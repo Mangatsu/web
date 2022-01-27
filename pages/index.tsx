@@ -7,7 +7,7 @@ import useSWRInfinite from "swr/infinite"
 import Filters from "../components/Filters"
 import Layout from "../components/Layout"
 import { fetchCategories, fetchLibrary } from "../lib/api/library"
-import { getApiUrl, getCacheUrl, RESULT_LIMIT, StringResponse } from "../lib/api/other"
+import { getCacheUrl, RESULT_LIMIT, StringResponse } from "../lib/api/other"
 import getServerInfo from "../lib/api/serverInfo"
 import { fetchFavoriteGroups } from "../lib/api/user"
 import useDebounce from "../lib/hooks/useDebounce"
@@ -16,8 +16,6 @@ import placeholderCover from "../public/placeholder.png"
 import { GalleryMeta, LibraryFilters, ServerInfo, Visibility } from "../types"
 
 interface Props {
-  apiURL: string
-  cacheURL: string
   serverInfo: ServerInfo
   categories: StringResponse
   favorites: StringResponse
@@ -28,10 +26,10 @@ interface GalleriesResult {
   Count: number
 }
 
-const fetcher = (url: string, offset: number, query: LibraryFilters, token: string) =>
-  fetchLibrary(url, offset, query, token).then((r) => r.json())
+const fetcher = (offset: number, query: LibraryFilters, token: string) =>
+  fetchLibrary(offset, query, token).then((r) => r.json())
 
-export default function LibraryIndex({ apiURL, cacheURL, serverInfo, categories, favorites }: Props) {
+export default function LibraryIndex({ serverInfo, categories, favorites }: Props) {
   const { data: session, status } = useSession()
   const [query, setQuery] = useState<LibraryFilters>({ nsfwHidden: getValue(LocalPreferences.NSFWPref) })
   const debouncedFilters = useDebounce(query, 100)
@@ -39,7 +37,7 @@ export default function LibraryIndex({ apiURL, cacheURL, serverInfo, categories,
   const getKey = (pageIndex: number, previousPageData: unknown[]) => {
     if (previousPageData && previousPageData.length === 0) return null
     if (status === "loading") return null
-    return [apiURL, pageIndex * RESULT_LIMIT, debouncedFilters, session?.user?.name]
+    return [pageIndex * RESULT_LIMIT, debouncedFilters, session?.user?.name]
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -79,7 +77,7 @@ export default function LibraryIndex({ apiURL, cacheURL, serverInfo, categories,
                     alt="cover image"
                     src={
                       gallery.Thumbnail
-                        ? `${cacheURL}/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`
+                        ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`)
                         : placeholderCover
                     }
                     className="w-full rounded text-center"
@@ -128,6 +126,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   favorites = favorites?.Data ? favorites : { Data: [], Count: 0 }
 
   return {
-    props: { apiURL: getApiUrl(), cacheURL: getCacheUrl(), serverInfo, categories, favorites },
+    props: { serverInfo, categories, favorites },
   }
 }

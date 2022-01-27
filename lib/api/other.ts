@@ -12,7 +12,7 @@ export const RESULT_LIMIT = 50
  * @returns API URL as string
  */
 export function getApiUrl(path = "") {
-  return `${process.env.NEXT_MANGATSU_API_URL || "http://localhost:5050"}/api/v1${path}`
+  return `${process.env.NEXT_PUBLIC_MANGATSU_API_URL || "http://localhost:5050"}/api/v1${path}`
 }
 
 /**
@@ -22,7 +22,7 @@ export function getApiUrl(path = "") {
  * @returns API URL as string
  */
 export function getCacheUrl(path = "") {
-  return `${process.env.NEXT_MANGATSU_API_URL || "http://localhost:5050"}/cache${path}`
+  return `${process.env.NEXT_PUBLIC_MANGATSU_API_URL || "http://localhost:5050"}/cache${path}`
 }
 
 /**
