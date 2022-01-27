@@ -10,8 +10,8 @@ import { getApiUrl, RESULT_LIMIT, StringResponse } from "./other"
  * @param token JWT
  * @returns promise of the response
  */
-export async function fetchLibrary(url: string, offset: number, filters?: LibraryFilters, token?: string) {
-  const requestUrl = new URL(`${url}/galleries`)
+export async function fetchLibrary(offset: number, filters?: LibraryFilters, token?: string) {
+  const requestUrl = new URL(getApiUrl("/galleries"))
   requestUrl.searchParams.append("limit", RESULT_LIMIT.toString())
   requestUrl.searchParams.append("offset", offset.toString())
 

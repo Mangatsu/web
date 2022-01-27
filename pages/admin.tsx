@@ -4,20 +4,18 @@ import useSWR from "swr"
 import Layout from "../components/Layout"
 import NewUser from "../components/NewUser"
 import Users from "../components/Users"
-import { getApiUrl } from "../lib/api/other"
 import getServerInfo from "../lib/api/serverInfo"
 import { fetchUsers } from "../lib/api/user"
 import { decodeJWT, Role } from "../lib/helpers"
 import { ServerInfo } from "../types"
 
 interface Props {
-  url: string
   serverInfo: ServerInfo
   token: string
 }
 
-export default function Settings({ url, serverInfo, token }: Props) {
-  const { data: users, mutate } = useSWR(token, (token: string) => fetchUsers(url, token).then((r) => r.json()))
+export default function Settings({ serverInfo, token }: Props) {
+  const { data: users, mutate } = useSWR(token, (token: string) => fetchUsers(token).then((r) => r.json()))
 
   return (
     <Layout serverInfo={serverInfo} subtitle="Administrative">
@@ -60,6 +58,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const serverInfo = await getServerInfo()
   return {
-    props: { url: getApiUrl(), serverInfo, token: session.user.name },
+    props: { serverInfo, token: session.user.name },
   }
 }

@@ -12,9 +12,9 @@ export interface UserForm {
  * @param token JWT
  * @returns promise of the response
  */
-export async function fetchUsers(url: string, token: string) {
+export async function fetchUsers(token: string) {
   const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
-  return await fetch(`${url}/users`, {
+  return await fetch(getApiUrl("/users"), {
     mode: "cors",
     headers: { ...authHeader },
   })
