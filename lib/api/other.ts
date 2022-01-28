@@ -39,3 +39,17 @@ export async function fetchApi(path: string) {
 
   return await response.json()
 }
+
+/**
+ * Returns information about server such as version, visibility, API version.
+ *
+ * @returns JSON promise
+ */
+export async function fetchServerInfo() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_MANGATSU_API_URL || "http://localhost:5050"}/api`)
+  if (!response.ok) {
+    return null
+  }
+
+  return await response.json()
+}
