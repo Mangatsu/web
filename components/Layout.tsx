@@ -1,7 +1,7 @@
 import Head from "next/head"
 import { ReactNode } from "react"
 import { ToastContainer } from "react-toastify"
-import { ServerInfo } from "../types"
+import { ServerInfo } from "../lib/types"
 import Nav from "./Nav"
 
 interface LayoutProps {

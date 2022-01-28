@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react"
-import { Visibility } from "../../types"
 import getServerInfo from "../api/serverInfo"
+import { Visibility } from "../types"
 
 export default async function useAccess(privatePage?: boolean) {
   let allowed = false

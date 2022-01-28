@@ -7,7 +7,7 @@ import Users from "../components/Users"
 import getServerInfo from "../lib/api/serverInfo"
 import { fetchUsers } from "../lib/api/user"
 import { decodeJWT, Role } from "../lib/helpers"
-import { ServerInfo } from "../types"
+import { ServerInfo } from "../lib/types"
 
 interface Props {
   serverInfo: ServerInfo

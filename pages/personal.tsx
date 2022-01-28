@@ -8,7 +8,7 @@ import getServerInfo from "../lib/api/serverInfo"
 import { updateUser } from "../lib/api/user"
 import { decodeJWT, Role } from "../lib/helpers"
 import { getValue, LocalPreferences, setValue } from "../lib/localStorage"
-import { ServerInfo } from "../types"
+import { ServerInfo } from "../lib/types"
 
 interface Props {
   serverInfo: ServerInfo

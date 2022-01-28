@@ -2,7 +2,7 @@ import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
 import { deleteUser, updateUser } from "../lib/api/user"
 import { getRole, Role } from "../lib/helpers"
-import { MangatsuUser } from "../types"
+import { MangatsuUser } from "../lib/types"
 import PopupLarge from "./PopupLarge"
 
 interface Props {
