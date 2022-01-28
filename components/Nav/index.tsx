@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react"
 import { decodeJWT, Role } from "../../lib/helpers"
-import { ServerInfo } from "../../types"
+import { ServerInfo } from "../../lib/types"
 import Button from "../Button"
 import Scan from "./Scan"
 import User from "./User"

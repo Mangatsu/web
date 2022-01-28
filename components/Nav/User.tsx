@@ -1,7 +1,7 @@
 import { Session } from "next-auth"
 import Image from "next/image"
+import { ServerInfo } from "../../lib/types"
 import UserIcon from "../../public/icons/uk-user.svg"
-import { ServerInfo } from "../../types"
 import Button from "../Button"
 import Lock from "../Lock"
 import PopupSmall from "../PopupSmall"

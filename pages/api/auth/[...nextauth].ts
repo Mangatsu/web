@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { getApiUrl } from "../../../lib/api/other"
 import getServerInfo from "../../../lib/api/serverInfo"
-import { Visibility } from "../../../types"
+import { Visibility } from "../../../lib/types"
 
 export default NextAuth({
   providers: [

@@ -1,4 +1,4 @@
-import { GalleryMeta } from '../types'
+import { GalleryMeta } from "../lib/types"
 
 interface GalleryProps {
   galleries: GalleryMeta[]

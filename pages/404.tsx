@@ -1,8 +1,8 @@
 import { GetStaticProps } from "next"
 import Image from "next/image"
 import getServerInfo from "../lib/api/serverInfo"
+import { ServerInfo } from "../lib/types"
 import MangatsuLogo from "../public/logo-small.png"
-import { ServerInfo } from "../types"
 
 const Custom404 = ({ serverInfo }: { serverInfo: ServerInfo }) => {
   return (

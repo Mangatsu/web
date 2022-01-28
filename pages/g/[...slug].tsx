@@ -9,7 +9,7 @@ import { fetchGallery } from "../../lib/api/library"
 import { getCacheUrl } from "../../lib/api/other"
 import getServerInfo from "../../lib/api/serverInfo"
 import { changeExtension, clamp } from "../../lib/helpers"
-import { Gallery, ServerInfo, Visibility } from "../../types"
+import { Gallery, ServerInfo, Visibility } from "../../lib/types"
 
 interface Props {
   gallery: Gallery

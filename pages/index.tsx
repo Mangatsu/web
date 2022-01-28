@@ -12,8 +12,8 @@ import getServerInfo from "../lib/api/serverInfo"
 import { fetchFavoriteGroups } from "../lib/api/user"
 import useDebounce from "../lib/hooks/useDebounce"
 import { getValue, LocalPreferences } from "../lib/localStorage"
+import { GalleryMeta, LibraryFilters, ServerInfo, Visibility } from "../lib/types"
 import placeholderCover from "../public/placeholder.png"
-import { GalleryMeta, LibraryFilters, ServerInfo, Visibility } from "../types"
 
 interface Props {
   serverInfo: ServerInfo
