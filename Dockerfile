@@ -1,30 +1,28 @@
+# Dependencies step to avoid rebuilds if the package.json or package-lock.json have not changed.
 FROM node:16-alpine as deps
 
-WORKDIR /deps
-# Copies only package.json and lock file to avoid rebuilds if the package.json hasn't changed.
+RUN adduser -D mangatsu && mkdir /home/mangatsu/deps
+WORKDIR /home/mangatsu/deps
+
 COPY package.json package-lock.json ./
 RUN npm install npm@latest -g && npm install
 
-FROM node:16-alpine as build
+FROM node:16-alpine as runner
 ENV NODE_ENV=production
 
-WORKDIR /build
+RUN mkdir /mangatsuweb
+RUN chown -R node:node /mangatsuweb
+USER node
+
+WORKDIR /mangatsuweb
 COPY . .
-COPY --from=deps /deps ./
-RUN npm run build
+COPY --from=deps /home/mangatsu/deps/node_modules ./node_modules
 
-FROM node:16-alpine
-ENV NODE_ENV=production
-
-RUN adduser -D mangatsu && mkdir /home/mangatsu/webapp
-USER mangatsu
-WORKDIR /home/mangatsu/webapp
-
-COPY --from=build /build/package*.json ./
-COPY --from=build /build/public ./node_modules
-COPY --from=build /build/.next ./.next
-COPY --from=build /build/public ./public
+RUN NEXT_PUBLIC_MANGATSU_API_URL=APP_NEXT_PUBLIC_MANGATSU_API_URL npm run build
+RUN npx next telemetry disable
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+# Thanks https://dev.to/itsrennyman/manage-nextpublic-environment-variables-at-runtime-with-docker-53dl
+ENTRYPOINT ["/mangatsuweb/entrypoint.sh"]
+CMD npm start
