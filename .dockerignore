@@ -1,5 +1,5 @@
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
@@ -7,7 +7,7 @@
 /coverage
 
 # next.js
-/.next/
+.next
 /out/
 
 # production
@@ -37,5 +37,10 @@ yarn-error.log*
 # cache file
 .server-info.json
 
+Dockerfile
+.dockerignore
+README.md
 .dockerignore
 .gitignore
+.git
+.github
