@@ -21,7 +21,9 @@ COPY --from=deps /home/mangatsu/deps/node_modules ./node_modules
 RUN NEXT_PUBLIC_MANGATSU_API_URL=APP_NEXT_PUBLIC_MANGATSU_API_URL npm run build
 RUN npx next telemetry disable
 
-EXPOSE 3000
+EXPOSE 3030
+
+RUN chmod +x /mangatsuweb/entrypoint.sh
 
 # Thanks https://dev.to/itsrennyman/manage-nextpublic-environment-variables-at-runtime-with-docker-53dl
 ENTRYPOINT ["/mangatsuweb/entrypoint.sh"]
