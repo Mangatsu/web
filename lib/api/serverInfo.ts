@@ -9,12 +9,14 @@ export default async function getServerInfo(refresh?: boolean): Promise<ServerIn
   let cachedData: ServerInfo | null = null
 
   try {
-    cachedData = JSON.parse(fs.readFileSync(SERVER_INFO_CACHE_PATH, "utf8"))
+    if (fs.existsSync(SERVER_INFO_CACHE_PATH)) {
+      cachedData = JSON.parse(fs.readFileSync(SERVER_INFO_CACHE_PATH, "utf8"))
+    }
   } catch (error) {
     console.log("Server info cache not initialized", error)
   }
 
-  if (!cachedData || refresh) {
+  if (!cachedData?.ServerVersion || refresh || cachedData.ServerVersion === "unknown") {
     let data
     try {
       data = await fetchServerInfo()
