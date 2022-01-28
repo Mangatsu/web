@@ -10,21 +10,17 @@
 
 ### [📰 CHANGELOG](docs/CHANGELOG.md)
 
-### 💨 Running
+## 💨 Running for development
 
 - Preferably have [Mangatsu Server](https://github.com/Mangatsu/server) running
 - Install Node 16+ and npm 8+
-- Copy `.env.local` as `.env.local`
+- Copy `example.env.local` as `.env.local` and change values
 - Run `npm i` to install all dependencies
 - Run `npm run dev` to start the development version
 - **OR**
 - Run `npm run build` and `npm start` for the production version
 
-### 📝 Generating docs
-
-- Coming soon
-
-## Requirements
+## ❗ Requirements
 
 - Node.js 16+
 - npm 8+
