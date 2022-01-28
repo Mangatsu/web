@@ -1,11 +1,7 @@
 import fs from "fs"
 import path from "path"
 import { ServerInfo, Visibility } from "../../types"
-import { fetchApi } from "./other"
-
-async function fetchServerInfo() {
-  return await fetchApi("/info")
-}
+import { fetchServerInfo } from "./other"
 
 const SERVER_INFO_CACHE_PATH = path.resolve(".server-info.json")
 
