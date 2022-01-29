@@ -6,11 +6,11 @@ import Button from "../Button"
 import PopupSmall from "../PopupSmall"
 
 const Scan = ({ token }: { token: string }) => {
-  // TODO: More options to the UI such as covers only thumnbnail generation etc.
-  const quickScanHandler = async () => {
-    toast("Starting quick scan...")
-    await initiateScan(token, false)
-  }
+  // TODO: More options to the UI such as quick scan, covers only thumnbnail generation etc.
+  // const quickScanHandler = async () => {
+  //   toast("Starting quick scan...")
+  //   await initiateScan(token, false)
+  // }
 
   const fullScanHandler = async () => {
     toast("Starting full scan...")
@@ -29,11 +29,11 @@ const Scan = ({ token }: { token: string }) => {
 
   return (
     <PopupSmall buttonChildren={<Image width={24} height={24} alt="scan menu" src={ScanIcon} />}>
-      <Button onClick={() => quickScanHandler()} className="mx-4 my-2">
+      {/* <Button onClick={() => quickScanHandler()} className="mx-4 my-2">
         Quick scan
-      </Button>
+      </Button> */}
       <Button onClick={() => fullScanHandler()} className="mx-4 my-2">
-        Full scan
+        Scan
       </Button>
       <Button onClick={() => metadataHandler()} className="mx-4 my-2">
         Generate metadata
