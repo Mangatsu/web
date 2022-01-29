@@ -1,5 +1,12 @@
+import { MangatsuUser } from "../types"
+
 export interface StringResponse {
   Data: string[]
+  Count: number
+}
+
+export interface MangatsuUserResponse {
+  Data: MangatsuUser[]
   Count: number
 }
 

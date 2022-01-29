@@ -4,6 +4,7 @@ import useSWR from "swr"
 import Layout from "../components/Layout"
 import NewUser from "../components/NewUser"
 import Users from "../components/Users"
+import { MangatsuUserResponse } from "../lib/api/other"
 import getServerInfo from "../lib/api/serverInfo"
 import { fetchUsers } from "../lib/api/user"
 import { decodeJWT, Role } from "../lib/helpers"
@@ -15,7 +16,8 @@ interface Props {
 }
 
 export default function Settings({ serverInfo, token }: Props) {
-  const { data: users, mutate } = useSWR(token, (token: string) => fetchUsers(token).then((r) => r.json()))
+  const { data, mutate } = useSWR(token, (token: string) => fetchUsers(token).then((r) => r.json()))
+  const users = data as MangatsuUserResponse
 
   return (
     <Layout serverInfo={serverInfo} subtitle="Administrative">
