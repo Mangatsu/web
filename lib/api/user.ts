@@ -1,9 +1,20 @@
+import { MangatsuSession, MangatsuUser } from "../../types/api"
 import { getApiUrl, StringResponse } from "./other"
 
 export interface UserForm {
   username?: string
   password?: string
   role?: number
+}
+
+export interface MangatsuUserResponse {
+  Data: MangatsuUser[]
+  Count: number
+}
+
+export interface MangatsuSessionResponse {
+  Data: MangatsuSession[]
+  Count: number
 }
 
 /**
@@ -68,6 +79,37 @@ export async function deleteUser(token: string, uuid: string) {
     method: "DELETE",
     mode: "cors",
     headers: { Authorization: `Bearer ${token}` },
+  })
+
+  return response.ok
+}
+
+/**
+ * Returns user's sessions from the API. Used with SWR.
+ *
+ * @param token JWT
+ * @returns promise of the response
+ */
+export async function fetchSessions(token: string) {
+  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
+  return await fetch(getApiUrl("/users/me/sessions"), {
+    mode: "cors",
+    headers: { ...authHeader },
+  })
+}
+
+/**
+ * Deletes a session. Only the owner of the session can delete it.
+ * @param token JWT
+ * @param sessionID
+ * @returns if action was successful
+ */
+export async function deleteSession(token: string, sessionID: string) {
+  const response = await fetch(getApiUrl("/users/me/sessions"), {
+    method: "DELETE",
+    mode: "cors",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ SessionID: sessionID }),
   })
 
   return response.ok

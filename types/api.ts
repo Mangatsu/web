@@ -73,8 +73,10 @@ export interface LibraryFilters {
 
 // Users
 export interface MangatsuSession {
-  Token: string
-  Passphrase: string
+  ID: string
+  UserUUID: string
+  Name: string | null
+  ExpiresAt: string | null
 }
 
 export interface MangatsuUser {

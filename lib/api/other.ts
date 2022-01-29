@@ -1,12 +1,5 @@
-import { MangatsuUser } from "../../types/api"
-
 export interface StringResponse {
   Data: string[]
-  Count: number
-}
-
-export interface MangatsuUserResponse {
-  Data: MangatsuUser[]
   Count: number
 }
 
