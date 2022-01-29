@@ -1,12 +1,12 @@
 import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
+import { MangatsuUserResponse } from "../lib/api/other"
 import { deleteUser, updateUser } from "../lib/api/user"
 import { getRole, Role } from "../lib/helpers"
-import { MangatsuUser } from "../lib/types"
 import PopupLarge from "./PopupLarge"
 
 interface Props {
-  users: MangatsuUser[]
+  users: MangatsuUserResponse
   token: string
   mutate: KeyedMutator<unknown>
 }
@@ -53,7 +53,7 @@ const Users = ({ users, token, mutate }: Props) => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {users.Data.map((user) => (
                   <tr key={user.UUID} className="border-b bg-gray-800 border-gray-700">
                     <td>{user.UUID}</td>
                     <td className="whitespace-nowrap">{user.Username}</td>
