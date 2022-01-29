@@ -104,9 +104,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const serverInfo = await getServerInfo()
   const session = await getSession(context)
 
-  const privateAccess = serverInfo.Visibility === Visibility.Private && session?.serverToken
+  const publicAccess = serverInfo.Visibility === Visibility.Public
+  const privateAccess = session?.serverToken
   const restrictedAccess = serverInfo.Visibility === Visibility.Restricted && session?.passphrase
-  if (!privateAccess && !restrictedAccess) {
+  if (!publicAccess && !privateAccess && !restrictedAccess) {
     return {
       redirect: {
         destination: "/api/auth/signin",

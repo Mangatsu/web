@@ -8,10 +8,11 @@ import PopupLarge from "./PopupLarge"
 interface Props {
   users: MangatsuUserResponse
   token: string
+  userUUID: string | null
   mutate: KeyedMutator<unknown>
 }
 
-const Users = ({ users, token, mutate }: Props) => {
+const Users = ({ users, token, userUUID, mutate }: Props) => {
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>, uuid: string) => {
     e.preventDefault()
     const target = e.target as typeof e.target & { password: { value: string }; role: { value: number } }
@@ -22,7 +23,7 @@ const Users = ({ users, token, mutate }: Props) => {
       mutate()
       toast.success("User updated")
     } else {
-      toast.error("Failes to update user")
+      toast.error("Failed to update user")
     }
   }
 
@@ -96,7 +97,7 @@ const Users = ({ users, token, mutate }: Props) => {
                         </form>
                       </PopupLarge>
                       {" - "}
-                      {user.Role >= Role.Admin ? (
+                      {user.Role >= Role.Admin || user.UUID === userUUID ? (
                         <span className="text-gray-600">Delete</span>
                       ) : (
                         <a
