@@ -1,7 +1,6 @@
 import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
-import { MangatsuUserResponse } from "../lib/api/other"
-import { deleteUser, updateUser } from "../lib/api/user"
+import { deleteUser, MangatsuUserResponse, updateUser } from "../lib/api/user"
 import { getRole, Role } from "../lib/helpers"
 import PopupLarge from "./PopupLarge"
 
