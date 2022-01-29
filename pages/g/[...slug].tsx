@@ -9,7 +9,7 @@ import { fetchGallery } from "../../lib/api/library"
 import { getCacheUrl } from "../../lib/api/other"
 import getServerInfo from "../../lib/api/serverInfo"
 import { changeExtension, clamp } from "../../lib/helpers"
-import { Gallery, ServerInfo, Visibility } from "../../lib/types"
+import { Gallery, ServerInfo, Visibility } from "../../types/api"
 
 interface Props {
   gallery: Gallery
@@ -84,7 +84,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const serverInfo = await getServerInfo()
   const session = await getSession(context)
-  if (!session?.user && serverInfo.Visibility !== Visibility.Public) {
+  const privateAccess = serverInfo.Visibility === Visibility.Private && session?.serverToken
+  const restrictedAccess = serverInfo.Visibility === Visibility.Restricted && session?.passphrase
+  if (!privateAccess && !restrictedAccess) {
     return {
       redirect: {
         destination: "/api/auth/signin",
@@ -99,7 +101,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: {} }
   }
 
-  const gallery: Gallery = await fetchGallery(slugs[0], session?.user?.name)
+  const gallery: Gallery = await fetchGallery(slugs[0], session?.serverToken || session?.passphrase)
   const thumbnails: string[] = []
 
   if (!gallery.Files) {

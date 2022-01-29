@@ -12,8 +12,8 @@ import getServerInfo from "../lib/api/serverInfo"
 import { fetchFavoriteGroups } from "../lib/api/user"
 import useDebounce from "../lib/hooks/useDebounce"
 import { getValue, LocalPreferences } from "../lib/localStorage"
-import { GalleryMeta, LibraryFilters, ServerInfo, Visibility } from "../lib/types"
 import placeholderCover from "../public/placeholder.png"
+import { GalleryMeta, LibraryFilters, ServerInfo, Visibility } from "../types/api"
 
 interface Props {
   serverInfo: ServerInfo
@@ -37,13 +37,13 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
   const getKey = (pageIndex: number, previousPageData: unknown[]) => {
     if (previousPageData && previousPageData.length === 0) return null
     if (status === "loading") return null
-    return [pageIndex * RESULT_LIMIT, debouncedFilters, session?.user?.name]
+    return [pageIndex * RESULT_LIMIT, debouncedFilters, session?.serverToken || session?.passphrase]
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data, error, isValidating, mutate, size, setSize } = useSWRInfinite(getKey, fetcher)
 
-  if (serverInfo?.Visibility !== Visibility.Public && !session?.user) {
+  if (serverInfo?.Visibility !== Visibility.Public && status === "unauthenticated") {
     return (
       <Layout serverInfo={serverInfo}>
         <Link href="api/auth/signin">Login</Link>
@@ -104,7 +104,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const serverInfo = await getServerInfo()
   const session = await getSession(context)
 
-  if (!session && serverInfo.Visibility !== Visibility.Public) {
+  const privateAccess = serverInfo.Visibility === Visibility.Private && session?.serverToken
+  const restrictedAccess = serverInfo.Visibility === Visibility.Restricted && session?.passphrase
+  if (!privateAccess && !restrictedAccess) {
     return {
       redirect: {
         destination: "/api/auth/signin",
@@ -114,14 +116,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   let categories
-  if (session?.user?.name) {
-    categories = await fetchCategories(session.user.name)
+  let favorites
+  if (session?.serverToken) {
+    categories = await fetchCategories(session?.serverToken)
+    favorites = await fetchFavoriteGroups(session?.serverToken)
   }
 
-  let favorites
-  if (session?.user?.name) {
-    favorites = await fetchFavoriteGroups(session.user.name)
-  }
   categories = categories?.Data ? categories : { Data: [], Count: 0 }
   favorites = favorites?.Data ? favorites : { Data: [], Count: 0 }
 

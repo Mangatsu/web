@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react"
 import { StringResponse } from "../../lib/api/other"
-import { LibraryFilters } from "../../lib/types"
+import { LibraryFilters } from "../../types/api"
 import CategorySelect from "./CategorySelect"
 import FavoriteSelect from "./FavoriteSelect"
 import NSFWSwitch from "./NSFWSwitch"

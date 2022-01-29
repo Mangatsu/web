@@ -6,9 +6,9 @@ import Layout from "../components/Layout"
 import OnOffSwitch from "../components/OnOffSwitch"
 import getServerInfo from "../lib/api/serverInfo"
 import { updateUser } from "../lib/api/user"
-import { decodeJWT, Role } from "../lib/helpers"
+import { Role } from "../lib/helpers"
 import { getValue, LocalPreferences, setValue } from "../lib/localStorage"
-import { ServerInfo } from "../lib/types"
+import { ServerInfo } from "../types/api"
 
 interface Props {
   serverInfo: ServerInfo
@@ -97,7 +97,7 @@ export default function Personal({ serverInfo, token, role, userUUID }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context)
-  if (!session?.user?.name) {
+  if (!session?.serverToken) {
     return {
       redirect: {
         destination: "/api/auth/signin",
@@ -107,9 +107,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const serverInfo = await getServerInfo()
-  const payload = decodeJWT(session.user.name)
-
   return {
-    props: { serverInfo, token: session.user.name, role: payload.Roles, userUUID: payload.Subject },
+    props: { serverInfo, token: session.serverToken, role: session?.user?.role || 0, userUUID: session?.user?.uuid },
   }
 }

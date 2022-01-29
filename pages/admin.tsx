@@ -7,15 +7,15 @@ import Users from "../components/Users"
 import { MangatsuUserResponse } from "../lib/api/other"
 import getServerInfo from "../lib/api/serverInfo"
 import { fetchUsers } from "../lib/api/user"
-import { decodeJWT, Role } from "../lib/helpers"
-import { ServerInfo } from "../lib/types"
+import { Role } from "../lib/helpers"
+import { ServerInfo } from "../types/api"
 
 interface Props {
   serverInfo: ServerInfo
   token: string
 }
 
-export default function Settings({ serverInfo, token }: Props) {
+export default function Admin({ serverInfo, token }: Props) {
   const { data, mutate } = useSWR(token, (token: string) => fetchUsers(token).then((r) => r.json()))
   const users = data as MangatsuUserResponse
 
@@ -39,7 +39,7 @@ export default function Settings({ serverInfo, token }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context)
-  if (!session?.user?.name) {
+  if (!session?.serverToken) {
     return {
       redirect: {
         destination: "/api/auth/signin",
@@ -48,8 +48,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const payload = decodeJWT(session.user.name)
-  if (payload.Roles < Role.Admin) {
+  if (session?.user?.role && session.user.role < Role.Admin) {
     return {
       redirect: {
         destination: "/",
@@ -60,6 +59,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const serverInfo = await getServerInfo()
   return {
-    props: { serverInfo, token: session.user.name },
+    props: { serverInfo, token: session.serverToken },
   }
 }

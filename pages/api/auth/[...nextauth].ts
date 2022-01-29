@@ -2,11 +2,13 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { getApiUrl } from "../../../lib/api/other"
 import getServerInfo from "../../../lib/api/serverInfo"
-import { Visibility } from "../../../lib/types"
+import { decodeJWT } from "../../../lib/helpers"
+import { Visibility } from "../../../types/api"
 
 export default NextAuth({
   providers: [
     Credentials({
+      id: "user",
       name: "Credentials",
       credentials: {
         username: { label: "Username", type: "text" },
@@ -33,13 +35,19 @@ export default NextAuth({
 
         if (res.ok) {
           const data = await res.json()
-          return { name: data.Token }
+          try {
+            const payload = decodeJWT(data.Token)
+            return { serverToken: data.Token, role: payload.Roles, uuid: payload.Subject }
+          } catch (e) {
+            return null
+          }
         }
 
         return null
       },
     }),
     Credentials({
+      id: "passphrase",
       name: "Passphrase",
       credentials: {
         passphrase: { label: "Passphrase", type: "password" },
@@ -53,19 +61,37 @@ export default NextAuth({
 
         const res = await fetch(getApiUrl("/login"), {
           method: "POST",
-          body: JSON.stringify(credentials),
+          body: JSON.stringify({ Passphrase: credentials.passphrase }),
           headers: { "Content-Type": "application/json" },
         })
 
         if (res.ok) {
-          const passphrase = await res.json()
-          return { passphrase: passphrase }
+          const data = await res.json()
+          return { passphrase: data.Token, role: 0 }
         }
 
         return null
       },
     }),
   ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.serverToken = user.serverToken
+        token.passphrase = user.passphrase
+        token.role = user.role
+        token.uuid = user.uuid
+      }
+      return token
+    },
+    session: async ({ session, token }) => {
+      session.serverToken = token.serverToken
+      session.passphrase = token.passphrase
+      session.role = token.role
+      token.uuid = token.uuid
+      return session
+    },
+  },
   secret: process.env.SECRET,
   session: {
     strategy: "jwt",
