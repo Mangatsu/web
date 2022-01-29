@@ -67,7 +67,7 @@ export default NextAuth({
 
         if (res.ok) {
           const data = await res.json()
-          return { passphrase: data.Token, role: 0 }
+          return { passphrase: data.Token, role: 0, uuid: null }
         }
 
         return null
@@ -79,16 +79,14 @@ export default NextAuth({
       if (user) {
         token.serverToken = user.serverToken
         token.passphrase = user.passphrase
-        token.role = user.role
-        token.uuid = user.uuid
+        token.user = { role: user.role, uuid: user.uuid }
       }
       return token
     },
     session: async ({ session, token }) => {
       session.serverToken = token.serverToken
       session.passphrase = token.passphrase
-      session.role = token.role
-      token.uuid = token.uuid
+      session.user = token.user
       return session
     },
   },

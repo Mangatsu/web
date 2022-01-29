@@ -13,9 +13,10 @@ import { ServerInfo } from "../types/api"
 interface Props {
   serverInfo: ServerInfo
   token: string
+  userUUID: string | null
 }
 
-export default function Admin({ serverInfo, token }: Props) {
+export default function Admin({ serverInfo, token, userUUID }: Props) {
   const { data, mutate } = useSWR(token, (token: string) => fetchUsers(token).then((r) => r.json()))
   const users = data as MangatsuUserResponse
 
@@ -30,7 +31,7 @@ export default function Admin({ serverInfo, token }: Props) {
         </div>
         <div className="p-4 rounded bg-opacity-20 bg-black">
           <h4>Users</h4>
-          {users && <Users users={users} token={token} mutate={mutate} />}
+          {users && <Users users={users} token={token} userUUID={userUUID} mutate={mutate} />}
         </div>
       </div>
     </Layout>
@@ -59,6 +60,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const serverInfo = await getServerInfo()
   return {
-    props: { serverInfo, token: session.serverToken },
+    props: { serverInfo, token: session.serverToken, userUUID: session?.user?.uuid || null },
   }
 }
