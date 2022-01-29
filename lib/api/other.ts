@@ -1,4 +1,4 @@
-import { MangatsuUser } from "../types"
+import { MangatsuUser } from "../../types/api"
 
 export interface StringResponse {
   Data: string[]

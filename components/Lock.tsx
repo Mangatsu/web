@@ -15,6 +15,7 @@ const Lock = ({ session, status }: Props) => {
     }
   }
 
+  const token = session?.serverToken || session?.passphrase
   return (
     <>
       {status === "loading" ? (
@@ -23,8 +24,8 @@ const Lock = ({ session, status }: Props) => {
             Loading…
           </button>
         </Link>
-      ) : session?.user?.name ? (
-        <Button href="/api/auth/signout" onClick={() => logoutHandler(session?.user?.name)} className="mt-3 mx-4">
+      ) : token ? (
+        <Button href="/api/auth/signout" onClick={() => logoutHandler(token)} className="mt-3 mx-4">
           Logout
         </Button>
       ) : (

@@ -1,4 +1,4 @@
-import { LibraryFilters } from "../types"
+import { LibraryFilters } from "../../types/api"
 import { getApiUrl, RESULT_LIMIT, StringResponse } from "./other"
 
 /**
