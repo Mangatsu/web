@@ -121,7 +121,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session?.serverToken) {
     try {
       categories = await fetchCategories(session?.serverToken)
-      favorites = await fetchFavoriteGroups(session?.serverToken)
+      favorites = (await fetchFavoriteGroups(session?.serverToken, false)) as StringResponse
     } catch {
       console.error("Failed to fetch categories and favorites. Is the backend offline?")
     }
