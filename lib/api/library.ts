@@ -68,3 +68,23 @@ export async function fetchGallery(uuid: string, token?: string | null) {
 
   return await response.json()
 }
+
+/**
+ * Returns a random gallery.
+ *
+ * @param token JWT
+ * @returns promise of the JSON or null
+ */
+export async function fetchRandomGallery(token?: string | null) {
+  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
+  const response = await fetch(getApiUrl("/galleries/random"), {
+    mode: "cors",
+    headers: { ...authHeader },
+  })
+
+  if (!response.ok) {
+    return null
+  }
+
+  return await response.json()
+}
