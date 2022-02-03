@@ -52,7 +52,7 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
   }
 
   // This should actually be called "mightHaveMore", as in rare cases the data ends exactly on the offset (results % offset === 0)
-  // in which, one extra request will be mades.
+  // which results one extra request being made.
   const hasMore = data && data[data.length - 1].Count === RESULT_LIMIT
 
   // TODO: Grid masonry when major browsers support it (https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Masonry_Layout)
@@ -119,8 +119,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let categories
   let favorites
   if (session?.serverToken) {
-    categories = await fetchCategories(session?.serverToken)
-    favorites = await fetchFavoriteGroups(session?.serverToken)
+    try {
+      categories = await fetchCategories(session?.serverToken)
+      favorites = await fetchFavoriteGroups(session?.serverToken)
+    } catch {
+      console.error("Failed to fetch categories and favorites. Is the backend offline?")
+    }
   }
 
   categories = categories?.Data ? categories : { Data: [], Count: 0 }
