@@ -1,5 +1,6 @@
 import { Session } from "next-auth"
 import Image from "next/image"
+import Link from "next/link"
 import UserIcon from "../../public/icons/uk-user.svg"
 import { ServerInfo } from "../../types/api"
 import Button from "../Button"
@@ -28,8 +29,12 @@ const User = ({ session, isAdmin, status, serverInfo }: Props) => {
         </Button>
       )}
       <div className="my-4 mx-4">
-        {session?.passphrase && <p className="text-sky-500">Anonymous access</p>}
-        <p className="font-bold">Mangatsu 🌕</p>
+        {session?.passphrase && <p className="text-sky-400">Anonymous access</p>}
+        <Link href="https://github.com/Mangatsu">
+          <a target="_blank" rel="noopener noreferrer" className="text-sky-400">
+            Mangatsu 🌕
+          </a>
+        </Link>
         <p>
           Visibility: <span className="font-bold">{serverInfo.Visibility}</span>
         </p>
