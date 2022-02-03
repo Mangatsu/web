@@ -133,6 +133,11 @@
     columns: 200px auto;
   } */
 
+  .gallery-actions {
+    display: grid;
+    grid-template-columns: 120px 120px 50%;
+  }
+
   .filter-grid {
     display: grid;
     grid-template-columns: 150px repeat(auto-fill, minmax(90px, 250px));

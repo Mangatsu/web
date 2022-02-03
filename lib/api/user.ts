@@ -134,17 +134,39 @@ export async function initiateLogout(token: string) {
  * Returns all favorite groups of the user from the API.
  *
  * @param token JWT
- * @returns promise of the JSON or null
+ * @param swr if true, returns the whole response for SWR
+ * @returns promise of the response, JSON or null
  */
-export async function fetchFavoriteGroups(token: string): Promise<StringResponse | null> {
+export async function fetchFavoriteGroups(token: string, swr: boolean) {
   const response = await fetch(getApiUrl("/users/me/favorites"), {
     mode: "cors",
     headers: { Authorization: `Bearer ${token}` },
   })
+  if (swr) {
+    return response
+  }
 
   if (!response.ok) {
     return null
   }
 
   return (await response.json()) as StringResponse
+}
+
+/**
+ * Sets gallery's favorite group for the requesting user.
+ *
+ * @param token JWT
+ * @param galleryUUID
+ * @param groupName
+ * @returns was the action successful
+ */
+export async function updateFavoriteGroup(token: string, galleryUUID: string, groupName: string) {
+  const response = await fetch(getApiUrl(`/galleries/${galleryUUID}/favorite/${groupName}`), {
+    method: "PATCH",
+    mode: "cors",
+    headers: { Authorization: `Bearer ${token}` },
+  })
+
+  return response.ok
 }
