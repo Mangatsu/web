@@ -6,15 +6,6 @@ COPY --chown=node:node package.json package-lock.json ./
 
 RUN npm install npm@latest -g && npm install
 
-# Only production dependencies (no devDependencies).
-FROM node:16-alpine as PROD-DEPS
-ENV NODE_ENV=production
-
-WORKDIR /mtsu-deps
-COPY --chown=node:node package.json package-lock.json ./
-
-RUN npm install npm@latest -g && npm install
-
 # Build the app.
 FROM node:16-alpine AS BUILDER
 ENV NODE_ENV=production
@@ -32,12 +23,9 @@ ENV NODE_ENV=production
 WORKDIR /mtsu-web
 RUN chown -R node:node /mtsu-web
 
-COPY --chown=node:node --from=PROD-DEPS /mtsu-deps/node_modules ./node_modules
-COPY --chown=node:node --from=BUILDER /mtsu-build/public ./public
-COPY --chown=node:node --from=BUILDER /mtsu-build/.next ./.next
-COPY --chown=node:node --from=BUILDER /mtsu-build/package.json /mtsu-build/package-lock.json ./
+COPY --chown=node:node --from=BUILDER /mtsu-build/.next/standalone ./
+COPY --chown=node:node --from=BUILDER /mtsu-build/.next/static ./.next/
 COPY --chown=node:node --from=BUILDER /mtsu-build/entrypoint.sh ./
-COPY --chown=node:node --from=BUILDER /mtsu-build/next.config.js ./
 
 USER root
 RUN chmod +x /mtsu-web/entrypoint.sh
