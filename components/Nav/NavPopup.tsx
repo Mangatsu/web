@@ -6,7 +6,7 @@ interface Props {
   children: ReactNode
 }
 
-const PopupSmall = ({ buttonChildren, children }: Props) => {
+const NavPopup = ({ buttonChildren, children }: Props) => {
   return (
     <Popup
       trigger={
@@ -27,4 +27,4 @@ const PopupSmall = ({ buttonChildren, children }: Props) => {
   )
 }
 
-export default PopupSmall
+export default NavPopup
