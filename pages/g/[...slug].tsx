@@ -1,3 +1,4 @@
+import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, EyeIcon, EyeOffIcon } from "@heroicons/react/solid"
 import { GetServerSideProps } from "next"
 import { getSession, useSession } from "next-auth/react"
 import Image from "next/image"
@@ -7,12 +8,13 @@ import { GroupBase, OptionsOrGroups, StylesConfig } from "react-select"
 import CreatableSelect from "react-select/creatable"
 import useSWR from "swr"
 import Button from "../../components/Button"
+import EditGallery from "../../components/EditGallery"
 import Layout from "../../components/Layout"
 import { fetchGallery } from "../../lib/api/library"
 import { getCacheUrl, StringResponse } from "../../lib/api/other"
 import getServerInfo from "../../lib/api/serverInfo"
 import { fetchFavoriteGroups, updateFavoriteGroup } from "../../lib/api/user"
-import { changeExtension, clamp } from "../../lib/helpers"
+import { changeExtension, clamp, Role } from "../../lib/helpers"
 import { Gallery, ServerInfo, Visibility } from "../../types/api"
 
 // Style for the react-select component (favorite selection)
@@ -58,6 +60,8 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
     label: gallery.Meta.GalleryPref?.FavoriteGroup || DEFAULT_GROUP,
   })
 
+  const isAdmin = session?.user?.role ? session?.user?.role >= Role.Admin : false
+
   const { data, mutate } = useSWR(session?.serverToken, (token: string) =>
     fetchFavoriteGroups(token, true).then((r) => (r as Response).json())
   )
@@ -102,18 +106,28 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
     )
 
   return (
-    <>
-      <Layout outerChildren={viewer} serverInfo={serverInfo} subtitle={gallery.Meta.Title}>
-        <div className="w-full mb-16 pb-96">
-          <div className="gallery-actions">
-            <Button onClick={() => setShowThumbnails(!showThumbnails)} className="mr-4">
-              Show pages
-            </Button>
-            <Button onClick={() => shiftByOne()}>Shift by one</Button>
-
-            {data && (
+    <Layout outerChildren={viewer} serverInfo={serverInfo} subtitle={gallery.Meta.Title}>
+      <div className="w-full mb-16 pb-96">
+        <div className="flex gap-2">
+          <Button onClick={() => setShowThumbnails(!showThumbnails)}>
+            {showThumbnails ? (
+              <EyeIcon className="h-5 w-5 text-zinc-100" />
+            ) : (
+              <EyeOffIcon className="h-5 w-5 text-zinc-100" />
+            )}
+          </Button>
+          <Button onClick={() => shiftByOne()}>
+            {isShift ? (
+              <ChevronDoubleLeftIcon className="h-5 w-5 text-zinc-100" />
+            ) : (
+              <ChevronDoubleRightIcon className="h-5 w-5 text-zinc-100" />
+            )}
+          </Button>
+          {session?.serverToken && isAdmin && <EditGallery gallery={gallery.Meta} token={session?.serverToken} />}
+          {data && (
+            <div className="grow">
               <CreatableSelect
-                className="mx-4 inline-block"
+                className="mx-4 max-w-md"
                 styles={customStyles}
                 options={favoriteGroups}
                 defaultValue={currentFavorite}
@@ -121,31 +135,31 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
                 onChange={(e) => handleFavoriteChange(e as { value: string; label: string }, true)}
                 onCreateOption={(e) => handleFavoriteChange({ value: e, label: e }, true)}
               />
-            )}
-          </div>
-
-          {showThumbnails && (
-            <div className="mt-4">
-              <p className="inline-block mb-1">Go to a page by clicking it.</p>
-              <div className="grid gap-2 thumbnails sm:thumbnails-sm lg:thumbnails-lg">
-                {thumbnails.map((thumbnail, i) => (
-                  <a key={i} href={`/g/${gallery.Meta.UUID}/${i}`}>
-                    <Image
-                      alt={`page ${i} thumbnail`}
-                      src={thumbnail}
-                      loading="lazy"
-                      width={200}
-                      height={300}
-                      objectFit="cover"
-                    />
-                  </a>
-                ))}
-              </div>
             </div>
           )}
         </div>
-      </Layout>
-    </>
+
+        {showThumbnails && (
+          <div className="mt-4">
+            <p className="inline-block mb-1">Go to a page by clicking it.</p>
+            <div className="grid gap-2 thumbnails sm:thumbnails-sm lg:thumbnails-lg">
+              {thumbnails.map((thumbnail, i) => (
+                <a key={i} href={`/g/${gallery.Meta.UUID}/${i}`}>
+                  <Image
+                    alt={`page ${i} thumbnail`}
+                    src={thumbnail}
+                    loading="lazy"
+                    width={200}
+                    height={300}
+                    objectFit="cover"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </Layout>
   )
 }
 
