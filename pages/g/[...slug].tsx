@@ -62,13 +62,23 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
 
   const isAdmin = session?.user?.role ? session?.user?.role >= Role.Admin : false
 
-  const { data, mutate } = useSWR(session?.serverToken, (token: string) =>
-    fetchFavoriteGroups(token, true).then((r) => (r as Response).json())
+  const { data: galleryData, mutate: mutateGallery } = useSWR(
+    [session?.serverToken, "gallery"],
+    (token: string) => fetchGallery(gallery.Meta.UUID, true, token).then((r) => (r as Response).json()),
+    { fallbackData: gallery }
+  )
+
+  const { data: favoritesData, mutate: mutateFavorites } = useSWR(
+    [session?.serverToken, "favorites"],
+    (token: string) => fetchFavoriteGroups(token, true).then((r) => (r as Response).json())
   )
 
   let favoriteGroups: OptionsOrGroups<unknown, GroupBase<unknown>> = []
-  if (data?.Data) {
-    favoriteGroups = [{ value: "", label: DEFAULT_GROUP }, ...data.Data.map((f: string) => ({ value: f, label: f }))]
+  if (favoritesData?.Data) {
+    favoriteGroups = [
+      { value: "", label: DEFAULT_GROUP },
+      ...favoritesData.Data.map((f: string) => ({ value: f, label: f })),
+    ]
   }
 
   useEffect(() => {
@@ -79,7 +89,7 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
     if (session?.serverToken) {
       await updateFavoriteGroup(session?.serverToken, gallery.Meta.UUID, group.value)
       if (isNew) {
-        mutate()
+        mutateFavorites()
       }
       setCurrentFavorite(group)
     }
@@ -98,7 +108,7 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
   const viewer =
     files.length > 0 ? (
       <div className="pb-16">
-        <h2 className="text-center mb-4 font-bold">{gallery.Meta.Title}</h2>
+        <h2 className="text-center mb-4 font-bold">{galleryData.Meta.Title}</h2>
         <ComicViewer pages={files} switchingRatio={1} initialCurrentPage={page} />
       </div>
     ) : (
@@ -106,7 +116,7 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
     )
 
   return (
-    <Layout outerChildren={viewer} serverInfo={serverInfo} subtitle={gallery.Meta.Title}>
+    <Layout outerChildren={viewer} serverInfo={serverInfo} subtitle={galleryData.Meta.Title}>
       <div className="w-full mb-16 pb-96">
         <div className="flex gap-2">
           <Button onClick={() => setShowThumbnails(!showThumbnails)}>
@@ -123,8 +133,10 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
               <ChevronDoubleRightIcon className="h-5 w-5 text-zinc-100" />
             )}
           </Button>
-          {session?.serverToken && isAdmin && <EditGallery gallery={gallery.Meta} token={session?.serverToken} />}
-          {data && (
+          {session?.serverToken && isAdmin && (
+            <EditGallery gallery={galleryData.Meta} mutate={mutateGallery} token={session?.serverToken} />
+          )}
+          {favoritesData && (
             <div className="grow">
               <CreatableSelect
                 className="mx-4 max-w-md"
@@ -184,7 +196,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: { serverInfo } }
   }
 
-  const gallery: Gallery = await fetchGallery(slugs[0], session?.serverToken || session?.passphrase)
+  const gallery: Gallery = await fetchGallery(slugs[0], false, session?.serverToken || session?.passphrase)
   if (!gallery) {
     return { notFound: true }
   }
