@@ -5,7 +5,7 @@ import UserIcon from "../../public/icons/uk-user.svg"
 import { ServerInfo } from "../../types/api"
 import Button from "../Button"
 import Lock from "../Lock"
-import PopupSmall from "../PopupSmall"
+import NavPopup from "./NavPopup"
 
 interface Props {
   session: Session | null
@@ -16,7 +16,7 @@ interface Props {
 
 const User = ({ session, isAdmin, status, serverInfo }: Props) => {
   return (
-    <PopupSmall buttonChildren={<Image width={24} height={24} alt="user menu" src={UserIcon} />}>
+    <NavPopup buttonChildren={<Image width={24} height={24} alt="user menu" src={UserIcon} />}>
       <Lock session={session} status={status} />
       {session?.serverToken && (
         <Button href="/personal" className="mt-3 mx-4">
@@ -45,7 +45,7 @@ const User = ({ session, isAdmin, status, serverInfo }: Props) => {
           API <span className="font-bold">V{serverInfo.APIVersion}</span>
         </p>
       </div>
-    </PopupSmall>
+    </NavPopup>
   )
 }
 

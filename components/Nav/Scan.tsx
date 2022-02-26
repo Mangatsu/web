@@ -3,7 +3,7 @@ import { toast } from "react-toastify"
 import { initiateMetadataGen, initiateScan, initiateThumbnailGen } from "../../lib/api/task"
 import ScanIcon from "../../public/icons/uk-refresh.svg"
 import Button from "../Button"
-import PopupSmall from "../PopupSmall"
+import NavPopup from "./NavPopup"
 
 const Scan = ({ token }: { token: string }) => {
   // TODO: More options to the UI such as quick scan, covers only thumnbnail generation etc.
@@ -28,7 +28,7 @@ const Scan = ({ token }: { token: string }) => {
   }
 
   return (
-    <PopupSmall buttonChildren={<Image width={24} height={24} alt="scan menu" src={ScanIcon} />}>
+    <NavPopup buttonChildren={<Image width={24} height={24} alt="scan menu" src={ScanIcon} />}>
       {/* <Button onClick={() => quickScanHandler()} className="mx-4 my-2">
         Quick scan
       </Button> */}
@@ -41,7 +41,7 @@ const Scan = ({ token }: { token: string }) => {
       <Button onClick={() => thumbnailHandler()} className="mx-4 my-2">
         Generate thumbnails
       </Button>
-    </PopupSmall>
+    </NavPopup>
   )
 }
 
