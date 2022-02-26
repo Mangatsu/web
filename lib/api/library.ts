@@ -1,6 +1,10 @@
 import { LibraryFilters } from "../../types/api"
 import { getApiUrl, RESULT_LIMIT, StringResponse } from "./other"
 
+export interface GalleryForm {
+  title?: string
+}
+
 /**
  * Returns the library (50 galleries per request) based on the specified filters and offset. Used with SWR.
  *
@@ -87,4 +91,23 @@ export async function fetchRandomGallery(token?: string | null) {
   }
 
   return await response.json()
+}
+
+/**
+ * Updates gallery metadata and/or tags.
+ *
+ * @param token JWT
+ * @param uuid
+ * @param form
+ * @returns promise of the JSON or null
+ */
+export async function updateGallery(token: string, uuid: string, form: GalleryForm) {
+  const response = await fetch(getApiUrl(`/galleries/${uuid}`), {
+    method: "PUT",
+    mode: "cors",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(form),
+  })
+
+  return response.ok
 }
