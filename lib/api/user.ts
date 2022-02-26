@@ -50,9 +50,10 @@ export async function newUser(token: string, form: UserForm) {
 }
 
 /**
- * Updates a new user.
+ * Updates user.
  *
  * @param token JWT
+ * @param uuid
  * @param form
  * @returns promise of the JSON or null
  */
