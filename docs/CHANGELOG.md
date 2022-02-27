@@ -9,6 +9,10 @@ All notable changes of this project will be documented in this file. Unreleased 
 ### Fixed
 
 - Docker image starting command
+- Static dir was not copied to the Docker image
+- Image hostname was not being whitelisted in the Docker image
+  - NEXT_MANGATSU_IMAGE_HOSTNAME wasn't embedded in the server.js when using Next.js standalone output
+- Sessions and Users tables might get mixed
 
 ## [0.2.0] - 2022-02-27
 
