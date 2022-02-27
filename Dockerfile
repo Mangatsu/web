@@ -37,4 +37,4 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 # Thanks https://dev.to/itsrennyman/manage-nextpublic-environment-variables-at-runtime-with-docker-53dl
 ENTRYPOINT ["/mtsu-web/entrypoint.sh"]
-CMD npm start
+CMD node server.js
