@@ -33,7 +33,21 @@ const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>, uuid: string) => {
     e.preventDefault()
     const target = e.target as typeof e.target & Form
-    const galleryForm = { title: target.title.value, nsfw: target.nsfw.checked }
+    const galleryForm = {
+      title: target.title.value,
+      titleNative: target.titleNative.value,
+      TitleTranslated: target.titleTranslated.value,
+      released: target.released.value,
+      series: target.series.value,
+      category: target.category.value,
+      language: target.language.value,
+      translated: target.translated.checked,
+      nsfw: target.nsfw.checked,
+      // exhToken: target.exhToken.value,
+      // exhGid: target.exhGid.value,
+      // anilistID: target.anilistID.value,
+      // urls: target.urls.value,
+    }
     const response = await updateGallery(token, uuid, galleryForm)
     if (response) {
       mutate()
@@ -57,6 +71,20 @@ const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
       <form className="max-w-xs" onSubmit={(e) => handleUpdate(e, gallery.UUID)}>
         <label>Title</label>
         <input type="text" id="title" defaultValue={gallery.Title} />
+        <label>Native Title</label>
+        <input type="text" id="titleNative" defaultValue={gallery.TitleNative} />
+        <label>Translated Title</label>
+        <input type="text" id="titleTranslated" defaultValue={gallery.TitleTranslated} />
+        <label>Released (event or date)</label>
+        <input type="text" id="released" defaultValue={gallery.Released} />
+        <label>Series</label>
+        <input type="text" id="series" defaultValue={gallery.Series} />
+        <label>Category</label>
+        <input type="text" id="category" defaultValue={gallery.Category} />
+        <label>Language</label>
+        <input type="text" id="language" defaultValue={gallery.Language} />
+        <label>Translated</label>
+        <input type="checkbox" id="translated" defaultChecked={gallery.Translated} />
         <label>NSFW</label>
         <input type="checkbox" id="nsfw" defaultChecked={gallery.Nsfw} />
         <button
