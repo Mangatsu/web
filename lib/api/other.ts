@@ -53,3 +53,20 @@ export async function fetchServerInfo() {
 
   return await response.json()
 }
+
+/**
+ * SWR fetch function.
+ *
+ * @param path
+ * @param token
+ * @returns Response
+ */
+export async function swrFetch(path: string, token?: string) {
+  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
+  const response = await fetch(getApiUrl(path), {
+    mode: "cors",
+    headers: { ...authHeader },
+  })
+
+  return response
+}

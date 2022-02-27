@@ -57,19 +57,15 @@ export async function fetchCategories(token?: string): Promise<StringResponse | 
  * Returns requested gallery from the API.
  *
  * @param uuid
- * @param swr if true, returns the whole response for SWR
  * @param token JWT
  * @returns promise of the JSON or null
  */
-export async function fetchGallery(uuid: string, swr: boolean, token?: string) {
+export async function fetchGallery(uuid: string, token?: string) {
   const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
   const response = await fetch(getApiUrl(`/galleries/${uuid}`), {
     mode: "cors",
     headers: { ...authHeader },
   })
-  if (swr) {
-    return response
-  }
   if (!response.ok) {
     return null
   }

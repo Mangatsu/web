@@ -6,8 +6,9 @@ import useSWR from "swr"
 import Layout from "../components/Layout"
 import OnOffSwitch from "../components/OnOffSwitch"
 import Sessions from "../components/Sessions"
+import { swrFetch } from "../lib/api/other"
 import getServerInfo from "../lib/api/serverInfo"
-import { fetchSessions, MangatsuSessionResponse, updateUser } from "../lib/api/user"
+import { MangatsuSessionResponse, updateUser } from "../lib/api/user"
 import { decodeJWT } from "../lib/helpers"
 import { getValue, LocalPreferences, setValue } from "../lib/localStorage"
 import { ServerInfo } from "../types/api"
@@ -21,7 +22,9 @@ interface Props {
 
 export default function Personal({ serverInfo, currentSessionID, token, userUUID }: Props) {
   const [nsfwPref, setNsfwPref] = useState(false)
-  const { data, mutate } = useSWR([token, "sessions"], (token: string) => fetchSessions(token).then((r) => r.json()))
+  const { data, mutate } = useSWR(token ? ["/users/me/sessions", token] : null, (path: string, token: string) =>
+    swrFetch(path, token).then((r) => r.json())
+  )
   const sessions = data as MangatsuSessionResponse
 
   useEffect(() => {
