@@ -24,7 +24,8 @@ WORKDIR /mtsu-web
 RUN chown -R node:node /mtsu-web
 
 COPY --chown=node:node --from=BUILDER /mtsu-build/.next/standalone ./
-COPY --chown=node:node --from=BUILDER /mtsu-build/.next/static ./.next/
+COPY --chown=node:node --from=BUILDER /mtsu-build/public ./public
+COPY --chown=node:node --from=BUILDER /mtsu-build/.next/static ./.next/static
 COPY --chown=node:node --from=BUILDER /mtsu-build/entrypoint.sh ./
 
 USER root
