@@ -14,21 +14,19 @@ interface EditGalleryProps {
 interface Form {
   title: { value: string }
   titleNative: { value: string }
-  TitleShort: { value: string }
+  titleTranslated: { value: string }
   released: { value: string }
-  circle: { value: string }
-  artists: { value: string }
   series: { value: string }
   category: { value: string }
   language: { value: string }
-  translated: { value: string }
+  translated: { checked: boolean }
   nsfw: { checked: boolean }
-  hidden: { value: string }
+  hidden: { checked: boolean }
   exhToken: { value: string }
   exhGid: { value: number }
   anilistID: { value: number }
   urls: { value: string }
-  // Tags        map[string][]string
+  tags: { value: string[] } // Record<string, string>
 }
 
 const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
