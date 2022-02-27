@@ -23,10 +23,8 @@ export interface GalleryMeta {
   UUID: string
   Title: string
   TitleNative?: string
-  TitleShort?: string
+  TitleTranslated?: string
   Released?: string
-  Circle?: string
-  Artists?: string
   Series?: string
   Category?: string
   Language?: string
