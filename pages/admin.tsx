@@ -4,8 +4,9 @@ import useSWR from "swr"
 import Layout from "../components/Layout"
 import NewUser from "../components/NewUser"
 import Users from "../components/Users"
+import { swrFetch } from "../lib/api/other"
 import getServerInfo from "../lib/api/serverInfo"
-import { fetchUsers, MangatsuUserResponse } from "../lib/api/user"
+import { MangatsuUserResponse } from "../lib/api/user"
 import { Role } from "../lib/helpers"
 import { ServerInfo } from "../types/api"
 
@@ -16,7 +17,9 @@ interface Props {
 }
 
 export default function Admin({ serverInfo, token, userUUID }: Props) {
-  const { data, mutate } = useSWR([token, "users"], (token: string) => fetchUsers(token).then((r) => r.json()))
+  const { data, mutate } = useSWR(token ? ["/users", token] : null, (path: string, token: string) =>
+    swrFetch(path, token).then((r) => r.json())
+  )
   const users = data as MangatsuUserResponse
 
   return (

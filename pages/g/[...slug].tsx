@@ -11,9 +11,9 @@ import Button from "../../components/Button"
 import EditGallery from "../../components/EditGallery"
 import Layout from "../../components/Layout"
 import { fetchGallery } from "../../lib/api/library"
-import { getCacheUrl, StringResponse } from "../../lib/api/other"
+import { getCacheUrl, StringResponse, swrFetch } from "../../lib/api/other"
 import getServerInfo from "../../lib/api/serverInfo"
-import { fetchFavoriteGroups, updateFavoriteGroup } from "../../lib/api/user"
+import { updateFavoriteGroup } from "../../lib/api/user"
 import { changeExtension, clamp, Role } from "../../lib/helpers"
 import { Gallery, ServerInfo, Visibility } from "../../types/api"
 
@@ -62,15 +62,19 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
 
   const isAdmin = session?.user?.role ? session?.user?.role >= Role.Admin : false
 
+  const tokenOrPassphrase = session?.serverToken || session?.passphrase
+
   const { data: galleryData, mutate: mutateGallery } = useSWR(
-    [session?.serverToken, "gallery"],
-    (token: string) => fetchGallery(gallery.Meta.UUID, true, token).then((r) => (r as Response).json()),
+    tokenOrPassphrase || serverInfo.Visibility === Visibility.Public
+      ? [`/galleries/${gallery.Meta.UUID}`, tokenOrPassphrase]
+      : null,
+    (path: string, token?: string) => swrFetch(path, token).then((r) => (r as Response).json()),
     { fallbackData: gallery }
   )
 
   const { data: favoritesData, mutate: mutateFavorites } = useSWR(
-    [session?.serverToken, "favorites"],
-    (token: string) => fetchFavoriteGroups(token, true).then((r) => (r as Response).json())
+    session?.serverToken ? ["/users/me/favorites", session?.serverToken] : null,
+    (path: string, token: string) => swrFetch(path, token).then((r) => (r as Response).json())
   )
 
   let favoriteGroups: OptionsOrGroups<unknown, GroupBase<unknown>> = []
@@ -108,7 +112,7 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
   const viewer =
     files.length > 0 ? (
       <div className="pb-16">
-        <h2 className="text-center mb-4 font-bold">{galleryData.Meta.Title}</h2>
+        <h2 className="text-center mb-4 font-bold">{galleryData?.Meta?.Title || gallery.Meta.Title}</h2>
         <ComicViewer pages={files} switchingRatio={1} initialCurrentPage={page} />
       </div>
     ) : (
@@ -116,7 +120,7 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
     )
 
   return (
-    <Layout outerChildren={viewer} serverInfo={serverInfo} subtitle={galleryData.Meta.Title}>
+    <Layout outerChildren={viewer} serverInfo={serverInfo} subtitle={galleryData?.Meta?.Title || gallery.Meta.Title}>
       <div className="w-full mb-16 pb-96">
         <div className="flex gap-2">
           <Button onClick={() => setShowThumbnails(!showThumbnails)}>
@@ -134,7 +138,11 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
             )}
           </Button>
           {session?.serverToken && isAdmin && (
-            <EditGallery gallery={galleryData.Meta} mutate={mutateGallery} token={session?.serverToken} />
+            <EditGallery
+              gallery={galleryData?.Meta || gallery.Meta}
+              mutate={mutateGallery}
+              token={session?.serverToken}
+            />
           )}
           {favoritesData && (
             <div className="grow">
@@ -196,7 +204,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: { serverInfo } }
   }
 
-  const gallery: Gallery = await fetchGallery(slugs[0], false, session?.serverToken || session?.passphrase)
+  const gallery: Gallery = await fetchGallery(slugs[0], session?.serverToken || session?.passphrase)
   if (!gallery) {
     return { notFound: true }
   }

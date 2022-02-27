@@ -18,20 +18,6 @@ export interface MangatsuSessionResponse {
 }
 
 /**
- * Returns users from the API. Used with SWR.
- *
- * @param token JWT
- * @returns promise of the response
- */
-export async function fetchUsers(token: string) {
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
-  return await fetch(getApiUrl("/users"), {
-    mode: "cors",
-    headers: { ...authHeader },
-  })
-}
-
-/**
  * Creates a new user.
  *
  * @param token JWT
@@ -86,20 +72,6 @@ export async function deleteUser(token: string, uuid: string) {
 }
 
 /**
- * Returns user's sessions from the API. Used with SWR.
- *
- * @param token JWT
- * @returns promise of the response
- */
-export async function fetchSessions(token: string) {
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
-  return await fetch(getApiUrl("/users/me/sessions"), {
-    mode: "cors",
-    headers: { ...authHeader },
-  })
-}
-
-/**
  * Deletes a session. Only the owner of the session can delete it.
  * @param token JWT
  * @param sessionID
@@ -135,18 +107,13 @@ export async function initiateLogout(token: string) {
  * Returns all favorite groups of the user from the API.
  *
  * @param token JWT
- * @param swr if true, returns the whole response for SWR
  * @returns promise of the response, JSON or null
  */
-export async function fetchFavoriteGroups(token: string, swr: boolean) {
+export async function fetchFavoriteGroups(token: string) {
   const response = await fetch(getApiUrl("/users/me/favorites"), {
     mode: "cors",
     headers: { Authorization: `Bearer ${token}` },
   })
-  if (swr) {
-    return response
-  }
-
   if (!response.ok) {
     return null
   }
