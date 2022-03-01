@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
+import { toast } from "react-toastify"
 import { fetchRandomGallery } from "../../lib/api/library"
 import { Role } from "../../lib/helpers"
 import { Gallery, ServerInfo } from "../../types/api"
@@ -14,7 +15,11 @@ const Nav = ({ serverInfo }: { serverInfo: ServerInfo }) => {
 
   const handleRandom = async () => {
     const gallery: Gallery = await fetchRandomGallery(session?.serverToken)
-    router.push(`/g/${gallery.Meta.UUID}`)
+    if (gallery) {
+      router.push(`/g/${gallery.Meta.UUID}`)
+    } else {
+      toast.error("No galleries.")
+    }
   }
 
   return (
