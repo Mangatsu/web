@@ -22,7 +22,7 @@ interface Props {
 }
 
 interface GalleriesResult {
-  Data: GalleryMeta[]
+  Data: GalleryMeta[] | Record<string, GalleryMeta[]>
   Count: number
 }
 
@@ -32,6 +32,7 @@ const fetcher = (offset: number, query: LibraryFilters, token: string) =>
 export default function LibraryIndex({ serverInfo, categories, favorites }: Props) {
   const { data: session, status } = useSession()
   const [query, setQuery] = useState<LibraryFilters>({ nsfwHidden: getValue(LocalPreferences.NSFWPref) })
+  const [grouped, setGrouped] = useState(false)
   const debouncedFilters = useDebounce(query, 100)
 
   const getKey = (pageIndex: number, previousPageData: unknown[]) => {
@@ -40,8 +41,7 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
     return [pageIndex * RESULT_LIMIT, debouncedFilters, session?.serverToken || session?.passphrase]
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data, error, isValidating, mutate, size, setSize } = useSWRInfinite(getKey, fetcher)
+  const { data, size, setSize } = useSWRInfinite(getKey, fetcher)
 
   if (serverInfo?.Visibility !== Visibility.Public && status === "unauthenticated") {
     return (
@@ -58,7 +58,14 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
   // TODO: Grid masonry when major browsers support it (https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Masonry_Layout)
   return (
     <Layout serverInfo={serverInfo}>
-      <Filters query={query} setQuery={setQuery} categories={categories} favorites={favorites} />
+      <Filters
+        query={query}
+        setQuery={setQuery}
+        grouped={grouped}
+        setGrouped={setGrouped}
+        categories={categories}
+        favorites={favorites}
+      />
       <div className="masonry sm:masonry-sm place-content-center">
         {data &&
           data.map((result: GalleriesResult) => {
@@ -66,8 +73,8 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
               return null
             }
 
-            return result.Data.map((gallery: GalleryMeta) => {
-              return (
+            if (Array.isArray(result.Data)) {
+              return (result.Data as GalleryMeta[]).map((gallery: GalleryMeta) => (
                 <a
                   href={`g/${gallery.UUID}`}
                   key={gallery.UUID}
@@ -87,6 +94,40 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
                     loading="lazy"
                   />
                 </a>
+              ))
+            }
+
+            const seriesMap = result.Data as Record<string, GalleryMeta[]>
+            return Object.keys(seriesMap).map((k, i) => {
+              const g = seriesMap[k]
+              return (
+                <div key={i} className="relative">
+                  <a
+                    href={`g/${g[0].UUID}`}
+                    key={g[0].UUID}
+                    className="grid place-content-center mb-3 mr-3 bg-gray-800 bg-clip-padding rounded"
+                  >
+                    <Image
+                      alt="cover image"
+                      src={
+                        g[0].Thumbnail ? getCacheUrl(`/thumbnails/${g[0].UUID}/${g[0].Thumbnail}`) : placeholderCover
+                      }
+                      className="w-full rounded text-center"
+                      width={200}
+                      height={300}
+                      objectFit="cover"
+                      loading="lazy"
+                    />
+                  </a>
+                  {seriesMap[k].length > 1 && (
+                    <div
+                      style={{ margin: "-50px 0 0 15px" }}
+                      className="absolute bg-slate-900 opacity-75 text-white text-center p-2 leading-3 rounded-full"
+                    >
+                      {seriesMap[k].length}
+                    </div>
+                  )}
+                </div>
               )
             })
           })}

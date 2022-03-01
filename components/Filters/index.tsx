@@ -3,6 +3,7 @@ import { StringResponse } from "../../lib/api/other"
 import { LibraryFilters } from "../../types/api"
 import CategorySelect from "./CategorySelect"
 import FavoriteSelect from "./FavoriteSelect"
+import GroupSeriesSwitch from "./GroupSeriesSwitch"
 import NSFWSwitch from "./NSFWSwitch"
 import OrderSwitch from "./OrderSwitch"
 import SearchBox from "./SearchBox"
@@ -14,11 +15,13 @@ export interface FilterProps {
 }
 
 interface Props extends FilterProps {
+  grouped: boolean
+  setGrouped: Dispatch<SetStateAction<boolean>>
   categories: StringResponse
   favorites: StringResponse
 }
 
-const Filters = ({ query, setQuery, categories, favorites }: Props) => {
+const Filters = ({ query, setQuery, grouped, setGrouped, categories, favorites }: Props) => {
   return (
     <div className="flex flex-row mb-12 mx-16">
       <div className="w-full grid grid-flow-row">
@@ -27,6 +30,7 @@ const Filters = ({ query, setQuery, categories, favorites }: Props) => {
           <div className="grid grid-flow-col">
             <NSFWSwitch query={query} setQuery={setQuery} />
             <OrderSwitch query={query} setQuery={setQuery} />
+            <GroupSeriesSwitch query={query} setQuery={setQuery} grouped={grouped} setGrouped={setGrouped} />
           </div>
           <SortBySelect query={query} setQuery={setQuery} />
           <CategorySelect query={query} setQuery={setQuery} categories={categories} />

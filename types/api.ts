@@ -19,6 +19,8 @@ export interface Gallery {
   Count: number
 }
 
+export type GroupedGalleries = Map<string, GalleryMeta[]>
+
 export interface GalleryMeta {
   UUID: string
   Title: string
@@ -67,6 +69,7 @@ export interface LibraryFilters {
   favoriteGroup?: string
   nsfwHidden?: boolean
   tags?: string
+  grouped?: boolean
 }
 
 // Users
