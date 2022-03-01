@@ -25,6 +25,7 @@ export async function fetchLibrary(offset: number, filters?: LibraryFilters, tok
   if (filters?.sortBy) requestUrl.searchParams.append("sortby", filters.sortBy)
   if (filters?.category) requestUrl.searchParams.append("category", filters.category)
   if (filters?.favoriteGroup) requestUrl.searchParams.append("favorite", filters.favoriteGroup)
+  if (filters?.grouped) requestUrl.searchParams.append("grouped", "true")
 
   const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
   return fetch(requestUrl.toString(), {
