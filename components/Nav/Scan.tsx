@@ -19,7 +19,7 @@ const Scan = ({ token }: { token: string }) => {
 
   const metadataHandler = async () => {
     toast("Parsing metadata...")
-    await initiateMetadataGen(token, true, true)
+    await initiateMetadataGen(token)
   }
 
   const thumbnailHandler = async () => {
