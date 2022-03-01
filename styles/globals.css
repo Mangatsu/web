@@ -31,6 +31,7 @@
     font-family: system-ui, "Noto Sans JP", sans-serif;
     padding: 0;
     margin: 0;
+    scrollbar-gutter: stable both-edges;
   }
 
   h1 {
@@ -135,7 +136,7 @@
 
   .filter-grid {
     display: grid;
-    grid-template-columns: 150px repeat(auto-fill, minmax(90px, 250px));
+    grid-template-columns: 250px repeat(auto-fill, minmax(90px, 250px));
   }
 
   .filter-grid > div {
