@@ -75,42 +75,14 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
 
             if (Array.isArray(result.Data)) {
               return (result.Data as GalleryMeta[]).map((gallery: GalleryMeta) => (
-                <a
-                  href={`g/${gallery.UUID}`}
-                  key={gallery.UUID}
-                  className="grid place-content-center mb-3 mr-3 bg-gray-800 bg-clip-padding rounded"
-                >
-                  <Image
-                    alt="cover image"
-                    src={
-                      gallery.Thumbnail
-                        ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`)
-                        : placeholderCover
-                    }
-                    className="w-full rounded text-center"
-                    width={200}
-                    height={300}
-                    objectFit="cover"
-                    loading="lazy"
-                  />
-                </a>
-              ))
-            }
-
-            const seriesMap = result.Data as Record<string, GalleryMeta[]>
-            return Object.keys(seriesMap).map((k, i) => {
-              const g = seriesMap[k]
-              return (
-                <div key={i} className="relative">
-                  <a
-                    href={`g/${g[0].UUID}`}
-                    key={g[0].UUID}
-                    className="grid place-content-center mb-3 mr-3 bg-gray-800 bg-clip-padding rounded"
-                  >
+                <Link href={`g/${gallery.UUID}`} key={gallery.UUID}>
+                  <a className="grid place-content-center mb-3 mr-3 bg-gray-800 bg-clip-padding rounded">
                     <Image
                       alt="cover image"
                       src={
-                        g[0].Thumbnail ? getCacheUrl(`/thumbnails/${g[0].UUID}/${g[0].Thumbnail}`) : placeholderCover
+                        gallery.Thumbnail
+                          ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`)
+                          : placeholderCover
                       }
                       className="w-full rounded text-center"
                       width={200}
@@ -119,12 +91,36 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
                       loading="lazy"
                     />
                   </a>
-                  {seriesMap[k].length > 1 && (
+                </Link>
+              ))
+            }
+
+            const galleryMap = result.Data as Record<string, GalleryMeta[]>
+            return Object.keys(galleryMap).map((k, i) => {
+              const g = galleryMap[k]
+              return (
+                <div key={i} className="relative">
+                  <Link href={g.length > 1 ? `series/${g[0].Series}` : `g/${g[0].UUID}`} key={g[0].UUID}>
+                    <a className="grid place-content-center mb-3 mr-3 bg-gray-800 bg-clip-padding rounded">
+                      <Image
+                        alt="cover image"
+                        src={
+                          g[0].Thumbnail ? getCacheUrl(`/thumbnails/${g[0].UUID}/${g[0].Thumbnail}`) : placeholderCover
+                        }
+                        className="w-full rounded text-center"
+                        width={200}
+                        height={300}
+                        objectFit="cover"
+                        loading="lazy"
+                      />
+                    </a>
+                  </Link>
+                  {g.length > 1 && (
                     <div
                       style={{ margin: "-50px 0 0 15px" }}
                       className="absolute bg-slate-900 opacity-75 text-white text-center p-2 leading-3 rounded-full"
                     >
-                      {seriesMap[k].length}
+                      {g.length}
                     </div>
                   )}
                 </div>

@@ -35,6 +35,33 @@ export async function fetchLibrary(offset: number, filters?: LibraryFilters, tok
 }
 
 /**
+ * Returns galleries in the specified series.
+ *
+ * @param path
+ * @param offset offset to start the request at
+ * @param params
+ * @param token JWT
+ * @returns promise of the response
+ */
+export async function fetchSeries(series: string, token?: string) {
+  const requestUrl = new URL(getApiUrl("/galleries"))
+
+  requestUrl.searchParams.append("series", series)
+
+  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
+  const response = await fetch(requestUrl.toString(), {
+    mode: "cors",
+    headers: { ...authHeader },
+  })
+
+  if (!response.ok) {
+    return null
+  }
+
+  return await response.json()
+}
+
+/**
  * Returns all categories from the API.  Returns all categories and, if logged in, user's favorite groups fron the API.
  *
  * @param token JWT

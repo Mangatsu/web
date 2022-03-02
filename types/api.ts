@@ -13,6 +13,11 @@ export interface ServerInfo {
 }
 
 // Galleries
+export interface GalleryResponse {
+  Data: GalleryMeta[]
+  Count: number
+}
+
 export interface Gallery {
   Meta: GalleryMeta
   Files: string[]
@@ -36,15 +41,11 @@ export interface GalleryMeta {
   ArchiveHash?: string
   Thumbnail?: string
   Nsfw: boolean
-  Tags: Tags
+  Tags: Record<string, string[]>
   Reference: Reference
   GalleryPref?: GalleryPref
   CreatedAt: string
   UpdatedAt: string
-}
-
-interface Tags {
-  [key: string]: [string]
 }
 
 interface Reference {
