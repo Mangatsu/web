@@ -11,7 +11,7 @@ import Button from "../../components/Button"
 import EditGallery from "../../components/EditGallery"
 import Layout from "../../components/Layout"
 import { fetchGallery } from "../../lib/api/library"
-import { getCacheUrl, StringResponse, swrFetch } from "../../lib/api/other"
+import { getCacheUrl, swrFetch } from "../../lib/api/other"
 import getServerInfo from "../../lib/api/serverInfo"
 import { updateFavoriteGroup } from "../../lib/api/user"
 import { changeExtension, clamp, Role } from "../../lib/helpers"
@@ -46,7 +46,6 @@ interface Props {
   gallery: Gallery
   thumbnails: string[]
   page: number
-  favorites: StringResponse
   serverInfo: ServerInfo
 }
 

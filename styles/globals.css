@@ -127,13 +127,6 @@
     @apply break-inside-avoid;
   }
 
-  /* .masonry {
-    columns: 125px auto;
-  }
-  .masonry-sm {
-    columns: 200px auto;
-  } */
-
   .filter-grid {
     display: grid;
     grid-template-columns: 250px repeat(auto-fill, minmax(90px, 250px));
@@ -142,6 +135,13 @@
   .filter-grid > div {
     @apply px-2;
   }
+
+  /* .masonry {
+    columns: 125px auto;
+  }
+  .masonry-sm {
+    columns: 200px auto;
+  } */
 
   .masonry {
     display: grid;
