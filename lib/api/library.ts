@@ -130,12 +130,15 @@ export async function fetchRandomGallery(token?: string | null) {
  * @returns promise of the JSON or null
  */
 export async function updateGallery(token: string, uuid: string, form: GalleryForm) {
-  const response = await fetch(getApiUrl(`/galleries/${uuid}`), {
-    method: "PUT",
-    mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify(form),
-  })
-
-  return response.ok
+  try {
+    const response = await fetch(getApiUrl(`/galleries/${uuid}`), {
+      method: "PUT",
+      mode: "cors",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(form),
+    })
+    return response.ok
+  } catch {
+    return false
+  }
 }
