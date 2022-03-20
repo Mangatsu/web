@@ -28,7 +28,7 @@ export default function Admin({ serverInfo, token, userUUID }: Props) {
         <br />
         <h3>Administrative settings</h3>
         <div className="p-4 rounded bg-opacity-20 bg-black">
-          <h4 className="pb-4">New user</h4>
+          <h4>New user</h4>
           <NewUser token={token} mutate={mutate} />
         </div>
         <div className="p-4 rounded bg-opacity-20 bg-black">
