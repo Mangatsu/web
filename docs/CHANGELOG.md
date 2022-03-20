@@ -4,6 +4,29 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2022-03-20
+
+## Added
+
+- Support for EHDL and Hath parsers
+- Support for grouping galleries together by series
+- Series pages (/series/[name])
+- Dark theming (scrollbars and other native elements)
+- Animations to popups
+
+### Fixed
+
+- Layout shifting when scroll bar appears
+- Fetching with SWR resulting in fatal error if token is undefined
+- Random gallery throwing an error when no galleries returned
+- Catch network errors of the User API endpoint and when updating galleries
+- Checkbox styles in forms and login screen
+
+## Changed
+
+- Updated dependencies
+- Disabled background scroll when large popup is open
+
 ## [0.2.1] - 2022-02-27
 
 ### Fixed
