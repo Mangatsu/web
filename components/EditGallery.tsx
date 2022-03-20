@@ -50,8 +50,8 @@ const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
     }
     const response = await updateGallery(token, uuid, galleryForm)
     if (response) {
-      mutate()
       toast.success("Gallery updated")
+      mutate()
     } else {
       toast.error("Failed to update gallery")
     }
@@ -83,10 +83,16 @@ const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
         <input type="text" id="category" defaultValue={gallery.Category} />
         <label>Language</label>
         <input type="text" id="language" defaultValue={gallery.Language} />
-        <label>Translated</label>
-        <input type="checkbox" id="translated" defaultChecked={gallery.Translated} />
-        <label>NSFW</label>
-        <input type="checkbox" id="nsfw" defaultChecked={gallery.Nsfw} />
+        <div className="grid grid-flow-col" style={{ gridAutoColumns: "100px" }}>
+          <span>
+            <label>Translated</label>
+            <input type="checkbox" id="translated" className="checkbox mb-4" defaultChecked={gallery.Translated} />
+          </span>
+          <span>
+            <label>NSFW</label>
+            <input type="checkbox" id="nsfw" className="checkbox" defaultChecked={gallery.Nsfw} />
+          </span>
+        </div>
         <button
           type="submit"
           className="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
