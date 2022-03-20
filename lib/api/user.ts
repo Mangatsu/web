@@ -25,14 +25,18 @@ export interface MangatsuSessionResponse {
  * @returns promise of the JSON or null
  */
 export async function newUser(token: string, form: UserForm) {
-  const response = await fetch(getApiUrl("/register"), {
-    method: "POST",
-    mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify(form),
-  })
+  try {
+    const response = await fetch(getApiUrl("/register"), {
+      method: "POST",
+      mode: "cors",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(form),
+    })
 
-  return response.ok
+    return response.ok
+  } catch {
+    return false
+  }
 }
 
 /**
@@ -44,14 +48,18 @@ export async function newUser(token: string, form: UserForm) {
  * @returns promise of the JSON or null
  */
 export async function updateUser(token: string, uuid: string, form: UserForm) {
-  const response = await fetch(getApiUrl(`/users/${uuid}`), {
-    method: "PUT",
-    mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify(form),
-  })
+  try {
+    const response = await fetch(getApiUrl(`/users/${uuid}`), {
+      method: "PUT",
+      mode: "cors",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(form),
+    })
 
-  return response.ok
+    return response.ok
+  } catch {
+    return false
+  }
 }
 
 /**
@@ -62,13 +70,17 @@ export async function updateUser(token: string, uuid: string, form: UserForm) {
  * @returns if action was successful
  */
 export async function deleteUser(token: string, uuid: string) {
-  const response = await fetch(getApiUrl(`/users/${uuid}`), {
-    method: "DELETE",
-    mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
-  })
+  try {
+    const response = await fetch(getApiUrl(`/users/${uuid}`), {
+      method: "DELETE",
+      mode: "cors",
+      headers: { Authorization: `Bearer ${token}` },
+    })
 
-  return response.ok
+    return response.ok
+  } catch {
+    return false
+  }
 }
 
 /**
@@ -78,14 +90,18 @@ export async function deleteUser(token: string, uuid: string) {
  * @returns if action was successful
  */
 export async function deleteSession(token: string, sessionID: string) {
-  const response = await fetch(getApiUrl("/users/me/sessions"), {
-    method: "DELETE",
-    mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ SessionID: sessionID }),
-  })
+  try {
+    const response = await fetch(getApiUrl("/users/me/sessions"), {
+      method: "DELETE",
+      mode: "cors",
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ SessionID: sessionID }),
+    })
 
-  return response.ok
+    return response.ok
+  } catch {
+    return false
+  }
 }
 
 /**
@@ -95,12 +111,15 @@ export async function deleteSession(token: string, sessionID: string) {
  * @returns true if successful
  */
 export async function initiateLogout(token: string) {
-  const response = await fetch(getApiUrl("/logout"), {
-    mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
-  })
-
-  return response.ok
+  try {
+    const response = await fetch(getApiUrl("/logout"), {
+      mode: "cors",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    return response.ok
+  } catch {
+    return false
+  }
 }
 
 /**
@@ -110,15 +129,18 @@ export async function initiateLogout(token: string) {
  * @returns promise of the response, JSON or null
  */
 export async function fetchFavoriteGroups(token: string) {
-  const response = await fetch(getApiUrl("/users/me/favorites"), {
-    mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
-  })
-  if (!response.ok) {
+  try {
+    const response = await fetch(getApiUrl("/users/me/favorites"), {
+      mode: "cors",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    if (!response.ok) {
+      return null
+    }
+    return (await response.json()) as StringResponse
+  } catch {
     return null
   }
-
-  return (await response.json()) as StringResponse
 }
 
 /**
@@ -130,11 +152,14 @@ export async function fetchFavoriteGroups(token: string) {
  * @returns was the action successful
  */
 export async function updateFavoriteGroup(token: string, galleryUUID: string, groupName: string) {
-  const response = await fetch(getApiUrl(`/galleries/${galleryUUID}/favorite/${groupName}`), {
-    method: "PATCH",
-    mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
-  })
-
-  return response.ok
+  try {
+    const response = await fetch(getApiUrl(`/galleries/${galleryUUID}/favorite/${groupName}`), {
+      method: "PATCH",
+      mode: "cors",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    return response.ok
+  } catch {
+    return false
+  }
 }
