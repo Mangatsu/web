@@ -28,37 +28,29 @@
   }
 
   h1 {
-    @apply text-6xl;
-    @apply font-bold;
+    @apply text-6xl font-bold;
     @apply py-6;
   }
 
   h2 {
-    @apply text-4xl;
-    @apply font-bold;
+    @apply text-4xl font-bold;
     @apply py-4;
   }
 
   h3 {
-    @apply text-3xl;
-    @apply font-bold;
+    @apply text-3xl font-bold;
     @apply py-4;
   }
 
   h4 {
-    @apply text-2xl;
-    @apply font-bold;
+    @apply text-2xl font-bold;
+    @apply pb-4;
   }
 
   nav {
-    @apply bg-slate-800;
-    @apply flex;
-    @apply flex-row;
-    @apply justify-end;
-    @apply items-center;
-    @apply h-12;
-    @apply p-4;
-    @apply shadow-xl;
+    @apply bg-slate-800 shadow-xl;
+    @apply flex flex-row justify-end items-center;
+    @apply h-12 p-4;
   }
 
   nav > a {
@@ -68,8 +60,7 @@
 
   th {
     @apply p-3;
-    @apply text-xs;
-    @apply font-medium;
+    @apply text-xs font-medium;
     @apply tracking-wider;
     @apply text-left;
     @apply uppercase;
@@ -78,8 +69,7 @@
 
   td {
     @apply p-4;
-    @apply text-sm;
-    @apply font-medium;
+    @apply text-sm font-medium;
     @apply text-white;
   }
 
@@ -91,13 +81,11 @@
   }
 
   form > input {
-    @apply border;
     @apply text-sm;
-    @apply my-2;
-    @apply rounded-lg;
+    @apply border rounded-lg;
     @apply block;
     @apply w-full;
-    @apply p-2.5;
+    @apply p-2.5 my-2;
     @apply bg-gray-700;
     @apply border-gray-600;
     @apply placeholder-gray-400;
@@ -106,11 +94,9 @@
   }
 
   button {
-    @apply font-medium;
+    @apply text-sm font-medium;
     @apply rounded-full;
-    @apply text-sm;
-    @apply px-3;
-    @apply py-1;
+    @apply py-1 px-3;
     @apply text-center;
   }
 }
