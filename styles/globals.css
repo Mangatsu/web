@@ -16,14 +16,6 @@
   --toastify-color-progress-dark: rgb(59 130 246);
 }
 
-.error-card {
-  max-width: max-content;
-  border: 1px solid #555;
-  border-radius: 5px;
-  padding: 20px 50px;
-  margin: 0 auto;
-}
-
 @layer base {
   html {
     @apply bg-slate-900;
@@ -123,7 +115,36 @@
   }
 }
 
+@layer components {
+  .error-card {
+    max-width: max-content;
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 20px 50px;
+    margin: 0 auto;
+  }
+
+  .popup-content {
+    -webkit-animation: slide 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+  }
+}
+
 @layer utilities {
+  @keyframes slide {
+    0% {
+      transform: translateY(-25%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .lock-scroll {
+    overflow: hidden;
+  }
+
   .break-inside {
     @apply break-inside-avoid;
   }
