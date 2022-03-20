@@ -73,10 +73,10 @@
     @apply text-white;
   }
 
-  form > label {
+  form > label,
+  form > div > span > label {
     @apply block;
-    @apply text-sm;
-    @apply font-medium;
+    @apply text-sm font-medium;
     @apply text-gray-300;
   }
 
@@ -112,6 +112,12 @@
 
   .popup-content {
     -webkit-animation: slide 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+  }
+
+  .checkbox {
+    @apply w-4 h-4;
+    @apply rounded border;
+    @apply bg-gray-700 border-gray-600  ring-offset-gray-800;
   }
 }
 
