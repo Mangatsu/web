@@ -13,7 +13,11 @@ export default NextAuth({
       credentials: {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
-        remember: { label: "Remember for 30 days", type: "checkbox" },
+        remember: {
+          label: "Remember for 30 days",
+          type: "checkbox",
+          style: "width: auto; margin: 10px 0 15px 2px;",
+        },
       },
       async authorize(credentials) {
         if (!credentials) {
