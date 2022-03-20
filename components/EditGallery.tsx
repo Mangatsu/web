@@ -65,10 +65,10 @@ const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
         </button>
       }
     >
-      <p>
+      <p className="mb-2 text-xl">
         Editing <span className="font-bold">{gallery.UUID}</span>
       </p>
-      <form className="max-w-xs" onSubmit={(e) => handleUpdate(e, gallery.UUID)}>
+      <form onSubmit={(e) => handleUpdate(e, gallery.UUID)}>
         <label>Title</label>
         <input type="text" id="title" defaultValue={gallery.Title} />
         <label>Native Title</label>

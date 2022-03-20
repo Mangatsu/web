@@ -8,8 +8,10 @@ interface Props {
 
 const PopupLarge = ({ activator, children }: Props) => {
   return (
-    <Popup trigger={activator} modal arrow={false}>
-      <div className="rounded bg-slate-800 w-auto h-auto p-8 flex flex-col py-2 shadow-xl" style={{ marginTop: 6 }}>
+      <div
+        className="popup-content rounded-xl bg-slate-800 w-auto h-auto m-4 px-5 py-4 flex flex-col shadow-xl overflow-y-auto"
+        style={{ marginTop: 6, maxHeight: "calc(100vh - 50px)" }}
+      >
         {children}
       </div>
     </Popup>
