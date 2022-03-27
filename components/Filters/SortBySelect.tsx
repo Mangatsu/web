@@ -4,7 +4,7 @@ const SortBySelect = ({ query, setQuery }: FilterProps) => {
   return (
     <div>
       <label htmlFor="sortby" className="text-sm font-medium text-gray-400 px-2">
-        Sortby
+        Sort by
       </label>
       <select
         id="sortby"
