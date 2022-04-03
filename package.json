@@ -20,9 +20,8 @@
     "react-switch": "^6.0.0",
     "react-toastify": "^8.1.0",
     "reactjs-popup": "^2.0.5",
-    "sharp": "^0.29.3",
-    "swr": "^1.1.2",
-    "yarn": "^1.22.17"
+    "sharp": "^0.30.3",
+    "swr": "^1.1.2"
   },
   "devDependencies": {
     "@types/node": "17.0.10",
