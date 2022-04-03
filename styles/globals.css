@@ -119,6 +119,16 @@
     @apply rounded border;
     @apply bg-gray-700 border-gray-600  ring-offset-gray-800;
   }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    animation: rotate 2s linear infinite;
+  }
+
+  .spinner-path {
+    animation: dash 1.5s ease-in-out infinite, 6s ease-in-out infinite;
+  }
 }
 
 @layer utilities {
@@ -130,6 +140,27 @@
     100% {
       transform: translateY(0);
       opacity: 1;
+    }
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35;
+    }
+    100% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124;
     }
   }
 
