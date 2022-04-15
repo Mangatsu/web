@@ -4,6 +4,32 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2022-04-15
+
+## Added
+
+- Spinner to indicate if the page is loading longer
+  - Usually when the backend is extracting the requested gallery if it's not in the cache already
+- Tooltips to icon buttons on gallery pages
+- Numbered placeholders for page thumbnails
+- Blur placeholders for covers
+
+## Fixed
+
+- Show "Loading…" instead of "No pages found" when clicking thumbnails on gallery pages
+- Library layout on small screens
+- Nav overflowing on small screens
+- Typos
+
+## Changed
+
+- Update dependencies
+  - Most notably React 17 -> 18
+- Icon of 'Shift pages' button
+- Color of nav icons (black -> white)
+- Change Random button to Heart icon
+- Remove old placeholder Login button on Library page
+
 ## [0.3.0] - 2022-03-20
 
 ## Added
