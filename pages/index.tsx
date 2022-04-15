@@ -43,14 +43,6 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
 
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher)
 
-  if (serverInfo?.Visibility !== Visibility.Public && status === "unauthenticated") {
-    return (
-      <Layout serverInfo={serverInfo}>
-        <Link href="api/auth/signin">Login</Link>
-      </Layout>
-    )
-  }
-
   // This should actually be called "mightHaveMore", as in rare cases the data ends exactly on the offset (results % offset === 0)
   // which results one extra request being made.
   const hasMore = data && data[data.length - 1].Count === RESULT_LIMIT
@@ -158,7 +150,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session?.serverToken) {
     try {
       categories = await fetchCategories(session?.serverToken)
-      favorites = (await fetchFavoriteGroups(session?.serverToken)) as StringResponse
+      favorites = await fetchFavoriteGroups(session?.serverToken)
     } catch {
       console.error("Failed to fetch categories and favorites. Is the backend offline?")
     }
