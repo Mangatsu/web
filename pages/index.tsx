@@ -12,7 +12,7 @@ import getServerInfo from "../lib/api/serverInfo"
 import { fetchFavoriteGroups } from "../lib/api/user"
 import useDebounce from "../lib/hooks/useDebounce"
 import { getValue, LocalPreferences } from "../lib/localStorage"
-import placeholderCover from "../public/placeholder.png"
+import placeholderCover from "../public/placeholder-fade.png"
 import { GalleryMeta, LibraryFilters, ServerInfo, Visibility } from "../types/api"
 
 interface Props {
