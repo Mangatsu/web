@@ -114,7 +114,12 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
         <ComicViewer pages={files} switchingRatio={1} initialCurrentPage={page} />
       </div>
     ) : (
-      <h3 className="text-center">No pages found</h3>
+      <div className="pb-16">
+        <h2 className="text-center mb-4 font-bold">{galleryData?.Meta?.Title || gallery.Meta.Title}</h2>
+        <div>
+          <h3 className="text-center">Loading…</h3>
+        </div>
+      </div>
     )
 
   return (
