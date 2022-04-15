@@ -28,7 +28,7 @@ const Nav = ({ serverInfo }: { serverInfo: ServerInfo }) => {
     <nav className="px-2 mb-8 flex flex-row justify-between">
       <Spinner />
       <span className="flex">
-        <Button href="/" className="mx-2" title="Library">
+        <Button href="/" className="mx-2">
           Library
         </Button>
         <Button onClick={() => handleRandom()} className="mr-2" title="Random gallery">
