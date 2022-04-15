@@ -1,4 +1,4 @@
-import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, EyeIcon, EyeOffIcon } from "@heroicons/react/solid"
+import { EyeIcon, EyeOffIcon, LoginIcon as ShiftIcon, LogoutIcon as NoShiftIcon } from "@heroicons/react/solid"
 import { GetServerSideProps } from "next"
 import { getSession, useSession } from "next-auth/react"
 import Image from "next/image"
@@ -131,9 +131,9 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
           </Button>
           <Button onClick={() => shiftByOne()}>
             {isShift ? (
-              <ChevronDoubleLeftIcon className="h-5 w-5 text-zinc-100" />
+              <ShiftIcon className="h-5 w-5 text-zinc-100" />
             ) : (
-              <ChevronDoubleRightIcon className="h-5 w-5 text-zinc-100" />
+              <NoShiftIcon className="h-5 w-5 text-zinc-100" />
             )}
           </Button>
           {session?.serverToken && isAdmin && (
