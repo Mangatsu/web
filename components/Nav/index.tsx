@@ -1,3 +1,4 @@
+import { HeartIcon } from "@heroicons/react/outline"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
@@ -30,10 +31,8 @@ const Nav = ({ serverInfo }: { serverInfo: ServerInfo }) => {
         <Button href="/" className="mx-4">
           Library
         </Button>
-        <Button onClick={() => handleRandom()} className="mr-2">
-          Random
+          <HeartIcon className="h-6 w-6" />
         </Button>
-
         {session?.serverToken && isAdmin && <Scan token={session?.serverToken} />}
         <User session={session} isAdmin={isAdmin} status={status} serverInfo={serverInfo} />
       </span>
