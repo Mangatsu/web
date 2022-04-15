@@ -10,6 +10,7 @@ import { fetchCategories, fetchLibrary } from "../lib/api/library"
 import { getCacheUrl, RESULT_LIMIT, StringResponse } from "../lib/api/other"
 import getServerInfo from "../lib/api/serverInfo"
 import { fetchFavoriteGroups } from "../lib/api/user"
+import { Base64Placeholder } from "../lib/helpers"
 import useDebounce from "../lib/hooks/useDebounce"
 import { getValue, LocalPreferences } from "../lib/localStorage"
 import placeholderCover from "../public/placeholder-fade.png"
@@ -104,6 +105,8 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
                         height={300}
                         objectFit="cover"
                         loading="lazy"
+                        placeholder="blur"
+                        blurDataURL={Base64Placeholder}
                       />
                     </a>
                   </Link>
