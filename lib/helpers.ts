@@ -1,5 +1,8 @@
 import path from "path"
 
+export const Base64Placeholder =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk5pZ/CgABWgEUxJ+HIQAAAABJRU5ErkJggg=="
+
 export function changeExtension(file: string, extension: string) {
   const basename = path.basename(file, path.extname(file))
   return path.join(path.dirname(file), `${basename}${extension}`)

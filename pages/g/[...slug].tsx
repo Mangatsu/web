@@ -1,7 +1,6 @@
 import { EyeIcon, EyeOffIcon, LoginIcon as ShiftIcon, LogoutIcon as NoShiftIcon } from "@heroicons/react/solid"
 import { GetServerSideProps } from "next"
 import { getSession, useSession } from "next-auth/react"
-import Image from "next/image"
 import { useEffect, useState } from "react"
 import ComicViewer from "react-comic-viewer"
 import { GroupBase, OptionsOrGroups, StylesConfig } from "react-select"
@@ -9,6 +8,7 @@ import CreatableSelect from "react-select/creatable"
 import useSWR from "swr"
 import Button from "../../components/Button"
 import EditGallery from "../../components/EditGallery"
+import ImageFallback from "../../components/ImageFallback"
 import Layout from "../../components/Layout"
 import { fetchGallery } from "../../lib/api/library"
 import { getCacheUrl, swrFetch } from "../../lib/api/other"
@@ -166,8 +166,9 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
             <div className="grid gap-2 thumbnails sm:thumbnails-sm lg:thumbnails-lg">
               {thumbnails.map((thumbnail, i) => (
                 <a key={i} href={`/g/${gallery.Meta.UUID}/${i}`}>
-                  <Image
-                    alt={`page ${i} thumbnail`}
+                  <ImageFallback
+                    text={i + 1}
+                    alt={`page ${i + 1}`}
                     src={thumbnail}
                     loading="lazy"
                     width={200}
