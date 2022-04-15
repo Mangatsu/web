@@ -25,12 +25,13 @@ const Nav = ({ serverInfo }: { serverInfo: ServerInfo }) => {
   }
 
   return (
-    <nav className="px-8 mb-8 flex flex-row justify-between">
+    <nav className="px-2 mb-8 flex flex-row justify-between">
       <Spinner />
       <span className="flex">
-        <Button href="/" className="mx-4">
+        <Button href="/" className="mx-2" title="Library">
           Library
         </Button>
+        <Button onClick={() => handleRandom()} className="mr-2" title="Random gallery">
           <HeartIcon className="h-6 w-6" />
         </Button>
         {session?.serverToken && isAdmin && <Scan token={session?.serverToken} />}
