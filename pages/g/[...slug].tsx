@@ -60,7 +60,6 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
   })
 
   const isAdmin = session?.user?.role ? session?.user?.role >= Role.Admin : false
-
   const tokenOrPassphrase = session?.serverToken || session?.passphrase
 
   const { data: galleryData, mutate: mutateGallery } = useSWR(
@@ -122,14 +121,17 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
     <Layout outerChildren={viewer} serverInfo={serverInfo} subtitle={galleryData?.Meta?.Title || gallery.Meta.Title}>
       <div className="w-full mb-16 pb-96">
         <div className="flex gap-2">
-          <Button onClick={() => setShowThumbnails(!showThumbnails)}>
+          <Button
+            onClick={() => setShowThumbnails(!showThumbnails)}
+            title={`${showThumbnails ? "Hide" : "Show"} thumbnails`}
+          >
             {showThumbnails ? (
               <EyeIcon className="h-5 w-5 text-zinc-100" />
             ) : (
               <EyeOffIcon className="h-5 w-5 text-zinc-100" />
             )}
           </Button>
-          <Button onClick={() => shiftByOne()}>
+          <Button onClick={() => shiftByOne()} title="Shift pages by one">
             {isShift ? (
               <ShiftIcon className="h-5 w-5 text-zinc-100" />
             ) : (

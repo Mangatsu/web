@@ -60,7 +60,7 @@ const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
   return (
     <PopupLarge
       activator={
-        <button type="button" className="text-white bg-blue-600 hover:bg-blue-800">
+        <button type="button" className="text-white bg-blue-600 hover:bg-blue-800" title="Edit gallery info">
           <PencilAltIcon className="h-5 w-5 text-zinc-100" />
         </button>
       }
