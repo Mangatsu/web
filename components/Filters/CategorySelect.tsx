@@ -8,7 +8,7 @@ interface Props extends FilterProps {
 const CategorySelect = ({ query, setQuery, categories }: Props) => {
   return (
     <div>
-      <label htmlFor="categories" className=" w-1/3 text-sm font-medium text-gray-400 px-2">
+      <label htmlFor="categories" className="w-1/3 text-sm font-medium text-gray-400 px-2">
         Category
       </label>
       <select
