@@ -1,12 +1,9 @@
 import { GetServerSideProps } from "next"
 import { getSession } from "next-auth/react"
-import Image from "next/image"
-import Link from "next/link"
+import GalleryInfoBox from "../../components/GalleryInfoBox"
 import Layout from "../../components/Layout"
 import { fetchSeries } from "../../lib/api/library"
-import { getCacheUrl } from "../../lib/api/other"
 import getServerInfo from "../../lib/api/serverInfo"
-import placeholderCover from "../../public/placeholder.png"
 import { GalleryResponse, ServerInfo, Visibility } from "../../types/api"
 
 interface Props {
@@ -18,46 +15,11 @@ export default function SeriesPage({ galleries, serverInfo }: Props) {
   return (
     <Layout serverInfo={serverInfo} subtitle={series}>
       <h2 className="mb-4 font-bold">
-        {series} ({galleries.Count} entries)
+        {series} ({galleries.Count})
       </h2>
       <div className="grid lg:grid-cols-2">
         {galleries.Data.map((gallery) => (
-          <div
-            key={gallery.UUID}
-            className="grid grid-flow-col place-content-start mb-3 mr-3 bg-gray-800 bg-clip-padding rounded"
-          >
-            <Link href={`/g/${gallery.UUID}`} key={gallery.UUID}>
-              <a>
-                <Image
-                  alt="cover image"
-                  src={
-                    gallery.Thumbnail
-                      ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`)
-                      : placeholderCover
-                  }
-                  className="w-full rounded text-center"
-                  width={166}
-                  height={250}
-                  objectFit="cover"
-                  loading="lazy"
-                />
-              </a>
-            </Link>
-            <div className="grid place-content-start m-4">
-              <p>
-                <b>Title: </b>
-                {gallery.Title}
-              </p>
-              <p>
-                <b>Tags: </b>
-                {Object.keys(gallery.Tags).map((namespace, i) => (
-                  <span key={i}>
-                    {namespace}: {gallery.Tags[namespace].map((name) => `${name}, `)}
-                  </span>
-                ))}
-              </p>
-            </div>
-          </div>
+          <GalleryInfoBox key={gallery.UUID} gallery={gallery} />
         ))}
       </div>
     </Layout>
