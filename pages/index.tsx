@@ -27,8 +27,8 @@ interface GalleriesResult {
   Count: number
 }
 
-const fetcher = (offset: number, query: LibraryFilters, token: string) =>
-  fetchLibrary(offset, query, token).then((r) => r.json())
+type FetcherKey = [number, LibraryFilters, string] // offset, query, token
+const fetcher = (key: FetcherKey) => fetchLibrary(...key).then((r) => r.json())
 
 export default function LibraryIndex({ serverInfo, categories, favorites }: Props) {
   const { data: session, status } = useSession()
