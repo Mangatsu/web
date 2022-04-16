@@ -18,6 +18,31 @@ export function clamp(value: number, min: number, max: number): number {
   return value
 }
 
+/**
+ * Shuffles the given array with Fisher–Yates algorithm.
+ *
+ * @param array
+ * @returns shuffled array
+ */
+export const shuffle = (array: unknown[]) => {
+  let counter = array.length
+  if (counter <= 1) {
+    return array
+  }
+
+  while (counter > 0) {
+    const randomIndex = Math.floor(Math.random() * counter)
+
+    counter--
+
+    const tempArr = array[counter]
+    array[counter] = array[randomIndex]
+    array[randomIndex] = tempArr
+  }
+
+  return array
+}
+
 export enum Role {
   Admin = 100,
   Member = 20,
