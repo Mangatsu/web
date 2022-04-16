@@ -7,6 +7,7 @@ import GroupSeriesSwitch from "./GroupSeriesSwitch"
 import NSFWSwitch from "./NSFWSwitch"
 import OrderSwitch from "./OrderSwitch"
 import SearchBox from "./SearchBox"
+import ShuffleSwitch from "./ShuffleSwitch"
 import SortBySelect from "./SortBySelect"
 
 export interface FilterProps {
@@ -31,6 +32,7 @@ const Filters = ({ query, setQuery, grouped, setGrouped, categories, favorites }
             <NSFWSwitch query={query} setQuery={setQuery} />
             <OrderSwitch query={query} setQuery={setQuery} />
             <GroupSeriesSwitch query={query} setQuery={setQuery} grouped={grouped} setGrouped={setGrouped} />
+            <ShuffleSwitch query={query} setQuery={setQuery} />
           </div>
           <SortBySelect query={query} setQuery={setQuery} />
           <CategorySelect query={query} setQuery={setQuery} categories={categories} />

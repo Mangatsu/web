@@ -71,6 +71,7 @@ export interface LibraryFilters {
   nsfwHidden?: boolean
   tags?: string
   grouped?: boolean
+  seed?: number
 }
 
 // Users

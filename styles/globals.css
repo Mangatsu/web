@@ -177,14 +177,14 @@
   @media only screen and (max-width: 450px) {
     .filter-grid {
       display: grid;
-      grid-template-columns: 250px repeat(minmax(90px, 250px), minmax(90px, 250px));
+      grid-template-columns: 275px repeat(minmax(90px, 250px), minmax(90px, 250px));
     }
   }
 
   @media only screen and (min-width: 450px) {
     .filter-grid {
       display: grid;
-      grid-template-columns: 250px repeat(auto-fill, minmax(90px, 250px));
+      grid-template-columns: 275px repeat(auto-fill, minmax(90px, 250px));
     }
   }
 
