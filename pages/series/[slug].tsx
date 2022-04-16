@@ -59,8 +59,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     galleries.Data = []
   }
 
-  console.log(galleries.Data[0].Tags)
-
   return {
     props: {
       serverInfo,
