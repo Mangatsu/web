@@ -6,26 +6,42 @@ export interface GalleryForm {
 }
 
 /**
+ * Constructs the query string from the filters.
+ *
+ * @param url
+ * @param filters
+ * @returns URL query string
+ */
+function constructGalleryQueryString(url: string, filters?: LibraryFilters) {
+  const requestUrl = new URL(getApiUrl(url))
+  if (!filters) {
+    return requestUrl
+  }
+
+  if (filters.searchTerm) requestUrl.searchParams.append("search", filters.searchTerm)
+  if (filters.nsfwHidden) requestUrl.searchParams.append("nsfw", "false")
+  if (filters.order) requestUrl.searchParams.append("order", filters.order)
+  if (filters.sortBy) requestUrl.searchParams.append("sortby", filters.sortBy)
+  if (filters.category) requestUrl.searchParams.append("category", filters.category)
+  if (filters.favoriteGroup) requestUrl.searchParams.append("favorite", filters.favoriteGroup)
+  if (filters.grouped) requestUrl.searchParams.append("grouped", "true")
+  if (filters.seed) requestUrl.searchParams.append("seed", filters.seed.toString())
+
+  return requestUrl
+}
+
+/**
  * Returns the library (50 galleries per request) based on the specified filters and offset. Used with SWR.
  *
- * @param path
  * @param offset offset to start the request at
- * @param params
+ * @param filters
  * @param token JWT
  * @returns promise of the response
  */
 export async function fetchLibrary(offset: number, filters?: LibraryFilters, token?: string) {
-  const requestUrl = new URL(getApiUrl("/galleries"))
+  const requestUrl = constructGalleryQueryString("/galleries", filters)
   requestUrl.searchParams.append("limit", RESULT_LIMIT.toString())
   requestUrl.searchParams.append("offset", offset.toString())
-
-  if (filters?.searchTerm) requestUrl.searchParams.append("search", filters.searchTerm)
-  if (filters?.nsfwHidden) requestUrl.searchParams.append("nsfw", "false")
-  if (filters?.order) requestUrl.searchParams.append("order", filters.order)
-  if (filters?.sortBy) requestUrl.searchParams.append("sortby", filters.sortBy)
-  if (filters?.category) requestUrl.searchParams.append("category", filters.category)
-  if (filters?.favoriteGroup) requestUrl.searchParams.append("favorite", filters.favoriteGroup)
-  if (filters?.grouped) requestUrl.searchParams.append("grouped", "true")
 
   const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
   return fetch(requestUrl.toString(), {
@@ -35,11 +51,32 @@ export async function fetchLibrary(offset: number, filters?: LibraryFilters, tok
 }
 
 /**
+ * Returns the count of galleries based on the specified filters.
+ *
+ * @param filters
+ * @param token
+ * @returns
+ */
+export async function fetchLibraryCount(filters?: LibraryFilters, token?: string) {
+  const requestUrl = constructGalleryQueryString("/galleries/count", filters)
+  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
+  const response = await fetch(requestUrl.toString(), {
+    mode: "cors",
+    headers: { ...authHeader },
+  })
+
+  if (!response.ok) {
+    return 0
+  }
+
+  const data = await response.json()
+  return data.Count
+}
+
+/**
  * Returns galleries in the specified series.
  *
- * @param path
- * @param offset offset to start the request at
- * @param params
+ * @param series
  * @param token JWT
  * @returns promise of the response
  */
