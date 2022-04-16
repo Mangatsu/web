@@ -4,6 +4,19 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2022-04-16
+
+## Added
+
+- Gallery Shuffle
+- More information to the Series page
+
+## Changed
+
+- Update SWR to 2.0.0 beta
+- Remove unnecessary tooltip from `Library` button
+- Show `Web vX.Y.Z` in the session name instead of `next-auth-session`
+
 ## [0.4.0] - 2022-04-15
 
 ## Added
