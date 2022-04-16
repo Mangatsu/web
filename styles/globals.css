@@ -102,6 +102,14 @@
 }
 
 @layer components {
+  .name-tag {
+    @apply mr-2 px-1 bg-sky-700 rounded-lg;
+  }
+
+  .badge {
+    @apply m-2 px-1 bg-sky-900 rounded-lg h-6 font-mono;
+  }
+
   .error-card {
     max-width: max-content;
     border: 1px solid #555;
