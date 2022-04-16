@@ -22,8 +22,8 @@ interface Props {
 
 export default function Personal({ serverInfo, currentSessionID, token, userUUID }: Props) {
   const [nsfwPref, setNsfwPref] = useState(false)
-  const { data, mutate } = useSWR(token ? ["/users/me/sessions", token] : null, (path: string, token: string) =>
-    swrFetch(path, token).then((r) => r.json())
+  const { data, mutate } = useSWR(token ? ["/users/me/sessions", token] : null, (key: [string, string]) =>
+    swrFetch(...key).then((r) => r.json())
   )
   const sessions = data as MangatsuSessionResponse
 
