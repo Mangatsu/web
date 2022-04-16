@@ -4,6 +4,7 @@ import { getApiUrl } from "../../../lib/api/other"
 import getServerInfo from "../../../lib/api/serverInfo"
 import { decodeJWT } from "../../../lib/helpers"
 import { Visibility } from "../../../types/api"
+import pkg from "./../../../package.json"
 
 export default NextAuth({
   providers: [
@@ -27,7 +28,7 @@ export default NextAuth({
         const body = {
           username: credentials.username,
           password: credentials.password,
-          session_name: "next-auth-session",
+          session_name: `Web v${pkg.version}`,
           expires_in: credentials.remember ? 30 * 24 * 60 * 60 : 900,
         }
 
