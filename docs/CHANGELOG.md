@@ -4,6 +4,18 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2022-04-17
+
+## Added
+
+- Logout automatically when session expires
+- Logout immediately when clicking `Logout`
+
+## Fixed
+
+- Logout HTTP method
+  - Now logging out properly deletes the session
+
 ## [0.4.1] - 2022-04-16
 
 ## Added
