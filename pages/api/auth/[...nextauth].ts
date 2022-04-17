@@ -25,7 +25,7 @@ export default NextAuth({
           return null
         }
 
-        const expiresIn = credentials.remember ? 365 * 24 * 60 * 60 : 10
+        const expiresIn = credentials.remember ? 365 * 24 * 60 * 60 : 24 * 60 * 60
         const body = {
           username: credentials.username,
           password: credentials.password,
