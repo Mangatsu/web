@@ -68,5 +68,5 @@ export async function swrFetch(path: string, token?: string) {
     headers: { ...authHeader },
   })
 
-  return response
+  return await response.json()
 }

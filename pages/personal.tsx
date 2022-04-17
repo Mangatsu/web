@@ -23,9 +23,9 @@ interface Props {
 export default function Personal({ serverInfo, currentSessionID, token, userUUID }: Props) {
   const [nsfwPref, setNsfwPref] = useState(false)
   const { data, mutate } = useSWR(token ? ["/users/me/sessions", token] : null, (key: [string, string]) =>
-    swrFetch(...key).then((r) => r.json())
+    swrFetch(...key)
   )
-  const sessions = data as MangatsuSessionResponse
+  const response = data as MangatsuSessionResponse
 
   useEffect(() => {
     setNsfwPref(getValue(LocalPreferences.NSFWPref))
@@ -90,7 +90,7 @@ export default function Personal({ serverInfo, currentSessionID, token, userUUID
         <br />
         <div className="p-4 rounded bg-opacity-20 bg-black">
           <h4>Sessions</h4>
-          <Sessions sessions={sessions} mutate={mutate} token={token} currentSessionID={currentSessionID} />
+          <Sessions sessions={response?.Data ?? []} mutate={mutate} token={token} currentSessionID={currentSessionID} />
         </div>
       </div>
     </Layout>
