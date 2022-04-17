@@ -1,7 +1,7 @@
-import Link from "next/link"
+import { signOut } from "next-auth/react"
 import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
-import { deleteSession } from "../lib/api/user"
+import { deleteSession, initiateLogout } from "../lib/api/user"
 import { MangatsuSession } from "../types/api"
 
 interface Props {
@@ -20,6 +20,13 @@ const Sessions = ({ sessions, currentSessionID, token, mutate }: Props) => {
     } else {
       toast.error("Session could not be deleted")
     }
+  }
+
+  const logoutHandler = (token?: string | null) => {
+    if (token) {
+      initiateLogout(token)
+    }
+    signOut()
   }
 
   return (
@@ -44,9 +51,12 @@ const Sessions = ({ sessions, currentSessionID, token, mutate }: Props) => {
                     <td className="whitespace-nowrap">{session.ExpiresAt}</td>
                     <td className="p-4 text-sm font-medium text-right whitespace-nowrap">
                       {currentSessionID === session.ID ? (
-                        <Link href="/api/auth/signout">
-                          <a className=" hover:text-blue-900 text-blue-500 hover:underline">Logout</a>
-                        </Link>
+                        <a
+                          className=" hover:text-blue-900 text-blue-500 hover:underline"
+                          onClick={() => logoutHandler(token)}
+                        >
+                          Logout
+                        </a>
                       ) : (
                         <a
                           onClick={() => handleDelete(session.ID)}
