@@ -1,4 +1,5 @@
 import { Session } from "next-auth"
+import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { initiateLogout } from "../lib/api/user"
 import Button from "./Button"
@@ -13,6 +14,7 @@ const Lock = ({ session, status }: Props) => {
     if (token) {
       initiateLogout(token)
     }
+    signOut()
   }
 
   const token = session?.serverToken || session?.passphrase
@@ -25,7 +27,7 @@ const Lock = ({ session, status }: Props) => {
           </button>
         </Link>
       ) : token ? (
-        <Button href="/api/auth/signout" onClick={() => logoutHandler(token)} className="mt-3 mx-4">
+        <Button onClick={() => logoutHandler(session?.serverToken)} className="mt-3 mx-4">
           Logout
         </Button>
       ) : (
