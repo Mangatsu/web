@@ -8,7 +8,8 @@ declare module "next-auth" {
   interface Session {
     serverToken?: string
     passphrase?: string
-    user?: User
+    user?: Pick<User, "id" | "serverToken" | "passphrase" | "role" | "uuid">
+    expiresAt: number | null
   }
 
   interface User {
@@ -17,6 +18,7 @@ declare module "next-auth" {
     passphrase?: string
     role: number
     uuid: string | null
+    expiresAt: number | null
   }
 }
 
@@ -25,6 +27,10 @@ declare module "next-auth/jwt" {
   interface JWT {
     serverToken?: string
     passphrase?: string
-    user: { role: number; uuid: string | null }
+    user: {
+      role: number
+      uuid: string | null
+    }
+    expiresAt: number | null
   }
 }
