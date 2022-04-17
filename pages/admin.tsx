@@ -17,10 +17,9 @@ interface Props {
 }
 
 export default function Admin({ serverInfo, token, userUUID }: Props) {
-  const { data, mutate } = useSWR(token ? ["/users", token] : null, (key: [string, string]) =>
-    swrFetch(...key).then((r) => r.json())
-  )
-  const users = data as MangatsuUserResponse
+  const { data, mutate } = useSWR(token ? ["/users", token] : null, (key: [string, string]) => swrFetch(...key))
+
+  const users = data?.Data ? (data as MangatsuUserResponse) : null
 
   return (
     <Layout serverInfo={serverInfo} subtitle="Administrative">

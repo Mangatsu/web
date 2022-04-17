@@ -66,13 +66,13 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
     tokenOrPassphrase || serverInfo.Visibility === Visibility.Public
       ? [`/galleries/${gallery.Meta.UUID}`, tokenOrPassphrase]
       : null,
-    (key: [string, string | undefined]) => swrFetch(...key).then((r) => (r as Response).json()),
+    (key: [string, string | undefined]) => swrFetch(...key),
     { fallbackData: gallery }
   )
 
   const { data: favoritesData, mutate: mutateFavorites } = useSWR(
     session?.serverToken ? ["/users/me/favorites", session?.serverToken] : null,
-    (key: [string, string]) => swrFetch(...key).then((r) => (r as Response).json())
+    (key: [string, string]) => swrFetch(...key)
   )
 
   let favoriteGroups: OptionsOrGroups<unknown, GroupBase<unknown>> = []

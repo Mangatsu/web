@@ -1,10 +1,11 @@
 import Link from "next/link"
 import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
-import { deleteSession, MangatsuSessionResponse } from "../lib/api/user"
+import { deleteSession } from "../lib/api/user"
+import { MangatsuSession } from "../types/api"
 
 interface Props {
-  sessions: MangatsuSessionResponse
+  sessions: MangatsuSession[]
   currentSessionID: string
   token: string
   mutate: KeyedMutator<unknown>
@@ -36,28 +37,27 @@ const Sessions = ({ sessions, currentSessionID, token, mutate }: Props) => {
                 </tr>
               </thead>
               <tbody>
-                {sessions?.Data &&
-                  sessions.Data.map((session) => (
-                    <tr key={session.ID} className="border-b bg-gray-800 border-gray-700">
-                      <td>{session.ID}</td>
-                      <td className="whitespace-nowrap">{session.Name}</td>
-                      <td className="whitespace-nowrap">{session.ExpiresAt}</td>
-                      <td className="p-4 text-sm font-medium text-right whitespace-nowrap">
-                        {currentSessionID === session.ID ? (
-                          <Link href="/api/auth/signout">
-                            <a className=" hover:text-blue-900 text-blue-500 hover:underline">Logout</a>
-                          </Link>
-                        ) : (
-                          <a
-                            onClick={() => handleDelete(session.ID)}
-                            className=" hover:text-blue-900 text-blue-500 hover:underline"
-                          >
-                            Delete
-                          </a>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                {sessions.map((session) => (
+                  <tr key={session.ID} className="border-b bg-gray-800 border-gray-700">
+                    <td>{session.ID}</td>
+                    <td className="whitespace-nowrap">{session.Name}</td>
+                    <td className="whitespace-nowrap">{session.ExpiresAt}</td>
+                    <td className="p-4 text-sm font-medium text-right whitespace-nowrap">
+                      {currentSessionID === session.ID ? (
+                        <Link href="/api/auth/signout">
+                          <a className=" hover:text-blue-900 text-blue-500 hover:underline">Logout</a>
+                        </Link>
+                      ) : (
+                        <a
+                          onClick={() => handleDelete(session.ID)}
+                          className=" hover:text-blue-900 text-blue-500 hover:underline"
+                        >
+                          Delete
+                        </a>
+                      )}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
