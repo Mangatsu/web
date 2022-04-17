@@ -113,6 +113,7 @@ export async function deleteSession(token: string, sessionID: string) {
 export async function initiateLogout(token: string) {
   try {
     const response = await fetch(getApiUrl("/logout"), {
+      method: "POST",
       mode: "cors",
       headers: { Authorization: `Bearer ${token}` },
     })
