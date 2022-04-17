@@ -15,7 +15,7 @@ export default NextAuth({
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
         remember: {
-          label: "Remember for 30 days",
+          label: "Remember for one year",
           type: "checkbox",
           style: "width: auto; margin: 10px 0 15px 2px;",
         },
@@ -25,11 +25,12 @@ export default NextAuth({
           return null
         }
 
+        const expiresIn = credentials.remember ? 365 * 24 * 60 * 60 : 10
         const body = {
           username: credentials.username,
           password: credentials.password,
           session_name: `Web v${pkg.version}`,
-          expires_in: credentials.remember ? 30 * 24 * 60 * 60 : 900,
+          expires_in: expiresIn,
         }
 
         const res = await fetch(getApiUrl("/login"), {
@@ -42,7 +43,12 @@ export default NextAuth({
           const data = await res.json()
           try {
             const payload = decodeJWT(data.Token)
-            return { serverToken: data.Token, role: payload.Roles, uuid: payload.Subject }
+            return {
+              serverToken: data.Token,
+              role: payload.Roles,
+              uuid: payload.Subject,
+              expiresAt: expiresIn * 1000 + Date.now(),
+            }
           } catch (e) {
             return null
           }
@@ -72,7 +78,7 @@ export default NextAuth({
 
         if (res.ok) {
           const data = await res.json()
-          return { passphrase: data.Token, role: 0, uuid: null }
+          return { passphrase: data.Token, role: 0, uuid: null, expiresAt: null }
         }
 
         return null
@@ -85,6 +91,7 @@ export default NextAuth({
         token.serverToken = user.serverToken
         token.passphrase = user.passphrase
         token.user = { role: user.role, uuid: user.uuid }
+        token.expiresAt = user.expiresAt
       }
       return token
     },
@@ -92,13 +99,14 @@ export default NextAuth({
       session.serverToken = token.serverToken
       session.passphrase = token.passphrase
       session.user = token.user
+      session.expiresAt = token.expiresAt
       return session
     },
   },
   secret: process.env.SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 365 * 24 * 60 * 60,
   },
   theme: {
     colorScheme: "dark",
