@@ -6,24 +6,24 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 ## [0.4.2] - 2022-04-17
 
-## Added
+### Added
 
 - Logout automatically when session expires
 - Logout immediately when clicking `Logout`
 
-## Fixed
+### Fixed
 
 - Logout HTTP method
   - Now logging out properly deletes the session
 
 ## [0.4.1] - 2022-04-16
 
-## Added
+### Added
 
 - Gallery Shuffle
 - More information to the Series page
 
-## Changed
+### Changed
 
 - Update SWR to 2.0.0 beta
 - Remove unnecessary tooltip from `Library` button
@@ -31,7 +31,7 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 ## [0.4.0] - 2022-04-15
 
-## Added
+### Added
 
 - Spinner to indicate if the page is loading longer
   - Usually when the backend is extracting the requested gallery if it's not in the cache already
@@ -39,14 +39,14 @@ All notable changes of this project will be documented in this file. Unreleased 
 - Numbered placeholders for page thumbnails
 - Blur placeholders for covers
 
-## Fixed
+### Fixed
 
 - Show "Loading…" instead of "No pages found" when clicking thumbnails on gallery pages
 - Library layout on small screens
 - Nav overflowing on small screens
 - Typos
 
-## Changed
+### Changed
 
 - Update dependencies
   - Most notably React 17 -> 18
@@ -57,7 +57,7 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 ## [0.3.0] - 2022-03-20
 
-## Added
+### Added
 
 - Support for EHDL and Hath parsers
 - Support for grouping galleries together by series
@@ -73,7 +73,7 @@ All notable changes of this project will be documented in this file. Unreleased 
 - Catch network errors of the User API endpoint and when updating galleries
 - Checkbox styles in forms and login screen
 
-## Changed
+### Changed
 
 - Updated dependencies
 - Disabled background scroll when large popup is open
