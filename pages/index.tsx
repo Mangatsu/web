@@ -42,7 +42,9 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
     return [pageIndex * RESULT_LIMIT, debouncedFilters, session?.serverToken || session?.passphrase]
   }
 
-  const { data, size, setSize } = useSWRInfinite(getKey, fetcher)
+  const { data, size, setSize } = useSWRInfinite(getKey, fetcher, {
+    keepPreviousData: true,
+  })
 
   // This should actually be called "mightHaveMore", as in rare cases the data ends exactly on the offset (results % offset === 0)
   // which results one extra request being made.
