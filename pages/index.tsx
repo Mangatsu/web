@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 import useSWRInfinite from "swr/infinite"
 import Filters from "../components/Filters"
+import { LibraryLayout } from "../components/Filters/LayoutSelect"
 import Layout from "../components/Layout"
 import { fetchCategories, fetchLibrary } from "../lib/api/library"
 import { getCacheUrl, RESULT_LIMIT, StringResponse } from "../lib/api/other"
@@ -36,6 +37,9 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
   const [grouped, setGrouped] = useState(false)
   const debouncedFilters = useDebounce(query, 100)
 
+  const [layout, setLayout] = useState(LibraryLayout.Thumbnail)
+  const nativeTitles = getValue(LocalPreferences.LanguagePref)
+
   const getKey = (pageIndex: number, previousPageData: unknown[]) => {
     if (previousPageData && previousPageData.length === 0) return null
     if (status === "loading") return null
@@ -60,6 +64,7 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
         setGrouped={setGrouped}
         categories={categories}
         favorites={favorites}
+        setLayout={setLayout}
       />
       <div className="masonry sm:masonry-sm place-content-center">
         {data &&
@@ -70,23 +75,38 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
 
             if (Array.isArray(result.Data)) {
               return (result.Data as GalleryMeta[]).map((gallery: GalleryMeta) => (
-                <Link href={`g/${gallery.UUID}`} key={gallery.UUID}>
-                  <a className="grid place-content-center mb-3 mr-3 bg-gray-800 bg-clip-padding rounded">
-                    <Image
-                      alt="cover image"
-                      src={
-                        gallery.Thumbnail
-                          ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`)
-                          : placeholderCover
-                      }
-                      className="w-full rounded text-center"
-                      width={200}
-                      height={300}
-                      objectFit="cover"
-                      loading="lazy"
-                    />
-                  </a>
-                </Link>
+                <div key={gallery.UUID} className="relative mr-3 bg-cyan-700 rounded mb-3">
+                  {layout === LibraryLayout.Detailed && (
+                    <div className="table w-full text-white text-sm p-1 h-12">
+                      <div
+                        style={{
+                          verticalAlign: "middle",
+                          display: "table-cell",
+                          textAlign: "center",
+                        }}
+                      >
+                        {(nativeTitles ? gallery.TitleNative : gallery.TitleTranslated) || gallery.Title}
+                      </div>
+                    </div>
+                  )}
+                  <Link href={`g/${gallery.UUID}`}>
+                    <a className="grid place-content-center bg-gray-800 bg-clip-padding rounded">
+                      <Image
+                        alt="cover image"
+                        src={
+                          gallery.Thumbnail
+                            ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`)
+                            : placeholderCover
+                        }
+                        className="w-full text-center rounded"
+                        width={200}
+                        height={300}
+                        objectFit="cover"
+                        loading="lazy"
+                      />
+                    </a>
+                  </Link>
+                </div>
               ))
             }
 

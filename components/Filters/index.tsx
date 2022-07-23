@@ -4,6 +4,7 @@ import { LibraryFilters } from "../../types/api"
 import CategorySelect from "./CategorySelect"
 import FavoriteSelect from "./FavoriteSelect"
 import GroupSeriesSwitch from "./GroupSeriesSwitch"
+import LayoutSelect, { LibraryLayout } from "./LayoutSelect"
 import NSFWSwitch from "./NSFWSwitch"
 import OrderSwitch from "./OrderSwitch"
 import SearchBox from "./SearchBox"
@@ -20,9 +21,10 @@ interface Props extends FilterProps {
   setGrouped: Dispatch<SetStateAction<boolean>>
   categories: StringResponse
   favorites: StringResponse
+  setLayout: (layout: LibraryLayout) => void
 }
 
-const Filters = ({ query, setQuery, grouped, setGrouped, categories, favorites }: Props) => {
+const Filters = ({ query, setQuery, grouped, setGrouped, categories, favorites, setLayout }: Props) => {
   return (
     <div className="flex flex-row mb-12 lg:mx-16 ">
       <div className="w-full grid grid-flow-row">
@@ -34,13 +36,15 @@ const Filters = ({ query, setQuery, grouped, setGrouped, categories, favorites }
             <GroupSeriesSwitch query={query} setQuery={setQuery} grouped={grouped} setGrouped={setGrouped} />
             <ShuffleSwitch query={query} setQuery={setQuery} />
           </div>
-          <SortBySelect query={query} setQuery={setQuery} />
+
           <CategorySelect query={query} setQuery={setQuery} categories={categories} />
           <FavoriteSelect query={query} setQuery={setQuery} favorites={favorites} />
+          <div className="grid grid-flow-col grid-cols-2 gap-2">
+            <SortBySelect query={query} setQuery={setQuery} />
+            <LayoutSelect setLayout={setLayout} />
+          </div>
         </div>
       </div>
-
-      <div className="grid grid-rows-2 grid-cols-3"></div>
     </div>
   )
 }

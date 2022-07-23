@@ -1,5 +1,6 @@
 export enum LocalPreferences {
   NSFWPref = "mtsu_nsfw_pref",
+  LanguagePref = "mtsu_language_pref",
 }
 
 export function getValue(key: string) {

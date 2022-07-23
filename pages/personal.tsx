@@ -22,6 +22,8 @@ interface Props {
 
 export default function Personal({ serverInfo, currentSessionID, token, userUUID }: Props) {
   const [nsfwPref, setNsfwPref] = useState(false)
+  const [langPref, setLangPref] = useState(false)
+
   const { data, mutate } = useSWR(token ? ["/users/me/sessions", token] : null, (key: [string, string]) =>
     swrFetch(...key)
   )
@@ -29,10 +31,12 @@ export default function Personal({ serverInfo, currentSessionID, token, userUUID
 
   useEffect(() => {
     setNsfwPref(getValue(LocalPreferences.NSFWPref))
+    setLangPref(getValue(LocalPreferences.LanguagePref))
   }, [])
 
   const handlePreferences = () => {
     setValue(LocalPreferences.NSFWPref, nsfwPref)
+    setValue(LocalPreferences.LanguagePref, langPref)
     toast.success("Preferences saved")
   }
 
@@ -75,9 +79,14 @@ export default function Personal({ serverInfo, currentSessionID, token, userUUID
           )}
           <div className="flex flex-col p-4 rounded bg-opacity-20 bg-black">
             <h4>Site</h4>
-            <label>
-              Hide NSFW results by default? <OnOffSwitch checked={nsfwPref} onChange={setNsfwPref} />
-            </label>
+            <div className="grid gap-2">
+              <label>
+                <OnOffSwitch checked={nsfwPref} onChange={setNsfwPref} /> Hide NSFW results by default
+              </label>
+              <label>
+                <OnOffSwitch checked={langPref} onChange={setLangPref} /> Show native titles when available
+              </label>
+            </div>
             <button
               onClick={() => handlePreferences()}
               type="submit"
