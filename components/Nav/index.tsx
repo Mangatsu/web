@@ -1,9 +1,10 @@
-import { HeartIcon } from "@heroicons/react/outline"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 import { fetchRandomGallery } from "../../lib/api/library"
 import { Role } from "../../lib/helpers"
+import gameDieIcon from "../../public/icons/game-die.svg"
 import { Gallery, ServerInfo } from "../../types/api"
 import Button from "../Button"
 import Spinner from "../Spinner"
@@ -31,8 +32,12 @@ const Nav = ({ serverInfo }: { serverInfo: ServerInfo }) => {
         <Button href="/" className="mx-2">
           Library
         </Button>
-        <Button onClick={() => handleRandom()} className="mr-2" title="Random gallery">
-          <HeartIcon className="h-6 w-6" />
+        <Button
+          onClick={() => handleRandom()}
+          title="Random gallery"
+          className="rounded-full p-1 mx-2 border-2 border-blue-800 inline-flex bg-blue-600 hover:bg-blue-800 focus:ring-blue-800"
+        >
+          <Image src={gameDieIcon} alt="game die" width={28} height={24} />
         </Button>
         {session?.serverToken && isAdmin && <Scan token={session?.serverToken} />}
         <User session={session} isAdmin={isAdmin} status={status} serverInfo={serverInfo} />
