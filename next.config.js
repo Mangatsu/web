@@ -8,9 +8,7 @@ const nextConfig = {
     formats: ["image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
-  experimental: {
-    outputStandalone: true,
-  },
+  output: "standalone",
 }
 
 module.exports = nextConfig
