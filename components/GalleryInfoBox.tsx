@@ -63,8 +63,15 @@ const GalleryInfoBox = ({ gallery }: Props) => {
           </div>
         </div>
       </div>
-      <div className="badge mt-2" title="Category">
-        {gallery.Category}
+      <div className="flex mt-2">
+        <div className="badge" title="Category">
+          {gallery.Category}
+        </div>
+        {!gallery.Nsfw && (
+          <div className="badge bg-pink-700 text-pink-200 font" title="NSFW">
+            H
+          </div>
+        )}
       </div>
     </div>
   )

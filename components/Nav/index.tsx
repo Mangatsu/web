@@ -21,7 +21,7 @@ const Nav = ({ serverInfo }: { serverInfo: ServerInfo }) => {
     if (gallery) {
       router.push(`/g/${gallery.Meta.UUID}`)
     } else {
-      toast.error("No galleries.")
+      toast.error("No galleries to load")
     }
   }
 
