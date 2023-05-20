@@ -1,4 +1,4 @@
-import { PencilAltIcon } from "@heroicons/react/solid"
+import { PencilSquareIcon } from "@heroicons/react/20/solid"
 import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
 import { updateGallery } from "../lib/api/library"
@@ -61,7 +61,7 @@ const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
     <PopupLarge
       activator={
         <button type="button" className="text-white bg-blue-600 hover:bg-blue-800" title="Edit gallery info">
-          <PencilAltIcon className="h-5 w-5 text-zinc-100" />
+          <PencilSquareIcon className="h-5 w-5 text-zinc-100" />
         </button>
       }
     >

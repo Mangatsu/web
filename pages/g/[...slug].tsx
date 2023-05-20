@@ -1,4 +1,4 @@
-import { EyeIcon, EyeOffIcon, LoginIcon as ShiftIcon, LogoutIcon as NoShiftIcon } from "@heroicons/react/solid"
+import { ArrowLeftOnRectangleIcon, ArrowRightOnRectangleIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid"
 import { GetServerSideProps } from "next"
 import { getSession, useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
@@ -14,7 +14,7 @@ import { fetchGallery } from "../../lib/api/library"
 import { getCacheUrl, swrFetch } from "../../lib/api/other"
 import getServerInfo from "../../lib/api/serverInfo"
 import { updateFavoriteGroup } from "../../lib/api/user"
-import { changeExtension, clamp, Role } from "../../lib/helpers"
+import { Role, changeExtension, clamp } from "../../lib/helpers"
 import { Gallery, ServerInfo, Visibility } from "../../types/api"
 
 // Style for the react-select component (favorite selection)
@@ -133,14 +133,14 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
             {showThumbnails ? (
               <EyeIcon className="h-5 w-5 text-zinc-100" />
             ) : (
-              <EyeOffIcon className="h-5 w-5 text-zinc-100" />
+              <EyeSlashIcon className="h-5 w-5 text-zinc-100" />
             )}
           </Button>
           <Button onClick={() => shiftByOne()} title="Shift pages by one">
             {isShift ? (
-              <ShiftIcon className="h-5 w-5 text-zinc-100" />
+              <ArrowLeftOnRectangleIcon className="h-5 w-5 text-zinc-100" />
             ) : (
-              <NoShiftIcon className="h-5 w-5 text-zinc-100" />
+              <ArrowRightOnRectangleIcon className="h-5 w-5 text-zinc-100" />
             )}
           </Button>
           {session?.serverToken && isAdmin && (
