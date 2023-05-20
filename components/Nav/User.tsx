@@ -30,10 +30,8 @@ const User = ({ session, isAdmin, status, serverInfo }: Props) => {
       )}
       <div className="my-4 mx-4">
         {session?.passphrase && <p className="text-sky-400">Anonymous access</p>}
-        <Link href="https://github.com/Mangatsu">
-          <a target="_blank" rel="noopener noreferrer" className="text-sky-400">
-            Mangatsu 🌕
-          </a>
+        <Link href="https://github.com/Mangatsu" target="_blank" rel="noopener noreferrer" className="text-sky-400">
+          Mangatsu 🌕
         </Link>
         <p>
           Visibility: <span className="font-bold">{serverInfo.Visibility}</span>

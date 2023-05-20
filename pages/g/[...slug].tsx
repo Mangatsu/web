@@ -178,7 +178,6 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
                     loading="lazy"
                     width={200}
                     height={300}
-                    objectFit="cover"
                   />
                 </a>
               ))}

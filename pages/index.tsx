@@ -8,12 +8,12 @@ import Filters from "../components/Filters"
 import { LibraryLayout } from "../components/Filters/LayoutSelect"
 import Layout from "../components/Layout"
 import { fetchCategories, fetchLibrary } from "../lib/api/library"
-import { getCacheUrl, RESULT_LIMIT, StringResponse } from "../lib/api/other"
+import { RESULT_LIMIT, StringResponse, getCacheUrl } from "../lib/api/other"
 import getServerInfo from "../lib/api/serverInfo"
 import { fetchFavoriteGroups } from "../lib/api/user"
 import { Base64Placeholder } from "../lib/helpers"
 import useDebounce from "../lib/hooks/useDebounce"
-import { getValue, LocalPreferences } from "../lib/localStorage"
+import { LocalPreferences, getValue } from "../lib/localStorage"
 import placeholderCover from "../public/placeholder-fade.png"
 import { GalleryMeta, LibraryFilters, ServerInfo, Visibility } from "../types/api"
 
@@ -89,22 +89,22 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
                       </div>
                     </div>
                   )}
-                  <Link href={`g/${gallery.UUID}`}>
-                    <a className="grid place-content-center bg-gray-800 bg-clip-padding rounded">
-                      <Image
-                        alt="cover image"
-                        src={
-                          gallery.Thumbnail
-                            ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`)
-                            : placeholderCover
-                        }
-                        className="w-full text-center rounded"
-                        width={200}
-                        height={300}
-                        objectFit="cover"
-                        loading="lazy"
-                      />
-                    </a>
+                  <Link
+                    href={`g/${gallery.UUID}`}
+                    className="grid place-content-center bg-gray-800 bg-clip-padding rounded"
+                  >
+                    <Image
+                      alt="cover image"
+                      src={
+                        gallery.Thumbnail
+                          ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`)
+                          : placeholderCover
+                      }
+                      className="w-full text-center rounded"
+                      width={200}
+                      height={300}
+                      loading="lazy"
+                    />
                   </Link>
                 </div>
               ))
@@ -115,22 +115,23 @@ export default function LibraryIndex({ serverInfo, categories, favorites }: Prop
               const g = galleryMap[k]
               return (
                 <div key={i} className="relative">
-                  <Link href={g.length > 1 ? `series/${g[0].Series}` : `g/${g[0].UUID}`} key={g[0].UUID}>
-                    <a className="grid place-content-center mb-3 mr-3 bg-gray-800 bg-clip-padding rounded">
-                      <Image
-                        alt="cover image"
-                        src={
-                          g[0].Thumbnail ? getCacheUrl(`/thumbnails/${g[0].UUID}/${g[0].Thumbnail}`) : placeholderCover
-                        }
-                        className="w-full rounded text-center"
-                        width={200}
-                        height={300}
-                        objectFit="cover"
-                        loading="lazy"
-                        placeholder="blur"
-                        blurDataURL={Base64Placeholder}
-                      />
-                    </a>
+                  <Link
+                    href={g.length > 1 ? `series/${g[0].Series}` : `g/${g[0].UUID}`}
+                    key={g[0].UUID}
+                    className="grid place-content-center mb-3 mr-3 bg-gray-800 bg-clip-padding rounded"
+                  >
+                    <Image
+                      alt="cover image"
+                      src={
+                        g[0].Thumbnail ? getCacheUrl(`/thumbnails/${g[0].UUID}/${g[0].Thumbnail}`) : placeholderCover
+                      }
+                      className="w-full rounded text-center"
+                      width={200}
+                      height={300}
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL={Base64Placeholder}
+                    />
                   </Link>
                   {g.length > 1 && (
                     <div
