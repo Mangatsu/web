@@ -1,17 +1,15 @@
 import Head from "next/head"
 import { ReactNode } from "react"
 import { ToastContainer } from "react-toastify"
-import { ServerInfo } from "../types/api"
 import Nav from "./Nav"
 
 interface LayoutProps {
   subtitle?: string
-  serverInfo: ServerInfo
   children: ReactNode
   outerChildren?: ReactNode
 }
 
-const Layout = ({ subtitle, serverInfo, children, outerChildren }: LayoutProps) => {
+const Layout = ({ subtitle, children, outerChildren }: LayoutProps) => {
   return (
     <div>
       <Head>
@@ -26,7 +24,7 @@ const Layout = ({ subtitle, serverInfo, children, outerChildren }: LayoutProps) 
         draggable
         pauseOnHover
       />
-      <Nav serverInfo={serverInfo} />
+      <Nav />
       {outerChildren}
       <div className="flex flex-col mx-auto px-2 sm:px-8 justify-center max-w-7xl">{children}</div>
     </div>
