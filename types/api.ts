@@ -89,3 +89,9 @@ export interface MangatsuUser {
   CreatedAt: string
   UpdatedAt: string
 }
+
+export interface LoginResponse {
+  UUID: string
+  Role: string
+  ExpiresIn: number
+}
