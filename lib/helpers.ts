@@ -74,3 +74,21 @@ export function decodeJWT(token: string) {
   const payload: JWTPayload = JSON.parse(buffer.toString())
   return payload
 }
+
+export function parseCookieHeader(key: string, cookie?: string | null) {
+  if (!cookie) {
+    return null
+  }
+
+  let parsed: string | undefined
+  try {
+    parsed = cookie
+      .split("; ")
+      .find((row) => row.startsWith(`${key}=`))
+      ?.split("=")[1]
+  } catch (e) {
+    return null
+  }
+
+  return parsed
+}
