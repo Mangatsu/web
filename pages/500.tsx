@@ -9,7 +9,7 @@ const Custom500 = () => {
       </div>
       <div className="error-card">
         <h1>500 - internal server error</h1>
-        Backend server might be offline.
+        Backend server might be unreachable.
       </div>
     </div>
   )
