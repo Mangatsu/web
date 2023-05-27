@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from "react"
-import { StringResponse } from "../../lib/api/other"
 import { LibraryFilters } from "../../types/api"
 import CategorySelect from "./CategorySelect"
 import FavoriteSelect from "./FavoriteSelect"
@@ -19,8 +18,8 @@ export interface FilterProps {
 interface Props extends FilterProps {
   grouped: boolean
   setGrouped: Dispatch<SetStateAction<boolean>>
-  categories: StringResponse
-  favorites: StringResponse
+  categories: string[] | null
+  favorites: string[] | null
   setLayout: (layout: LibraryLayout) => void
 }
 
