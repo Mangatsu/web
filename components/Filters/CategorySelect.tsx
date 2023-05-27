@@ -1,8 +1,7 @@
 import { FilterProps } from "."
-import { StringResponse } from "../../lib/api/other"
 
 interface Props extends FilterProps {
-  categories: StringResponse
+  categories: string[] | null
 }
 
 const CategorySelect = ({ query, setQuery, categories }: Props) => {
@@ -17,9 +16,7 @@ const CategorySelect = ({ query, setQuery, categories }: Props) => {
         onChange={(e) => setQuery({ ...query, category: e.currentTarget.value })}
       >
         <option></option>
-        {categories.Data.map((category) => (
-          <option key={category}>{category}</option>
-        ))}
+        {categories && categories.map((category) => <option key={category}>{category}</option>)}
       </select>
     </div>
   )
