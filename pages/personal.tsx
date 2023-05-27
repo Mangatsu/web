@@ -1,5 +1,4 @@
 import { GetServerSideProps } from "next"
-import { getSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import useSWR from "swr"
@@ -7,26 +6,20 @@ import Layout from "../components/Layout"
 import OnOffSwitch from "../components/OnOffSwitch"
 import Sessions from "../components/Sessions"
 import { swrFetch } from "../lib/api/other"
-import getServerInfo from "../lib/api/serverInfo"
 import { MangatsuSessionResponse, updateUser } from "../lib/api/user"
-import { decodeJWT } from "../lib/helpers"
-import { getValue, LocalPreferences, setValue } from "../lib/localStorage"
-import { ServerInfo } from "../types/api"
+import { decodeJWT, parseCookieHeader } from "../lib/helpers"
+import { LocalPreferences, getValue, setValue } from "../lib/localStorage"
 
 interface Props {
-  serverInfo: ServerInfo
   currentSessionID: string
-  token: string
-  userUUID: string | null
+  userUUID: string
 }
 
-export default function Personal({ serverInfo, currentSessionID, token, userUUID }: Props) {
+export default function Personal({ currentSessionID, userUUID }: Props) {
   const [nsfwPref, setNsfwPref] = useState(false)
   const [langPref, setLangPref] = useState(false)
 
-  const { data, mutate } = useSWR(token ? ["/users/me/sessions", token] : null, (key: [string, string]) =>
-    swrFetch(...key)
-  )
+  const { data, mutate } = useSWR("/users/me/sessions", (key) => swrFetch(key))
   const response = data as MangatsuSessionResponse
 
   useEffect(() => {
@@ -49,7 +42,7 @@ export default function Personal({ serverInfo, currentSessionID, token, userUUID
     const target = e.target as typeof e.target & { password: { value: string }; role: { value: number } }
     const userForm = { password: target.password.value }
 
-    const response = await updateUser(token, userUUID, userForm)
+    const response = await updateUser(userUUID, userForm)
     if (response) {
       toast.success("User updated")
     } else {
@@ -58,7 +51,7 @@ export default function Personal({ serverInfo, currentSessionID, token, userUUID
   }
 
   return (
-    <Layout serverInfo={serverInfo} subtitle="Personal">
+    <Layout subtitle="Personal">
       <div className="flex flex-col justify-center">
         <h3>Personal Settings</h3>
         <div className="grid grid-flow-col h-64">
@@ -99,7 +92,7 @@ export default function Personal({ serverInfo, currentSessionID, token, userUUID
         <br />
         <div className="p-4 rounded bg-opacity-20 bg-black">
           <h4>Sessions</h4>
-          <Sessions sessions={response?.Data ?? []} mutate={mutate} token={token} currentSessionID={currentSessionID} />
+          <Sessions sessions={response?.Data ?? []} mutate={mutate} currentSessionID={currentSessionID} />
         </div>
       </div>
     </Layout>
@@ -107,25 +100,22 @@ export default function Personal({ serverInfo, currentSessionID, token, userUUID
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
-  if (!session?.serverToken) {
+  const jwtCookie = parseCookieHeader("mtsu.jwt", context.req.headers.cookie)
+  if (!jwtCookie) {
     return {
       redirect: {
-        destination: "/api/auth/signin",
+        destination: "/login",
         permanent: false,
       },
     }
   }
 
-  const currentSessionID = decodeJWT(session.serverToken).ID
+  const decodedJWT = decodeJWT(jwtCookie)
 
-  const serverInfo = await getServerInfo()
   return {
     props: {
-      serverInfo,
-      currentSessionID,
-      token: session.serverToken,
-      userUUID: session?.user?.uuid || null,
+      currentSessionID: decodedJWT.ID,
+      userUUID: decodedJWT.Subject,
     },
   }
 }
