@@ -5,7 +5,7 @@ import ScanIcon from "../../public/icons/uk-refresh.svg"
 import Button from "../Button"
 import NavPopup from "./NavPopup"
 
-const Scan = ({ token }: { token: string }) => {
+const Scan = () => {
   // TODO: More options to the UI such as quick scan, covers only thumnbnail generation etc.
   // const quickScanHandler = async () => {
   //   toast("Starting quick scan...")
@@ -14,17 +14,17 @@ const Scan = ({ token }: { token: string }) => {
 
   const fullScanHandler = async () => {
     toast("Starting full scan...")
-    await initiateScan(token, true)
+    await initiateScan(true)
   }
 
   const metadataHandler = async () => {
     toast("Parsing metadata...")
-    await initiateMetadataGen(token)
+    await initiateMetadataGen()
   }
 
   const thumbnailHandler = async () => {
     toast.info("Generating thumbnails...")
-    await initiateThumbnailGen(token, true, true)
+    await initiateThumbnailGen(true, true)
   }
 
   return (
