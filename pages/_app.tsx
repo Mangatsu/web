@@ -5,10 +5,10 @@ import "../styles/globals.css"
 
 function Mangatsu({ Component, pageProps }: AppProps) {
   return (
-    <div>
+    <>
       <ExpiredLogin />
       <Component {...pageProps} />
-    </div>
+    </>
   )
 }
 
