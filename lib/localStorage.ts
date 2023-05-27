@@ -14,7 +14,11 @@ export function getValue(key: string) {
 
 export function setValue(key: string, value: unknown) {
   try {
-    window.localStorage.setItem(key, JSON.stringify(value))
+    if (value === undefined) {
+      window.localStorage.removeItem(key)
+    } else {
+      window.localStorage.setItem(key, JSON.stringify(value))
+    }
   } catch (e) {
     console.error(e)
   }
