@@ -26,7 +26,7 @@ Images: [Web](https://hub.docker.com/r/luukuton/mangatsu-web) & [Server](https:/
 
 ## ❗ Requirements
 
-- Node.js 16+
-- npm 8+
+- Node.js 18+
+- npm 9+
 - Mangatsu Server
 - Docker (optional)
