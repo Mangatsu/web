@@ -1,4 +1,3 @@
-import { signOut } from "next-auth/react"
 import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
 import { deleteSession, initiateLogout } from "../lib/api/user"
@@ -7,13 +6,12 @@ import { MangatsuSession } from "../types/api"
 interface Props {
   sessions: MangatsuSession[]
   currentSessionID: string
-  token: string
   mutate: KeyedMutator<unknown>
 }
 
-const Sessions = ({ sessions, currentSessionID, token, mutate }: Props) => {
+const Sessions = ({ sessions, currentSessionID, mutate }: Props) => {
   const handleDelete = async (sessionID: string) => {
-    const response = await deleteSession(token, sessionID)
+    const response = await deleteSession(sessionID)
     if (response) {
       mutate()
       toast.success("Session deleted")
@@ -22,11 +20,8 @@ const Sessions = ({ sessions, currentSessionID, token, mutate }: Props) => {
     }
   }
 
-  const logoutHandler = (token?: string | null) => {
-    if (token) {
-      initiateLogout(token)
-    }
-    signOut()
+  const logoutHandler = () => {
+    initiateLogout()
   }
 
   return (
@@ -53,7 +48,7 @@ const Sessions = ({ sessions, currentSessionID, token, mutate }: Props) => {
                       {currentSessionID === session.ID ? (
                         <a
                           className=" hover:text-blue-900 text-blue-500 hover:underline"
-                          onClick={() => logoutHandler(token)}
+                          onClick={() => logoutHandler()}
                         >
                           Logout
                         </a>
