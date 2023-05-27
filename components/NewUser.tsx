@@ -4,11 +4,10 @@ import { newUser } from "../lib/api/user"
 import { Role } from "../lib/helpers"
 
 interface Props {
-  token: string
   mutate: KeyedMutator<unknown>
 }
 
-const NewUser = ({ token, mutate }: Props) => {
+const NewUser = ({ mutate }: Props) => {
   const newUserHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const target = e.target as typeof e.target & {
@@ -21,7 +20,7 @@ const NewUser = ({ token, mutate }: Props) => {
       password: target.password.value,
       role: target.role.value,
     }
-    const response = await newUser(token, registerForm)
+    const response = await newUser(registerForm)
     if (response) {
       mutate()
       toast.success("User created successfully")

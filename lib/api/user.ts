@@ -1,5 +1,5 @@
 import { MangatsuSession, MangatsuUser } from "../../types/api"
-import { getApiUrl, StringResponse } from "./other"
+import { getApiUrl } from "./other"
 
 export interface UserForm {
   username?: string
@@ -20,16 +20,15 @@ export interface MangatsuSessionResponse {
 /**
  * Creates a new user.
  *
- * @param token JWT
  * @param form
  * @returns promise of the JSON or null
  */
-export async function newUser(token: string, form: UserForm) {
+export async function newUser(form: UserForm) {
   try {
     const response = await fetch(getApiUrl("/register"), {
       method: "POST",
       mode: "cors",
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include",
       body: JSON.stringify(form),
     })
 
@@ -42,17 +41,16 @@ export async function newUser(token: string, form: UserForm) {
 /**
  * Updates user.
  *
- * @param token JWT
  * @param uuid
  * @param form
  * @returns promise of the JSON or null
  */
-export async function updateUser(token: string, uuid: string, form: UserForm) {
+export async function updateUser(uuid: string, form: UserForm) {
   try {
     const response = await fetch(getApiUrl(`/users/${uuid}`), {
       method: "PUT",
       mode: "cors",
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include",
       body: JSON.stringify(form),
     })
 
@@ -65,16 +63,15 @@ export async function updateUser(token: string, uuid: string, form: UserForm) {
 /**
  * Deletes a user. Admins cannot be deleted direclty.
  *
- * @param token JWT
  * @param uuid user UUID
  * @returns if action was successful
  */
-export async function deleteUser(token: string, uuid: string) {
+export async function deleteUser(uuid: string) {
   try {
     const response = await fetch(getApiUrl(`/users/${uuid}`), {
       method: "DELETE",
       mode: "cors",
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include",
     })
 
     return response.ok
@@ -85,16 +82,15 @@ export async function deleteUser(token: string, uuid: string) {
 
 /**
  * Deletes a session. Only the owner of the session can delete it.
- * @param token JWT
  * @param sessionID
  * @returns if action was successful
  */
-export async function deleteSession(token: string, sessionID: string) {
+export async function deleteSession(sessionID: string) {
   try {
     const response = await fetch(getApiUrl("/users/me/sessions"), {
       method: "DELETE",
       mode: "cors",
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include",
       body: JSON.stringify({ SessionID: sessionID }),
     })
 
@@ -107,15 +103,13 @@ export async function deleteSession(token: string, sessionID: string) {
 /**
  * Sends logout request to the API which removes the session token from the server which in turn invalidates the JWT.
  *
- * @param token JWT
  * @returns true if successful
  */
-export async function initiateLogout(token: string) {
+export async function initiateLogout() {
   try {
     const response = await fetch(getApiUrl("/logout"), {
       method: "POST",
-      mode: "cors",
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include",
     })
     return response.ok
   } catch {
@@ -124,40 +118,30 @@ export async function initiateLogout(token: string) {
 }
 
 /**
- * Returns all favorite groups of the user from the API.
+ * Returns user's favorite groups from the API.
  *
- * @param token JWT
  * @returns promise of the response, JSON or null
  */
-export async function fetchFavoriteGroups(token: string) {
-  try {
-    const response = await fetch(getApiUrl("/users/me/favorites"), {
-      mode: "cors",
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    if (!response.ok) {
-      return null
-    }
-    return (await response.json()) as StringResponse
-  } catch {
-    return null
-  }
+export async function fetchFavoriteGroups() {
+  return fetch(getApiUrl("/users/me/favorites"), {
+    mode: "cors",
+    credentials: "include",
+  })
 }
 
 /**
  * Sets gallery's favorite group for the requesting user.
  *
- * @param token JWT
  * @param galleryUUID
  * @param groupName
  * @returns was the action successful
  */
-export async function updateFavoriteGroup(token: string, galleryUUID: string, groupName: string) {
+export async function updateFavoriteGroup(galleryUUID: string, groupName: string) {
   try {
     const response = await fetch(getApiUrl(`/galleries/${galleryUUID}/favorite/${groupName}`), {
       method: "PATCH",
       mode: "cors",
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include",
     })
     return response.ok
   } catch {

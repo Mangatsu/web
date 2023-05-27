@@ -46,26 +46,22 @@ export async function fetchApi(path: string) {
  * @returns JSON promise
  */
 export async function fetchServerInfo() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_MANGATSU_API_URL || "http://localhost:5050"}/api`)
-  if (!response.ok) {
-    return null
-  }
-
-  return await response.json()
+  return fetch(`${process.env.NEXT_PUBLIC_MANGATSU_API_URL || "http://localhost:5050"}/api`, {
+    mode: "cors",
+    credentials: "include",
+  })
 }
 
 /**
- * SWR fetch function.
+ * SWR fetcher function.
  *
  * @param path
- * @param token
  * @returns Response
  */
-export async function swrFetch(path: string, token?: string) {
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
+export async function swrFetch(path: string) {
   const response = await fetch(getApiUrl(path), {
     mode: "cors",
-    headers: { ...authHeader },
+    credentials: "include",
   })
 
   return await response.json()

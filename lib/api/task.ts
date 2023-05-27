@@ -3,11 +3,10 @@ import { getApiUrl } from "./other"
 /**
  * Initiates a new gallery scan.
  *
- * @param token JWT
  * @param full full scan
  * @returns promise of the JSON or null
  */
-export async function initiateScan(token: string, full: boolean) {
+export async function initiateScan(full: boolean) {
   const requestUrl = new URL(getApiUrl("/scan"))
   if (full) {
     requestUrl.searchParams.append("full", "true")
@@ -15,7 +14,7 @@ export async function initiateScan(token: string, full: boolean) {
 
   const response = await fetch(requestUrl.toString(), {
     mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
+    credentials: "include",
   })
 
   if (!response.ok) {
@@ -28,12 +27,11 @@ export async function initiateScan(token: string, full: boolean) {
 /**
  * Initiates a new task to generate metadata for every gallery.
  *
- * @param token JWT
  * @param x parse X formatted JSON files
  * @param title parse titles
  * @returns promise of the JSON or null
  */
-export async function initiateMetadataGen(token: string) {
+export async function initiateMetadataGen() {
   const requestUrl = new URL(getApiUrl("/meta"))
   requestUrl.searchParams.append("title", "true")
   requestUrl.searchParams.append("x", "true")
@@ -42,7 +40,7 @@ export async function initiateMetadataGen(token: string) {
 
   const response = await fetch(requestUrl.toString(), {
     mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
+    credentials: "include",
   })
   if (!response.ok) {
     return null
@@ -54,19 +52,18 @@ export async function initiateMetadataGen(token: string) {
 /**
  * Initiates a new task to generate thumbnails.
  *
- * @param token JWT
  * @param force rewrite already existing thumbnails
  * @param pages also generate thumbnails for pages, not only covers
  * @returns promise of the JSON or null
  */
-export async function initiateThumbnailGen(token: string, force: boolean, pages: boolean) {
+export async function initiateThumbnailGen(force: boolean, pages: boolean) {
   const requestUrl = new URL(getApiUrl("/thumbnails"))
   if (force) requestUrl.searchParams.append("force", "true")
   if (pages) requestUrl.searchParams.append("pages", "true")
 
   const response = await fetch(requestUrl.toString(), {
     mode: "cors",
-    headers: { Authorization: `Bearer ${token}` },
+    credentials: "include",
   })
 
   if (!response.ok) {

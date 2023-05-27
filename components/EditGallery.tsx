@@ -8,7 +8,6 @@ import PopupLarge from "./PopupLarge"
 interface EditGalleryProps {
   gallery: GalleryMeta
   mutate: KeyedMutator<unknown>
-  token: string
 }
 
 interface Form {
@@ -29,7 +28,7 @@ interface Form {
   tags: { value: string[] } // Record<string, string>
 }
 
-const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
+const EditGallery = ({ gallery, mutate }: EditGalleryProps) => {
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>, uuid: string) => {
     e.preventDefault()
     const target = e.target as typeof e.target & Form
@@ -48,7 +47,7 @@ const EditGallery = ({ gallery, mutate, token }: EditGalleryProps) => {
       // anilistID: target.anilistID.value,
       // urls: target.urls.value,
     }
-    const response = await updateGallery(token, uuid, galleryForm)
+    const response = await updateGallery(uuid, galleryForm)
     if (response) {
       toast.success("Gallery updated")
       mutate()
