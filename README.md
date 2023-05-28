@@ -17,7 +17,7 @@ Images: [Web](https://hub.docker.com/r/luukuton/mangatsu-web) & [Server](https:/
 ## 💨 Running for development
 
 - Preferably have [Mangatsu Server](https://github.com/Mangatsu/server) running
-- Install Node 16+ and npm 8+
+- Install Node.js ([nvm](https://github.com/nvm-sh/nvm) recommended) and npm
 - Copy `example.env.local` as `.env.local` and change values
 - Run `npm i` to install all dependencies
 - Run `npm run dev` to start the development version
@@ -26,7 +26,7 @@ Images: [Web](https://hub.docker.com/r/luukuton/mangatsu-web) & [Server](https:/
 
 ## ❗ Requirements
 
-- Node.js 18+
-- npm 9+
-- Mangatsu Server
-- Docker (optional)
+- [Node.js](https://nodejs.org) 18+ ([nvm](https://github.com/nvm-sh/nvm) recommended)
+- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 9+
+- [Mangatsu Server](https://github.com/Mangatsu/server)
+- [Docker](https://docs.docker.com/engine/install/) (optional, recommended)
