@@ -9,7 +9,7 @@ const Lock = () => {
   const router = useRouter()
   const logoutHandler = () => {
     initiateLogout()
-    setValue(LocalPreferences.LoggedIn, undefined)
+    setValue(LocalPreferences.Expires, undefined)
     setValue(LocalPreferences.Roles, undefined)
     setValue(LocalPreferences.UserUUID, undefined)
 

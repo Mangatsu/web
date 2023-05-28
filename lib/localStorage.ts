@@ -1,6 +1,6 @@
 export enum LocalPreferences {
-  LoggedIn = "mtsu_logged_in",
   Roles = "mtsu_roles",
+  Expires = "mtsu_expires",
   UserUUID = "mtsu_user_uuid",
   NSFWPref = "mtsu_nsfw_pref",
   LanguagePref = "mtsu_language_pref",

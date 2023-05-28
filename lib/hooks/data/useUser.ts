@@ -5,12 +5,17 @@ import { LocalPreferences, getValue } from "../../localStorage"
 export default function useUser() {
   const [uuid, setUUID] = useState<string | null>(null)
   const [role, setRole] = useState(0)
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null)
 
   useEffect(() => {
     setUUID(getValue(LocalPreferences.UserUUID))
     setRole(getValue(LocalPreferences.Roles))
-    setLoggedIn(getValue(LocalPreferences.LoggedIn))
+    const expires = getValue(LocalPreferences.Expires)
+    if (isNaN(expires)) {
+      setLoggedIn(null)
+    } else {
+      setLoggedIn(expires > Date.now())
+    }
   }, [])
 
   const anonymous = loggedIn && !!uuid
