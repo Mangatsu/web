@@ -1,4 +1,4 @@
-import { getApiUrl } from "./other"
+import { APIPathsV1, fetchJSON, getApiUrl } from "./other"
 
 /**
  * Initiates a new gallery scan.
@@ -7,21 +7,12 @@ import { getApiUrl } from "./other"
  * @returns promise of the JSON or null
  */
 export async function initiateScan(full: boolean) {
-  const requestUrl = new URL(getApiUrl("/scan"))
+  const requestUrl = new URL(getApiUrl(APIPathsV1.Scan))
   if (full) {
     requestUrl.searchParams.append("full", "true")
   }
 
-  const response = await fetch(requestUrl.toString(), {
-    mode: "cors",
-    credentials: "include",
-  })
-
-  if (!response.ok) {
-    return null
-  }
-
-  return await response.json()
+  return await fetchJSON(requestUrl.toString())
 }
 
 /**
@@ -32,21 +23,13 @@ export async function initiateScan(full: boolean) {
  * @returns promise of the JSON or null
  */
 export async function initiateMetadataGen() {
-  const requestUrl = new URL(getApiUrl("/meta"))
+  const requestUrl = new URL(getApiUrl(APIPathsV1.Meta))
   requestUrl.searchParams.append("title", "true")
   requestUrl.searchParams.append("x", "true")
   requestUrl.searchParams.append("hath", "true")
   requestUrl.searchParams.append("ehdl", "true")
 
-  const response = await fetch(requestUrl.toString(), {
-    mode: "cors",
-    credentials: "include",
-  })
-  if (!response.ok) {
-    return null
-  }
-
-  return await response.json()
+  return await fetchJSON(requestUrl.toString())
 }
 
 /**
@@ -57,18 +40,9 @@ export async function initiateMetadataGen() {
  * @returns promise of the JSON or null
  */
 export async function initiateThumbnailGen(force: boolean, pages: boolean) {
-  const requestUrl = new URL(getApiUrl("/thumbnails"))
+  const requestUrl = new URL(getApiUrl(APIPathsV1.Thumbnails))
   if (force) requestUrl.searchParams.append("force", "true")
   if (pages) requestUrl.searchParams.append("pages", "true")
 
-  const response = await fetch(requestUrl.toString(), {
-    mode: "cors",
-    credentials: "include",
-  })
-
-  if (!response.ok) {
-    return null
-  }
-
-  return await response.json()
+  return await fetchJSON(requestUrl.toString())
 }

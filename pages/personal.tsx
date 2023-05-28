@@ -5,7 +5,7 @@ import useSWR from "swr"
 import Layout from "../components/Layout"
 import OnOffSwitch from "../components/OnOffSwitch"
 import Sessions from "../components/Sessions"
-import { swrFetch } from "../lib/api/other"
+import { APIPathsV1, swrFetcher } from "../lib/api/other"
 import { MangatsuSessionResponse, updateUser } from "../lib/api/user"
 import { decodeJWT, parseCookieHeader } from "../lib/helpers"
 import { LocalPreferences, getValue, setValue } from "../lib/localStorage"
@@ -19,7 +19,7 @@ export default function Personal({ currentSessionID, userUUID }: Props) {
   const [nsfwPref, setNsfwPref] = useState(false)
   const [langPref, setLangPref] = useState(false)
 
-  const { data, mutate } = useSWR("/users/me/sessions", (key) => swrFetch(key))
+  const { data, mutate } = useSWR(APIPathsV1.Sessions, (key) => swrFetcher(key))
   const response = data as MangatsuSessionResponse
 
   useEffect(() => {

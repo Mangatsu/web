@@ -1,5 +1,5 @@
 import { MangatsuSession, MangatsuUser } from "../../types/api"
-import { getApiUrl } from "./other"
+import { APIPathsV1, getApiUrl } from "./other"
 
 export interface UserForm {
   username?: string
@@ -25,7 +25,7 @@ export interface MangatsuSessionResponse {
  */
 export async function newUser(form: UserForm) {
   try {
-    const response = await fetch(getApiUrl("/register"), {
+    const response = await fetch(getApiUrl(APIPathsV1.Register), {
       method: "POST",
       mode: "cors",
       credentials: "include",
@@ -47,7 +47,7 @@ export async function newUser(form: UserForm) {
  */
 export async function updateUser(uuid: string, form: UserForm) {
   try {
-    const response = await fetch(getApiUrl(`/users/${uuid}`), {
+    const response = await fetch(getApiUrl(`${APIPathsV1.User}${uuid}`), {
       method: "PUT",
       mode: "cors",
       credentials: "include",
@@ -68,7 +68,7 @@ export async function updateUser(uuid: string, form: UserForm) {
  */
 export async function deleteUser(uuid: string) {
   try {
-    const response = await fetch(getApiUrl(`/users/${uuid}`), {
+    const response = await fetch(getApiUrl(`${APIPathsV1.User}${uuid}`), {
       method: "DELETE",
       mode: "cors",
       credentials: "include",
@@ -87,7 +87,7 @@ export async function deleteUser(uuid: string) {
  */
 export async function deleteSession(sessionID: string) {
   try {
-    const response = await fetch(getApiUrl("/users/me/sessions"), {
+    const response = await fetch(getApiUrl(APIPathsV1.Sessions), {
       method: "DELETE",
       mode: "cors",
       credentials: "include",
@@ -107,7 +107,7 @@ export async function deleteSession(sessionID: string) {
  */
 export async function initiateLogout() {
   try {
-    const response = await fetch(getApiUrl("/logout"), {
+    const response = await fetch(getApiUrl(APIPathsV1.Logout), {
       method: "POST",
       credentials: "include",
     })
@@ -116,19 +116,6 @@ export async function initiateLogout() {
     return false
   }
 }
-
-/**
- * Returns user's favorite groups from the API.
- *
- * @returns promise of the response, JSON or null
- */
-export async function fetchFavoriteGroups() {
-  return fetch(getApiUrl("/users/me/favorites"), {
-    mode: "cors",
-    credentials: "include",
-  })
-}
-
 /**
  * Sets gallery's favorite group for the requesting user.
  *
@@ -138,7 +125,7 @@ export async function fetchFavoriteGroups() {
  */
 export async function updateFavoriteGroup(galleryUUID: string, groupName: string) {
   try {
-    const response = await fetch(getApiUrl(`/galleries/${galleryUUID}/favorite/${groupName}`), {
+    const response = await fetch(getApiUrl(`${APIPathsV1.Gallery}${galleryUUID}/favorite/${groupName}`), {
       method: "PATCH",
       mode: "cors",
       credentials: "include",

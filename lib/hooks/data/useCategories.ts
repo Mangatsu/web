@@ -1,8 +1,8 @@
 import useSWR from "swr"
-import { swrFetch } from "../../api/other"
+import { APIPathsV1, swrFetcher } from "../../api/other"
 
 export default function useCategories() {
-  const { data, error, isLoading } = useSWR("/categories", (key) => swrFetch(key).then((r) => r.json()))
+  const { data, error, isLoading } = useSWR(APIPathsV1.Categories, (key) => swrFetcher(key))
 
   let categories = null
   let categoriesCount = 0

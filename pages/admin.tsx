@@ -3,7 +3,7 @@ import useSWR from "swr"
 import Layout from "../components/Layout"
 import NewUser from "../components/NewUser"
 import Users from "../components/Users"
-import { swrFetch } from "../lib/api/other"
+import { APIPathsV1, swrFetcher } from "../lib/api/other"
 import { MangatsuUserResponse } from "../lib/api/user"
 import { Role, decodeJWT, parseCookieHeader } from "../lib/helpers"
 
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function Admin({ userUUID }: Props) {
-  const { data, mutate } = useSWR("/users", (key: string) => swrFetch(key))
+  const { data, mutate } = useSWR(APIPathsV1.Users, (key: string) => swrFetcher(key))
 
   const users = data?.Data ? (data as MangatsuUserResponse) : null
   return (
@@ -45,7 +45,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const decodedJWT = decodeJWT(jwtCookie)
-
   if (decodedJWT.Roles < Role.Admin) {
     return {
       notFound: true,

@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
-import { fetchRandomGallery } from "../../lib/api/library"
+import { APIPathsV1, fetchJSON } from "../../lib/api/other"
 import useUser from "../../lib/hooks/data/useUser"
 import gameDieIcon from "../../public/icons/game-die.svg"
 import { Gallery } from "../../types/api"
@@ -15,7 +15,7 @@ const Nav = () => {
   const { isAdmin } = useUser()
 
   const handleRandom = async () => {
-    const gallery: Gallery = await fetchRandomGallery()
+    const gallery: Gallery = await fetchJSON(APIPathsV1.RandomGallery)
     if (gallery) {
       router.push(`/g/${gallery.Meta.UUID}`)
     } else {

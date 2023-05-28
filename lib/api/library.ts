@@ -1,5 +1,5 @@
 import { LibraryFilters } from "../../types/api"
-import { getApiUrl, RESULT_LIMIT } from "./other"
+import { APIPathsV1, fetchResponse, getApiUrl, RESULT_LIMIT } from "./other"
 
 export interface GalleryForm {
   title?: string
@@ -38,14 +38,11 @@ function constructGalleryQueryString(url: string, filters?: LibraryFilters) {
  * @returns promise of the response
  */
 export async function fetchLibrary(offset: number, filters?: LibraryFilters) {
-  const requestUrl = constructGalleryQueryString("/galleries", filters)
+  const requestUrl = constructGalleryQueryString(APIPathsV1.Galleries, filters)
   requestUrl.searchParams.append("limit", RESULT_LIMIT.toString())
   requestUrl.searchParams.append("offset", offset.toString())
 
-  return fetch(requestUrl.toString(), {
-    mode: "cors",
-    credentials: "include",
-  })
+  return fetchResponse(requestUrl.toString(), undefined, false)
 }
 
 /**
@@ -55,11 +52,8 @@ export async function fetchLibrary(offset: number, filters?: LibraryFilters) {
  * @returns
  */
 export async function fetchLibraryCount(filters?: LibraryFilters) {
-  const requestUrl = constructGalleryQueryString("/galleries/count", filters)
-  const response = await fetch(requestUrl.toString(), {
-    mode: "cors",
-    credentials: "include",
-  })
+  const requestUrl = constructGalleryQueryString(APIPathsV1.GalleriesCount, filters)
+  const response = await fetchResponse(requestUrl.toString())
 
   if (!response.ok) {
     return 0
@@ -76,64 +70,10 @@ export async function fetchLibraryCount(filters?: LibraryFilters) {
  * @returns promise of the response
  */
 export async function fetchSeries(series: string, cookie?: string) {
-  const requestUrl = new URL(getApiUrl("/galleries"))
-  const headers = cookie ? { cookie: cookie } : undefined
-
+  const requestUrl = new URL(getApiUrl(APIPathsV1.Galleries))
   requestUrl.searchParams.append("series", series)
 
-  return fetch(requestUrl.toString(), {
-    mode: "cors",
-    credentials: "include",
-    headers: headers,
-  })
-}
-
-/**
- * Returns all categories and, if logged in, user's favorite groups from the API.
- *
- * @returns promise of the JSON or null
- */
-export async function fetchCategories() {
-  return fetch(getApiUrl("/categories"), {
-    mode: "cors",
-    credentials: "include",
-  })
-}
-
-/**
- * Returns requested gallery from the API.
- *
- * @param uuid if undefined, returns a random gallery
- * @param cookie
- * @returns promise of the JSON or null
- */
-export async function fetchGallery(uuid: string, cookie?: string) {
-  const headers = cookie ? { cookie: cookie } : undefined
-  const response = await fetch(getApiUrl(`/galleries/${uuid}`), {
-    mode: "cors",
-    credentials: "include",
-    headers: headers,
-  })
-
-  if (!response.ok) {
-    return null
-  }
-
-  return await response.json()
-}
-
-/**
- * Returns a random gallery.
- *
- * @returns promise of the JSON or null
- */
-export async function fetchRandomGallery() {
-  const response = await fetch(getApiUrl("/galleries/random"), {
-    mode: "cors",
-    credentials: "include",
-  })
-
-  return await response.json()
+  return fetchResponse(requestUrl.toString(), cookie)
 }
 
 /**
@@ -145,7 +85,7 @@ export async function fetchRandomGallery() {
  */
 export async function updateGallery(uuid: string, form: GalleryForm) {
   try {
-    const response = await fetch(getApiUrl(`/galleries/${uuid}`), {
+    const response = await fetch(getApiUrl(`${APIPathsV1.Gallery}${uuid}`), {
       method: "PUT",
       mode: "cors",
       credentials: "include",

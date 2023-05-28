@@ -1,19 +1,17 @@
 import { GetServerSideProps } from "next"
-import { getSession } from "next-auth/react"
 import GalleryInfoBox from "../../components/GalleryInfoBox"
 import Layout from "../../components/Layout"
 import { fetchSeries } from "../../lib/api/library"
-import getServerInfo from "../../lib/api/serverInfo"
-import { GalleryResponse, ServerInfo, Visibility } from "../../types/api"
+import { GalleryResponse } from "../../types/api"
 
 interface Props {
   galleries: GalleryResponse
-  serverInfo: ServerInfo
 }
-export default function SeriesPage({ galleries, serverInfo }: Props) {
+
+export default function SeriesPage({ galleries }: Props) {
   const series = galleries.Data[0].Series
   return (
-    <Layout serverInfo={serverInfo} subtitle={series}>
+    <Layout subtitle={series}>
       <h2 className="mb-4 font-bold">
         {series} ({galleries.Count})
       </h2>
@@ -27,42 +25,20 @@ export default function SeriesPage({ galleries, serverInfo }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const serverInfo = await getServerInfo()
-  const session = await getSession(context)
-
-  const publicAccess = serverInfo.Visibility === Visibility.Public
-  const privateAccess = session?.serverToken
-  const restrictedAccess = serverInfo.Visibility === Visibility.Restricted && session?.passphrase
-  if (!publicAccess && !privateAccess && !restrictedAccess) {
-    return {
-      redirect: {
-        destination: "/api/auth/signin",
-        permanent: false,
-      },
-    }
-  }
-
   if (!context.params?.slug) {
-    return { props: { serverInfo } }
+    return { notFound: true }
   }
 
   if (typeof context.params.slug !== "string") {
     context.params.slug = context.params.slug[0]
   }
 
-  const galleries: GalleryResponse = await fetchSeries(context.params.slug, session?.serverToken || session?.passphrase)
+  const galleries = await fetchSeries(context.params.slug, context.req.headers.cookie)
   if (!galleries) {
     return { notFound: true }
   }
 
-  if (galleries.Count === 0) {
-    galleries.Data = []
-  }
-
   return {
-    props: {
-      serverInfo,
-      galleries,
-    },
+    props: { galleries },
   }
 }

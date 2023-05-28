@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import Layout from "../components/Layout"
-import { getApiUrl } from "../lib/api/other"
+import { APIPathsV1, getApiUrl } from "../lib/api/other"
 import { LocalPreferences, setValue } from "../lib/localStorage"
 import { LoginResponse } from "../types/api"
 import pkg from "./../package.json"
@@ -33,7 +33,7 @@ export default function Login() {
       expires_in: expiresIn,
     }
 
-    const res = await fetch(getApiUrl("/login"), {
+    const res = await fetch(getApiUrl(APIPathsV1.Login), {
       method: "POST",
       credentials: "include",
       body: JSON.stringify(body),
@@ -61,7 +61,7 @@ export default function Login() {
       passphrase: data.passphrase,
     }
 
-    const res = await fetch(getApiUrl("/login"), {
+    const res = await fetch(getApiUrl(APIPathsV1.Login), {
       method: "POST",
       credentials: "include",
       body: JSON.stringify(body),

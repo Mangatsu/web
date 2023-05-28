@@ -1,8 +1,8 @@
 import useSWR from "swr"
-import { swrFetch } from "../../api/other"
+import { APIPathsV1, swrFetcher } from "../../api/other"
 
 export default function useFavorites() {
-  const { data, error, isLoading } = useSWR("/users/me/favorites", (key) => swrFetch(key).then((r) => r.json()))
+  const { data, error, isLoading } = useSWR(APIPathsV1.Favorites, (key) => swrFetcher(key))
 
   let favorites = null
   let favoritesCount = 0
