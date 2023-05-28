@@ -4,6 +4,47 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2022-04-17
+
+### Added
+
+- Support for multiple Library layouts
+  - Currently: Thumbnail and Detailed
+- NSFW badge to the Series page
+- New login page
+- Expires local storage object
+- Function to parser cookie headers
+
+### Fixed
+
+- Next.js deprecations
+  - Removed `next/image` objectFit props
+  - Removed nested `<a>` tags inside `next/link` tags
+- Local storage objects are now properly removed when logged out
+- Logout expiry
+
+### Changed
+
+- JWT Authorization header authentication to JWT cookie (httpOnly) authentication
+- Refactored API integration to the backend
+- Refactored many pages such as admin and personal
+- Refactored logout process
+- Random gallery button to a game die (🎲)
+- Enabled SWR's keepPreviousData option which eliminates blinking on Library page
+- Wording on 500 page
+- Minimized SVGs for performance
+- Upgrade NodeJS to 18
+- Upgrade packages
+  - e.g. Next.js v13, TypeScript v5, heroicons v2
+- next.config.js to next.config.mjs
+
+### Removed
+
+- next-auth
+- next-auth environmentals
+- Fetching serverInfo explicitly on 404 page
+- ServerInfo file cache
+
 ## [0.4.2] - 2022-04-17
 
 ### Added
