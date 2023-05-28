@@ -12,7 +12,7 @@ export async function initiateScan(full: boolean) {
     requestUrl.searchParams.append("full", "true")
   }
 
-  return await fetchJSON(requestUrl.toString())
+  return await fetchJSON(requestUrl.toString(), undefined, false)
 }
 
 /**
@@ -29,7 +29,7 @@ export async function initiateMetadataGen() {
   requestUrl.searchParams.append("hath", "true")
   requestUrl.searchParams.append("ehdl", "true")
 
-  return await fetchJSON(requestUrl.toString())
+  return await fetchJSON(requestUrl.toString(), undefined, false)
 }
 
 /**
@@ -44,5 +44,5 @@ export async function initiateThumbnailGen(force: boolean, pages: boolean) {
   if (force) requestUrl.searchParams.append("force", "true")
   if (pages) requestUrl.searchParams.append("pages", "true")
 
-  return await fetchJSON(requestUrl.toString())
+  return await fetchJSON(requestUrl.toString(), undefined, false)
 }
