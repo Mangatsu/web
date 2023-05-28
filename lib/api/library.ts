@@ -1,5 +1,5 @@
 import { LibraryFilters } from "../../types/api"
-import { getApiUrl, RESULT_LIMIT, StringResponse } from "./other"
+import { APIPathsV1, fetchResponse, getApiUrl, RESULT_LIMIT } from "./other"
 
 export interface GalleryForm {
   title?: string
@@ -35,35 +35,25 @@ function constructGalleryQueryString(url: string, filters?: LibraryFilters) {
  *
  * @param offset offset to start the request at
  * @param filters
- * @param token JWT
  * @returns promise of the response
  */
-export async function fetchLibrary(offset: number, filters?: LibraryFilters, token?: string) {
-  const requestUrl = constructGalleryQueryString("/galleries", filters)
+export async function fetchLibrary(offset: number, filters?: LibraryFilters) {
+  const requestUrl = constructGalleryQueryString(APIPathsV1.Galleries, filters)
   requestUrl.searchParams.append("limit", RESULT_LIMIT.toString())
   requestUrl.searchParams.append("offset", offset.toString())
 
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
-  return fetch(requestUrl.toString(), {
-    mode: "cors",
-    headers: { ...authHeader },
-  })
+  return fetchResponse(requestUrl.toString(), undefined, false)
 }
 
 /**
  * Returns the count of galleries based on the specified filters.
  *
  * @param filters
- * @param token
  * @returns
  */
-export async function fetchLibraryCount(filters?: LibraryFilters, token?: string) {
-  const requestUrl = constructGalleryQueryString("/galleries/count", filters)
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
-  const response = await fetch(requestUrl.toString(), {
-    mode: "cors",
-    headers: { ...authHeader },
-  })
+export async function fetchLibraryCount(filters?: LibraryFilters) {
+  const requestUrl = constructGalleryQueryString(APIPathsV1.GalleriesCount, filters)
+  const response = await fetchResponse(requestUrl.toString())
 
   if (!response.ok) {
     return 0
@@ -77,101 +67,28 @@ export async function fetchLibraryCount(filters?: LibraryFilters, token?: string
  * Returns galleries in the specified series.
  *
  * @param series
- * @param token JWT
  * @returns promise of the response
  */
-export async function fetchSeries(series: string, token?: string) {
-  const requestUrl = new URL(getApiUrl("/galleries"))
-
+export async function fetchSeries(series: string, cookie?: string) {
+  const requestUrl = new URL(getApiUrl(APIPathsV1.Galleries))
   requestUrl.searchParams.append("series", series)
 
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
-  const response = await fetch(requestUrl.toString(), {
-    mode: "cors",
-    headers: { ...authHeader },
-  })
-
-  if (!response.ok) {
-    return null
-  }
-
-  return await response.json()
-}
-
-/**
- * Returns all categories from the API.  Returns all categories and, if logged in, user's favorite groups fron the API.
- *
- * @param token JWT
- * @returns promise of the JSON or null
- */
-export async function fetchCategories(token?: string): Promise<StringResponse | null> {
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
-  const response = await fetch(getApiUrl("/categories"), {
-    mode: "cors",
-    headers: { ...authHeader },
-  })
-
-  if (!response.ok) {
-    return null
-  }
-
-  return (await response.json()) as StringResponse
-}
-
-/**
- * Returns requested gallery from the API.
- *
- * @param uuid
- * @param token JWT
- * @returns promise of the JSON or null
- */
-export async function fetchGallery(uuid: string, token?: string) {
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
-  const response = await fetch(getApiUrl(`/galleries/${uuid}`), {
-    mode: "cors",
-    headers: { ...authHeader },
-  })
-  if (!response.ok) {
-    return null
-  }
-
-  return await response.json()
-}
-
-/**
- * Returns a random gallery.
- *
- * @param token JWT
- * @returns promise of the JSON or null
- */
-export async function fetchRandomGallery(token?: string | null) {
-  const authHeader = token ? { Authorization: `Bearer ${token}` } : undefined
-  const response = await fetch(getApiUrl("/galleries/random"), {
-    mode: "cors",
-    headers: { ...authHeader },
-  })
-
-  if (!response.ok) {
-    return null
-  }
-
-  return await response.json()
+  return fetchResponse(requestUrl.toString(), cookie)
 }
 
 /**
  * Updates gallery metadata and/or tags.
  *
- * @param token JWT
  * @param uuid
  * @param form
  * @returns promise of the JSON or null
  */
-export async function updateGallery(token: string, uuid: string, form: GalleryForm) {
+export async function updateGallery(uuid: string, form: GalleryForm) {
   try {
-    const response = await fetch(getApiUrl(`/galleries/${uuid}`), {
+    const response = await fetch(getApiUrl(`${APIPathsV1.Gallery}${uuid}`), {
       method: "PUT",
       mode: "cors",
-      headers: { Authorization: `Bearer ${token}` },
+      credentials: "include",
       body: JSON.stringify(form),
     })
     return response.ok

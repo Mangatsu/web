@@ -16,19 +16,14 @@ const GalleryInfoBox = ({ gallery }: Props) => {
     >
       <div className="grid grid-flow-col place-content-start">
         <Link href={`/g/${gallery.UUID}`} key={gallery.UUID}>
-          <a>
-            <Image
-              alt="cover image"
-              src={
-                gallery.Thumbnail ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`) : placeholderCover
-              }
-              className="rounded"
-              width={166}
-              height={250}
-              objectFit="cover"
-              loading="lazy"
-            />
-          </a>
+          <Image
+            alt="cover image"
+            src={gallery.Thumbnail ? getCacheUrl(`/thumbnails/${gallery.UUID}/${gallery.Thumbnail}`) : placeholderCover}
+            className="rounded"
+            width={166}
+            height={250}
+            loading="lazy"
+          />
         </Link>
         <div className="place-content-start m-4 w-full">
           <p>

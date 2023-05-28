@@ -6,18 +6,17 @@ import PopupLarge from "./PopupLarge"
 
 interface Props {
   users: MangatsuUserResponse
-  token: string
   userUUID: string | null
   mutate: KeyedMutator<unknown>
 }
 
-const Users = ({ users, token, userUUID, mutate }: Props) => {
+const Users = ({ users, userUUID, mutate }: Props) => {
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>, uuid: string) => {
     e.preventDefault()
     const target = e.target as typeof e.target & { password: { value: string }; role: { value: number } }
     const userForm = { password: target.password.value, role: target.role.value }
 
-    const response = await updateUser(token, uuid, userForm)
+    const response = await updateUser(uuid, userForm)
     if (response) {
       mutate()
       toast.success("User updated")
@@ -27,7 +26,7 @@ const Users = ({ users, token, userUUID, mutate }: Props) => {
   }
 
   const handleDelete = async (uuid: string) => {
-    const response = await deleteUser(token, uuid)
+    const response = await deleteUser(uuid)
     if (response) {
       mutate()
       toast.success("User deleted")

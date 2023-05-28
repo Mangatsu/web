@@ -1,6 +1,5 @@
 import { ArrowLeftOnRectangleIcon, ArrowRightOnRectangleIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid"
 import { GetServerSideProps } from "next"
-import { getSession, useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import ComicViewer from "react-comic-viewer"
 import { GroupBase, OptionsOrGroups, StylesConfig } from "react-select"
@@ -10,12 +9,11 @@ import Button from "../../components/Button"
 import EditGallery from "../../components/EditGallery"
 import ImageFallback from "../../components/ImageFallback"
 import Layout from "../../components/Layout"
-import { fetchGallery } from "../../lib/api/library"
-import { getCacheUrl, swrFetch } from "../../lib/api/other"
-import getServerInfo from "../../lib/api/serverInfo"
+import { APIPathsV1, fetchJSON, getCacheUrl, swrFetcher } from "../../lib/api/other"
 import { updateFavoriteGroup } from "../../lib/api/user"
-import { Role, changeExtension, clamp } from "../../lib/helpers"
-import { Gallery, ServerInfo, Visibility } from "../../types/api"
+import { changeExtension, clamp } from "../../lib/helpers"
+import useUser from "../../lib/hooks/data/useUser"
+import { Gallery } from "../../types/api"
 
 // Style for the react-select component (favorite selection)
 const customStyles: StylesConfig = {
@@ -46,33 +44,28 @@ interface Props {
   gallery: Gallery
   thumbnails: string[]
   page: number
-  serverInfo: ServerInfo
 }
 
-export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: Props) {
-  const { data: session } = useSession()
+export default function GalleryPage({ gallery, thumbnails, page }: Props) {
+  const { loggedIn, anonymous, isAdmin } = useUser()
+
   const [files, setFiles] = useState<string[]>([])
   const [showThumbnails, setShowThumbnails] = useState(false)
   const [isShift, setIsShift] = useState(false)
+
   const [currentFavorite, setCurrentFavorite] = useState<{ value: string; label: string }>({
-    value: gallery.Meta.GalleryPref?.FavoriteGroup || "",
-    label: gallery.Meta.GalleryPref?.FavoriteGroup || DEFAULT_GROUP,
+    value: gallery?.Meta?.GalleryPref?.FavoriteGroup || "",
+    label: gallery?.Meta?.GalleryPref?.FavoriteGroup || DEFAULT_GROUP,
   })
 
-  const isAdmin = session?.user?.role ? session?.user?.role >= Role.Admin : false
-  const tokenOrPassphrase = session?.serverToken || session?.passphrase
-
   const { data: galleryData, mutate: mutateGallery } = useSWR(
-    tokenOrPassphrase || serverInfo.Visibility === Visibility.Public
-      ? [`/galleries/${gallery.Meta.UUID}`, tokenOrPassphrase]
-      : null,
-    (key: [string, string | undefined]) => swrFetch(...key),
+    loggedIn ? `${APIPathsV1.Categories}/${gallery.Meta.UUID}` : null,
+    (key) => swrFetcher(key),
     { fallbackData: gallery }
   )
 
-  const { data: favoritesData, mutate: mutateFavorites } = useSWR(
-    session?.serverToken ? ["/users/me/favorites", session?.serverToken] : null,
-    (key: [string, string]) => swrFetch(...key)
+  const { data: favoritesData, mutate: mutateFavorites } = useSWR(anonymous ? null : APIPathsV1.Favorites, (key) =>
+    swrFetcher(key)
   )
 
   let favoriteGroups: OptionsOrGroups<unknown, GroupBase<unknown>> = []
@@ -84,12 +77,14 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
   }
 
   useEffect(() => {
-    setFiles(gallery.Files)
-  }, [gallery.Files])
+    if (gallery) {
+      setFiles(gallery.Files)
+    }
+  }, [gallery, gallery?.Files])
 
   const handleFavoriteChange = async (group: { value: string; label: string }, isNew: boolean) => {
-    if (session?.serverToken) {
-      await updateFavoriteGroup(session?.serverToken, gallery.Meta.UUID, group.value)
+    if (loggedIn && !anonymous) {
+      await updateFavoriteGroup(gallery.Meta.UUID, group.value)
       if (isNew) {
         mutateFavorites()
       }
@@ -110,12 +105,12 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
   const viewer =
     files.length > 0 ? (
       <div className="pb-16">
-        <h2 className="text-center mb-4 font-bold">{galleryData?.Meta?.Title || gallery.Meta.Title}</h2>
+        <h2 className="text-center mb-4 font-bold">{gallery?.Meta?.Title ?? ""}</h2>
         <ComicViewer pages={files} switchingRatio={1} initialCurrentPage={page} />
       </div>
     ) : (
       <div className="pb-16">
-        <h2 className="text-center mb-4 font-bold">{galleryData?.Meta?.Title || gallery.Meta.Title}</h2>
+        <h2 className="text-center mb-4 font-bold">{gallery?.Meta?.Title ?? ""}</h2>
         <div>
           <h3 className="text-center">Loading…</h3>
         </div>
@@ -123,7 +118,7 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
     )
 
   return (
-    <Layout outerChildren={viewer} serverInfo={serverInfo} subtitle={galleryData?.Meta?.Title || gallery.Meta.Title}>
+    <Layout outerChildren={viewer} subtitle={gallery?.Meta?.Title ?? ""}>
       <div className="w-full mb-16 pb-96">
         <div className="flex gap-2">
           <Button
@@ -143,13 +138,7 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
               <ArrowRightOnRectangleIcon className="h-5 w-5 text-zinc-100" />
             )}
           </Button>
-          {session?.serverToken && isAdmin && (
-            <EditGallery
-              gallery={galleryData?.Meta || gallery.Meta}
-              mutate={mutateGallery}
-              token={session?.serverToken}
-            />
-          )}
+          {loggedIn && isAdmin && <EditGallery gallery={galleryData?.Meta || gallery.Meta} mutate={mutateGallery} />}
           {favoritesData && (
             <div className="grow">
               <CreatableSelect
@@ -178,7 +167,6 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
                     loading="lazy"
                     width={200}
                     height={300}
-                    objectFit="cover"
                   />
                 </a>
               ))}
@@ -189,29 +177,18 @@ export default function GalleryPage({ gallery, thumbnails, page, serverInfo }: P
     </Layout>
   )
 }
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const serverInfo = await getServerInfo()
-  const session = await getSession(context)
-
-  const publicAccess = serverInfo.Visibility === Visibility.Public
-  const privateAccess = session?.serverToken
-  const restrictedAccess = serverInfo.Visibility === Visibility.Restricted && session?.passphrase
-  if (!publicAccess && !privateAccess && !restrictedAccess) {
+  const slugs = context.params?.slug
+  if (!slugs || slugs.length === 0) {
     return {
       redirect: {
-        destination: "/api/auth/signin",
+        destination: "/",
         permanent: false,
       },
     }
   }
 
-  const slugs = context.params?.slug
-  if (!slugs || slugs.length === 0) {
-    return { props: { serverInfo } }
-  }
-
-  const gallery: Gallery = await fetchGallery(slugs[0], session?.serverToken || session?.passphrase)
+  const gallery: Gallery = await fetchJSON(`${APIPathsV1.Gallery}${slugs[0]}`, context.req.headers.cookie)
   if (!gallery) {
     return { notFound: true }
   }
@@ -226,15 +203,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     gallery.Files[i] = getCacheUrl(`/${gallery.Meta.UUID}/${file}`)
   })
 
-  // let favorites
-  // if (session?.serverToken) {
-  //   favorites = await fetchFavoriteGroups(session?.serverToken, false)
-  // }
-  // favorites = favorites?.Data ? favorites : { Data: [], Count: 0 }
-
   return {
     props: {
-      serverInfo,
       gallery,
       thumbnails,
       page: slugs.length > 1 ? clamp(parseInt(slugs[1]), 0, gallery.Count) : 0,

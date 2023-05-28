@@ -1,37 +1,40 @@
-import { Session } from "next-auth"
-import { signOut } from "next-auth/react"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { initiateLogout } from "../lib/api/user"
+import useUser from "../lib/hooks/data/useUser"
+import { LocalPreferences, setValue } from "../lib/localStorage"
 import Button from "./Button"
 
-interface Props {
-  session: Session | null
-  status: string
-}
+const Lock = () => {
+  const router = useRouter()
+  const logoutHandler = () => {
+    initiateLogout()
+    setValue(LocalPreferences.Expires, undefined)
+    setValue(LocalPreferences.Roles, undefined)
+    setValue(LocalPreferences.UserUUID, undefined)
 
-const Lock = ({ session, status }: Props) => {
-  const logoutHandler = (token?: string | null) => {
-    if (token) {
-      initiateLogout(token)
+    if (router.pathname === "/") {
+      router.reload()
+    } else {
+      router.push("/")
     }
-    signOut()
   }
 
-  const token = session?.serverToken || session?.passphrase
+  const { loggedIn } = useUser()
   return (
     <>
-      {status === "loading" ? (
+      {false ? (
         <Link href="#" passHref>
           <button disabled className="m-4 bg-blue-600 text-white opacity-50 cursor-not-allowed">
             Loading…
           </button>
         </Link>
-      ) : token ? (
-        <Button onClick={() => logoutHandler(session?.serverToken)} className="mt-3 mx-4">
+      ) : loggedIn ? (
+        <Button onClick={() => logoutHandler()} className="mt-3 mx-4">
           Logout
         </Button>
       ) : (
-        <Button href="/api/auth/signin" className="mt-3 mx-4">
+        <Button href="/login" className="mt-3 mx-4">
           Login
         </Button>
       )}

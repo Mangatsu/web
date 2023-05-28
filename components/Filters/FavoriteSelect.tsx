@@ -1,8 +1,7 @@
 import { FilterProps } from "."
-import { StringResponse } from "../../lib/api/other"
 
 interface Props extends FilterProps {
-  favorites: StringResponse
+  favorites: string[] | null
 }
 
 const FavoriteSelect = ({ query, setQuery, favorites }: Props) => {
@@ -17,9 +16,7 @@ const FavoriteSelect = ({ query, setQuery, favorites }: Props) => {
         onChange={(e) => setQuery({ ...query, favoriteGroup: e.currentTarget.value })}
       >
         <option></option>
-        {favorites.Data.map((favorite) => (
-          <option key={favorite}>{favorite}</option>
-        ))}
+        {favorites && favorites.map((favorite) => <option key={favorite}>{favorite}</option>)}
       </select>
     </div>
   )

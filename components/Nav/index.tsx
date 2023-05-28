@@ -1,23 +1,21 @@
-import { useSession } from "next-auth/react"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
-import { fetchRandomGallery } from "../../lib/api/library"
-import { Role } from "../../lib/helpers"
+import { APIPathsV1, fetchJSON } from "../../lib/api/other"
+import useUser from "../../lib/hooks/data/useUser"
 import gameDieIcon from "../../public/icons/game-die.svg"
-import { Gallery, ServerInfo } from "../../types/api"
+import { Gallery } from "../../types/api"
 import Button from "../Button"
 import Spinner from "../Spinner"
 import Scan from "./Scan"
 import User from "./User"
 
-const Nav = ({ serverInfo }: { serverInfo: ServerInfo }) => {
+const Nav = () => {
   const router = useRouter()
-  const { data: session, status } = useSession()
-  const isAdmin = session?.user?.role ? session?.user?.role >= Role.Admin : false
+  const { isAdmin } = useUser()
 
   const handleRandom = async () => {
-    const gallery: Gallery = await fetchRandomGallery(session?.serverToken)
+    const gallery: Gallery = await fetchJSON(APIPathsV1.RandomGallery)
     if (gallery) {
       router.push(`/g/${gallery.Meta.UUID}`)
     } else {
@@ -39,8 +37,8 @@ const Nav = ({ serverInfo }: { serverInfo: ServerInfo }) => {
         >
           <Image src={gameDieIcon} alt="game die" width={28} height={24} />
         </Button>
-        {session?.serverToken && isAdmin && <Scan token={session?.serverToken} />}
-        <User session={session} isAdmin={isAdmin} status={status} serverInfo={serverInfo} />
+        {isAdmin && <Scan />}
+        <User isAdmin={isAdmin} />
       </span>
     </nav>
   )
