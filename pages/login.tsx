@@ -43,7 +43,7 @@ export default function Login() {
     if (res.ok) {
       const data: LoginResponse = await res.json()
       try {
-        setValue(LocalPreferences.LoggedIn, true)
+        setValue(LocalPreferences.Expires, data.ExpiresIn * 1000 + Date.now())
         setValue(LocalPreferences.Roles, data.Role)
         setValue(LocalPreferences.UserUUID, data.UUID)
       } catch (e) {
