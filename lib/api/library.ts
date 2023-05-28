@@ -1,5 +1,5 @@
 import { LibraryFilters } from "../../types/api"
-import { APIPathsV1, fetchResponse, getApiUrl, RESULT_LIMIT } from "./other"
+import { APIPathsV1, fetchJSON, fetchResponse, getApiUrl, RESULT_LIMIT } from "./other"
 
 export interface GalleryForm {
   title?: string
@@ -42,7 +42,7 @@ export async function fetchLibrary(offset: number, filters?: LibraryFilters) {
   requestUrl.searchParams.append("limit", RESULT_LIMIT.toString())
   requestUrl.searchParams.append("offset", offset.toString())
 
-  return fetchResponse(requestUrl.toString(), undefined, false)
+  return fetchJSON(requestUrl.toString(), undefined, false)
 }
 
 /**

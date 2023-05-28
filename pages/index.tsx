@@ -22,7 +22,7 @@ interface GalleriesResult {
 }
 
 type FetcherKey = [number, LibraryFilters] // offset, query
-const gFetcher = (key: FetcherKey) => fetchLibrary(...key).then((r) => r.json())
+const gFetcher = (key: FetcherKey) => fetchLibrary(...key)
 
 export default function LibraryIndex() {
   const [query, setQuery] = useState<LibraryFilters>({ nsfwHidden: getValue(LocalPreferences.NSFWPref) })
