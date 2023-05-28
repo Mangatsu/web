@@ -91,8 +91,8 @@ export function fetchResponse(path: string, cookie?: string, constructURL = true
  * @param cookie JWT
  * @returns promise of the JSON or null
  */
-export async function fetchJSON(path: string, cookie?: string) {
-  const response = await fetchResponse(path, cookie)
+export async function fetchJSON(path: string, cookie?: string, constructURL = true) {
+  const response = await fetchResponse(path, cookie, constructURL)
   if (!response.ok) {
     return null
   }
