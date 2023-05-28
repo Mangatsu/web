@@ -50,7 +50,7 @@ export default function LibraryIndex() {
 
   // This should actually be called "mightHaveMore", as in rare cases the data ends exactly on the offset
   // which results one extra request being made. (results % offset === 0)
-  const hasMoreGalleries = gData && gData[gData.length - 1].Count === RESULT_LIMIT
+  const hasMoreGalleries = gData && gData[gData.length - 1]?.Count === RESULT_LIMIT
 
   // TODO: Grid masonry when major browsers support it (https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Masonry_Layout)
   return (
