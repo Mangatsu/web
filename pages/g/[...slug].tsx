@@ -59,7 +59,7 @@ export default function GalleryPage({ gallery, thumbnails, page }: Props) {
   })
 
   const { data: galleryData, mutate: mutateGallery } = useSWR(
-    loggedIn ? `${APIPathsV1.Categories}/${gallery.Meta.UUID}` : null,
+    loggedIn ? `${APIPathsV1.Gallery}${gallery.Meta.UUID}` : null,
     (key) => swrFetcher(key),
     { fallbackData: gallery }
   )
