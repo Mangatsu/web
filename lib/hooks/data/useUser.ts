@@ -2,10 +2,21 @@ import { useEffect, useState } from "react"
 import { Role } from "../../helpers"
 import { LocalPreferences, getValue } from "../../localStorage"
 
+export interface UserPreferences {
+  NSFW: boolean
+  Language: boolean
+  SeriesRandom: boolean
+}
+
 export default function useUser() {
   const [uuid, setUUID] = useState<string | null>(null)
   const [role, setRole] = useState(0)
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null)
+  const [preferences, setPreferences] = useState({
+    NSFW: false,
+    Language: false,
+    SeriesRandom: false,
+  })
 
   useEffect(() => {
     setUUID(getValue(LocalPreferences.UserUUID))
@@ -16,6 +27,11 @@ export default function useUser() {
     } else {
       setLoggedIn(expires > Date.now())
     }
+    setPreferences({
+      NSFW: getValue(LocalPreferences.NSFWPref),
+      Language: getValue(LocalPreferences.LanguagePref),
+      SeriesRandom: getValue(LocalPreferences.SeriesRandomPref),
+    })
   }, [])
 
   const anonymous = loggedIn && !!uuid
@@ -27,5 +43,6 @@ export default function useUser() {
     uuid,
     role,
     isAdmin,
+    preferences,
   }
 }

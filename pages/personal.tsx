@@ -18,6 +18,7 @@ interface Props {
 export default function Personal({ currentSessionID, userUUID }: Props) {
   const [nsfwPref, setNsfwPref] = useState(false)
   const [langPref, setLangPref] = useState(false)
+  const [seriesRandomPref, setSeriesRandomPref] = useState(false)
 
   const { data, mutate } = useSWR(APIPathsV1.Sessions, (key) => swrFetcher(key))
   const response = data as MangatsuSessionResponse
@@ -25,11 +26,13 @@ export default function Personal({ currentSessionID, userUUID }: Props) {
   useEffect(() => {
     setNsfwPref(getValue(LocalPreferences.NSFWPref))
     setLangPref(getValue(LocalPreferences.LanguagePref))
+    setSeriesRandomPref(getValue(LocalPreferences.SeriesRandomPref))
   }, [])
 
   const handlePreferences = () => {
     setValue(LocalPreferences.NSFWPref, nsfwPref)
     setValue(LocalPreferences.LanguagePref, langPref)
+    setValue(LocalPreferences.SeriesRandomPref, seriesRandomPref)
     toast.success("Preferences saved")
   }
 
@@ -78,6 +81,10 @@ export default function Personal({ currentSessionID, userUUID }: Props) {
               </label>
               <label>
                 <OnOffSwitch checked={langPref} onChange={setLangPref} /> Show native titles when available
+              </label>
+              <label>
+                <OnOffSwitch checked={seriesRandomPref} onChange={setSeriesRandomPref} /> Include serialized galleries
+                in the random selection (🎲)
               </label>
             </div>
             <button

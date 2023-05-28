@@ -12,10 +12,12 @@ import User from "./User"
 
 const Nav = () => {
   const router = useRouter()
-  const { isAdmin } = useUser()
+  const { isAdmin, preferences } = useUser()
 
   const handleRandom = async () => {
-    const gallery: Gallery = await fetchJSON(APIPathsV1.RandomGallery)
+    const gallery: Gallery = await fetchJSON(
+      `${APIPathsV1.RandomGallery}${preferences.SeriesRandom ? "" : "?series=false"}`
+    )
     if (gallery) {
       router.push(`/g/${gallery.Meta.UUID}`)
     } else {

@@ -4,6 +4,7 @@ export enum LocalPreferences {
   UserUUID = "mtsu_user_uuid",
   NSFWPref = "mtsu_nsfw_pref",
   LanguagePref = "mtsu_language_pref",
+  SeriesRandomPref = "mtsu_series_random_pref",
 }
 
 export function getValue(key: LocalPreferences) {
