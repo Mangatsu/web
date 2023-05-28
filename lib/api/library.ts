@@ -73,7 +73,7 @@ export async function fetchSeries(series: string, cookie?: string) {
   const requestUrl = new URL(getApiUrl(APIPathsV1.Galleries))
   requestUrl.searchParams.append("series", series)
 
-  return fetchResponse(requestUrl.toString(), cookie)
+  return fetchJSON(requestUrl.toString(), cookie, false)
 }
 
 /**
