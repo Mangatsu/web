@@ -4,7 +4,23 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.5.0] - 2022-04-17
+## [0.5.1] - 2023-05-28
+
+### Added
+
+- Add a new preference for including serialized galleries to randomized galleries
+
+### Fixed
+
+- JSON serialization error on Series page
+- Broken API URLs
+- Rare client side crash on non-200 server response
+
+### Changed
+
+- Refactor Library fetching
+
+## [0.5.0] - 2023-05-28
 
 ### Added
 
