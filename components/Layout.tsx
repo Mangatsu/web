@@ -10,10 +10,11 @@ interface LayoutProps {
 }
 
 const Layout = ({ subtitle, children, outerChildren }: LayoutProps) => {
+  const title = `Mangatsu${subtitle ? ` - ${subtitle}` : ""}`
   return (
     <div>
       <Head>
-        <title>Mangatsu{subtitle ? ` - ${subtitle}` : ""}</title>
+        <title>{title}</title>
       </Head>
       <ToastContainer
         theme="dark"
