@@ -12,7 +12,9 @@
 
 ## 🐳 Docker
 
-Images: [Web](https://hub.docker.com/r/luukuton/mangatsu-web) & [Server](https://hub.docker.com/r/luukuton/mangatsu-server/)
+#### GitHub Container Registry: [server](https://github.com/Mangatsu/server/pkgs/container/server) & [web](https://github.com/Mangatsu/server/pkgs/container/server)
+
+#### DockerHub: [Web](https://hub.docker.com/r/luukuton/mangatsu-web) & [Server](https://hub.docker.com/r/luukuton/mangatsu-server/)
 
 ## 💨 Running for development
 
