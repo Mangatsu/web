@@ -4,6 +4,17 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.2] - 2023-05-30
+
+**Released packages also on GHCR (GitHub Container Registry) alongside DockerHub:**
+
+- [ghcr.io/mangatsu/server](https://github.com/Mangatsu/server/pkgs/container/server)
+- [ghcr.io/mangatsu/web](https://github.com/Mangatsu/server/pkgs/container/server)
+
+### Fixed
+
+- A warning about page title-element
+
 ## [0.5.1] - 2023-05-28
 
 ### Added
