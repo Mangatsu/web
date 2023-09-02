@@ -18,7 +18,7 @@ Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) when 
 
 ### ❗ Requirements
 
-- Node.js 16+
-- npm 8.3+
+- Node.js 18+
+- npm 9.0+
 - Mangatsu Server
 - Docker (optional)
