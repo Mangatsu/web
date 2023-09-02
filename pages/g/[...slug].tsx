@@ -139,7 +139,7 @@ export default function GalleryPage({ gallery, thumbnails, page }: Props) {
             )}
           </Button>
           {loggedIn && isAdmin && <EditGallery gallery={galleryData?.Meta || gallery.Meta} mutate={mutateGallery} />}
-          {favoritesData && (
+          {loggedIn && !anonymous && (
             <div className="grow">
               <CreatableSelect
                 className="mx-4 max-w-md"
