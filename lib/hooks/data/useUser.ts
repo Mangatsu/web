@@ -34,7 +34,7 @@ export default function useUser() {
     })
   }, [])
 
-  const anonymous = loggedIn && !!uuid
+  const anonymous = loggedIn && !uuid
   const isAdmin = !!uuid && role >= Role.Admin
 
   return {
