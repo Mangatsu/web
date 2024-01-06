@@ -1,5 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
+import { RefObject, useRef } from "react"
+import { PopupActions } from "reactjs-popup/dist/types"
 import useServer from "../../lib/hooks/data/useServer"
 import { LocalPreferences, getValue } from "../../lib/localStorage"
 import UserIcon from "../../public/icons/uk-user.svg"
@@ -14,16 +16,23 @@ interface Props {
 const User = ({ isAdmin }: Props) => {
   const { server, isLoading, error } = useServer()
 
+  const menuRef = useRef<PopupActions>() as RefObject<PopupActions>
+  const closeUserMenu = () => {
+    if (menuRef.current) {
+      menuRef.current.close()
+    }
+  }
+
   return (
-    <NavPopup buttonChildren={<Image width={24} height={24} alt="user menu" src={UserIcon} />}>
+    <NavPopup menuRef={menuRef} buttonChildren={<Image width={24} height={24} alt="user menu" src={UserIcon} />}>
       <Lock />
       {getValue(LocalPreferences.UserUUID) && (
-        <Button href="/personal" className="mt-3 mx-4">
+        <Button href="/personal" onClick={() => closeUserMenu()} className="mt-3 mx-4">
           Personal
         </Button>
       )}
       {isAdmin && (
-        <Button href="/admin" className="mt-3 mx-4">
+        <Button href="/admin" onClick={() => closeUserMenu()} className="mt-3 mx-4">
           Administration
         </Button>
       )}
