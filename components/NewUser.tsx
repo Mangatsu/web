@@ -51,6 +51,7 @@ const NewUser = ({ mutate }: Props) => {
           <input
             type="password"
             id="password"
+            autoComplete="new-password"
             className="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
             minLength={8}
             required

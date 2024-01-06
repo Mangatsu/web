@@ -70,7 +70,7 @@ const Users = ({ users, userUUID, mutate }: Props) => {
                         </p>
                         <form className="max-w-xs" onSubmit={(e) => handleUpdate(e, user.UUID)}>
                           <label>New password</label>
-                          <input type="password" id="password" />
+                          <input type="password" id="password" autoComplete="new-password" />
                           <label>Role</label>
                           <select
                             id="role"
