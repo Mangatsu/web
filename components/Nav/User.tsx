@@ -39,7 +39,7 @@ const User = ({ isAdmin }: Props) => {
       <div className="my-4 mx-4">
         {false && <p className="text-sky-400">Anonymous access</p>}
         <Link href="https://github.com/Mangatsu" target="_blank" rel="noopener noreferrer" className="text-sky-400">
-          Mangatsu 🌕
+          github.com/Mangatsu
         </Link>
         {error ? (
           <p>Error loading server info.</p>
