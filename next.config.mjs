@@ -24,7 +24,7 @@ const nextConfig = {
     formats: ["image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
-  output: "standalone",
+  // output: "export",
 }
 
 export default nextConfig
