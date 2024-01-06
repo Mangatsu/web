@@ -12,8 +12,7 @@ export default function Personal() {
   const [nsfwPref, setNsfwPref] = useState(false)
   const [langPref, setLangPref] = useState(false)
   const [seriesRandomPref, setSeriesRandomPref] = useState(false)
-
-  const userUUID = getValue(LocalPreferences.UserUUID)
+  const [userUUID, setUserUUID] = useState<string | null>(null)
 
   const { data, mutate } = useSWR(APIPathsV1.Sessions, (key) => swrFetcher(key))
   const response = data as MangatsuSessionResponse
@@ -22,6 +21,7 @@ export default function Personal() {
     setNsfwPref(getValue(LocalPreferences.NSFWPref))
     setLangPref(getValue(LocalPreferences.LanguagePref))
     setSeriesRandomPref(getValue(LocalPreferences.SeriesRandomPref))
+    setUserUUID(getValue(LocalPreferences.UserUUID))
   }, [])
 
   const handlePreferences = () => {
@@ -58,7 +58,9 @@ export default function Personal() {
               <h4>User</h4>
               <form onSubmit={(e) => handleUserUpdate(e)}>
                 <label>New password</label>
-                <input type="password" id="password" />
+                {/* Password forms should have (optionally hidden) username fields for accessibility. */}
+                <input type="text" id="username" autoComplete="username" hidden />
+                <input type="password" id="password" autoComplete="new-password" />
                 <button
                   type="submit"
                   className="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
