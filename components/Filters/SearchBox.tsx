@@ -3,7 +3,7 @@ import { FilterProps } from "."
 const SearchBox = ({ query, setQuery }: FilterProps) => {
   return (
     <input
-      className="rounded w-full h-12 p-4 text-xl bg-slate-700 text-white shadow-xl focus:outline-none"
+      className="rounded h-12 p-4 text-xl bg-slate-700 text-white shadow-xl focus:outline-none"
       type="text"
       id="search"
       name="search"

@@ -25,7 +25,7 @@ interface Props extends FilterProps {
 
 const Filters = ({ query, setQuery, grouped, setGrouped, categories, favorites, setLayout }: Props) => {
   return (
-    <div className="flex flex-row mb-12 lg:mx-16 ">
+    <div className="flex flex-row mb-12 lg:mx-4">
       <div className="w-full grid grid-flow-row">
         <SearchBox query={query} setQuery={setQuery} />
         <div className="filter-grid mt-2">
