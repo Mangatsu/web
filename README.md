@@ -28,7 +28,7 @@
 
 ## ❗ Requirements
 
-- [Node.js](https://nodejs.org) 18+ ([nvm](https://github.com/nvm-sh/nvm) recommended)
-- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 9+
+- [Node.js](https://nodejs.org) v20+ ([nvm](https://github.com/nvm-sh/nvm) recommended)
+- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) v10+
 - [Mangatsu Server](https://github.com/Mangatsu/server)
 - [Docker](https://docs.docker.com/engine/install/) (optional, recommended)
