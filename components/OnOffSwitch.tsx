@@ -13,7 +13,7 @@ interface Props {
 const OnOffSwitch = ({ checked, onChange }: Props) => {
   return (
     <Switch
-      checked={checked}
+      checked={checked === undefined ? false : checked}
       onChange={onChange}
       className="h-5"
       offColor="#234371"
