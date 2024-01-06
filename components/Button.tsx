@@ -20,8 +20,8 @@ const Button = ({ children, title, href, onClick, className }: Props) => {
   }
 
   return (
-    <Link href={href} passHref>
-      <button type="button" onClick={onClick} className={`${classes} ${className}`} title={title}>
+    <Link href={href} onClick={onClick} passHref className="flex justify-center">
+      <button type="button" className={`${classes} ${className} w-full`} title={title}>
         {children}
       </button>
     </Link>
