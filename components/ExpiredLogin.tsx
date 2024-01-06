@@ -1,13 +1,14 @@
-import { useRouter } from "next/router"
+"use client"
+import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { initiateLogout } from "../lib/api/user"
 import useUser from "../lib/hooks/data/useUser"
-import useRouteChange from "../lib/hooks/useRouteChange"
 import { LocalPreferences, setValue } from "../lib/localStorage"
 
 const ExpiredLogin = () => {
   const router = useRouter()
-  const { routeChanging } = useRouteChange()
+  const pathname = usePathname()
+  // const { routeChanging } = useRouteChange()
   const { loggedIn } = useUser()
 
   useEffect(() => {
@@ -18,13 +19,13 @@ const ExpiredLogin = () => {
       setValue(LocalPreferences.Roles, undefined)
       setValue(LocalPreferences.UserUUID, undefined)
 
-      if (router.pathname === "/" || router.pathname === "/login") {
-        router.reload()
+      if (pathname === "/" || pathname === "/login") {
+        router.refresh()
       } else {
         router.push("/")
       }
     }
-  }, [loggedIn, routeChanging, router])
+  }, [loggedIn, pathname, router])
 
   return null
 }

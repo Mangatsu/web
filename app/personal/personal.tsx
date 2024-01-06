@@ -1,24 +1,19 @@
-import { GetServerSideProps } from "next"
+"use client"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import useSWR from "swr"
-import Layout from "../components/Layout"
-import OnOffSwitch from "../components/OnOffSwitch"
-import Sessions from "../components/Sessions"
-import { APIPathsV1, swrFetcher } from "../lib/api/other"
-import { MangatsuSessionResponse, updateUser } from "../lib/api/user"
-import { decodeJWT, parseCookieHeader } from "../lib/helpers"
-import { LocalPreferences, getValue, setValue } from "../lib/localStorage"
+import OnOffSwitch from "../../components/OnOffSwitch"
+import Sessions from "../../components/Sessions"
+import { APIPathsV1, swrFetcher } from "../../lib/api/other"
+import { MangatsuSessionResponse, updateUser } from "../../lib/api/user"
+import { LocalPreferences, getValue, setValue } from "../../lib/localStorage"
 
-interface Props {
-  currentSessionID: string
-  userUUID: string
-}
-
-export default function Personal({ currentSessionID, userUUID }: Props) {
+export default function Personal() {
   const [nsfwPref, setNsfwPref] = useState(false)
   const [langPref, setLangPref] = useState(false)
   const [seriesRandomPref, setSeriesRandomPref] = useState(false)
+
+  const userUUID = getValue(LocalPreferences.UserUUID)
 
   const { data, mutate } = useSWR(APIPathsV1.Sessions, (key) => swrFetcher(key))
   const response = data as MangatsuSessionResponse
@@ -54,7 +49,7 @@ export default function Personal({ currentSessionID, userUUID }: Props) {
   }
 
   return (
-    <Layout subtitle="Personal">
+    <>
       <div className="flex flex-col justify-center">
         <h3>Personal Settings</h3>
         <div className="grid grid-flow-col h-64">
@@ -99,30 +94,9 @@ export default function Personal({ currentSessionID, userUUID }: Props) {
         <br />
         <div className="p-4 rounded bg-opacity-20 bg-black">
           <h4>Sessions</h4>
-          <Sessions sessions={response?.Data ?? []} mutate={mutate} currentSessionID={currentSessionID} />
+          <Sessions sessions={response?.Data ?? []} mutate={mutate} currentSessionID={response?.CurrentSession ?? ""} />
         </div>
       </div>
-    </Layout>
+    </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const jwtCookie = parseCookieHeader("mtsu.jwt", context.req.headers.cookie)
-  if (!jwtCookie) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    }
-  }
-
-  const decodedJWT = decodeJWT(jwtCookie)
-
-  return {
-    props: {
-      currentSessionID: decodedJWT.ID,
-      userUUID: decodedJWT.Subject,
-    },
-  }
 }

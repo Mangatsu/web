@@ -2,12 +2,12 @@ import { PencilSquareIcon } from "@heroicons/react/20/solid"
 import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
 import { updateGallery } from "../lib/api/library"
-import { GalleryMeta } from "../types/api"
+import { Gallery, GalleryMeta } from "../types/api"
 import PopupLarge from "./PopupLarge"
 
 interface EditGalleryProps {
   gallery: GalleryMeta
-  mutate: KeyedMutator<unknown>
+  mutate: KeyedMutator<Gallery>
 }
 
 interface Form {

@@ -6,7 +6,7 @@ interface Props {
   onChange: (
     checked: boolean,
     event: MouseEvent | SyntheticEvent<MouseEvent | KeyboardEvent, Event>,
-    id: string
+    id: string,
   ) => void
 }
 

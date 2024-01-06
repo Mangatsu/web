@@ -1,3 +1,4 @@
+"use client"
 import ExpiredLogin from "../components/ExpiredLogin"
 import Layout from "../components/Layout"
 
@@ -8,6 +9,7 @@ import { Noto_Sans_JP } from "next/font/google"
 
 const notoSansJP = Noto_Sans_JP({
   display: "swap",
+  subsets: ["latin", "latin-ext"],
 })
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

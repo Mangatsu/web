@@ -14,6 +14,7 @@ export interface MangatsuUserResponse {
 
 export interface MangatsuSessionResponse {
   Data: MangatsuSession[]
+  CurrentSession: string
   Count: number
 }
 

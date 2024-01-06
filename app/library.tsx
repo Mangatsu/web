@@ -1,20 +1,19 @@
-import { GetServerSideProps } from "next"
+"use client"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 import useSWRInfinite from "swr/infinite"
 import Filters from "../components/Filters"
 import { LibraryLayout } from "../components/Filters/LayoutSelect"
-import Layout from "../components/Layout"
 import { fetchLibrary } from "../lib/api/library"
-import { RESULT_LIMIT, fetchServerInfo, getCacheUrl } from "../lib/api/other"
-import { Base64Placeholder, parseCookieHeader } from "../lib/helpers"
+import { RESULT_LIMIT, getCacheUrl } from "../lib/api/other"
+import { Base64Placeholder } from "../lib/helpers"
 import useCategories from "../lib/hooks/data/useCategories"
 import useFavorites from "../lib/hooks/data/useFavorites"
 import useDebounce from "../lib/hooks/useDebounce"
 import { LocalPreferences, getValue } from "../lib/localStorage"
 import placeholderCover from "../public/placeholder-fade.png"
-import { GalleryMeta, LibraryFilters, ServerInfo, Visibility } from "../types/api"
+import { GalleryMeta, LibraryFilters } from "../types/api"
 
 interface GalleriesResult {
   Data: GalleryMeta[] | Record<string, GalleryMeta[]>
@@ -24,7 +23,7 @@ interface GalleriesResult {
 type FetcherKey = [number, LibraryFilters] // offset, query
 const gFetcher = (key: FetcherKey) => fetchLibrary(...key)
 
-export default function LibraryIndex() {
+export default function Library() {
   const [query, setQuery] = useState<LibraryFilters>({ nsfwHidden: getValue(LocalPreferences.NSFWPref) })
   const [grouped, setGrouped] = useState(false)
   const debouncedFilters = useDebounce(query, 100)
@@ -54,7 +53,7 @@ export default function LibraryIndex() {
 
   // TODO: Grid masonry when major browsers support it (https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Masonry_Layout)
   return (
-    <Layout>
+    <>
       <Filters
         query={query}
         setQuery={setQuery}
@@ -151,33 +150,6 @@ export default function LibraryIndex() {
           Load More
         </button>
       )}
-    </Layout>
+    </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  let serverInfo: ServerInfo = await fetchServerInfo()
-  if (!serverInfo) {
-    serverInfo = {
-      APIVersion: 0,
-      ServerVersion: "Unknown",
-      Visibility: Visibility.Private,
-      Registrations: false,
-    }
-  }
-
-  const jwtCookie = parseCookieHeader("mtsu.jwt", context.req.headers.cookie)
-  const publicAccess = serverInfo.Visibility === Visibility.Public
-  if (!publicAccess && !jwtCookie) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: {},
-  }
 }

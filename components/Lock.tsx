@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { useRouter } from "next/router"
+import { usePathname, useRouter } from "next/navigation"
 import { initiateLogout } from "../lib/api/user"
 import useUser from "../lib/hooks/data/useUser"
 import { LocalPreferences, setValue } from "../lib/localStorage"
@@ -7,14 +7,15 @@ import Button from "./Button"
 
 const Lock = () => {
   const router = useRouter()
+  const pathname = usePathname()
   const logoutHandler = () => {
     initiateLogout()
     setValue(LocalPreferences.Expires, undefined)
     setValue(LocalPreferences.Roles, undefined)
     setValue(LocalPreferences.UserUUID, undefined)
 
-    if (router.pathname === "/") {
-      router.reload()
+    if (pathname === "/") {
+      router.refresh()
     } else {
       router.push("/")
     }
