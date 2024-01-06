@@ -1,11 +1,11 @@
-import { useRouter } from "next/router"
+"use client"
+import { useRouter } from "next/navigation"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import Layout from "../components/Layout"
-import { APIPathsV1, getApiUrl } from "../lib/api/other"
-import { LocalPreferences, setValue } from "../lib/localStorage"
-import { LoginResponse } from "../types/api"
-import pkg from "./../package.json"
+import { APIPathsV1, getApiUrl } from "../../lib/api/other"
+import { LocalPreferences, setValue } from "../../lib/localStorage"
+import pkg from "../../package.json"
+import { LoginResponse } from "../../types/api"
 
 export default function Login() {
   const {
@@ -77,7 +77,7 @@ export default function Login() {
   }
 
   return (
-    <Layout subtitle="Personal">
+    <>
       <h2>Login</h2>
       <form onSubmit={loginUser((data) => loginWithCredentials(data))}>
         <label>Username</label>
@@ -102,6 +102,6 @@ export default function Login() {
         {anonymousErrors.passphrase && <p>Passphrase is required.</p>}
         <input type="submit" value="Sign in Anonymously" />
       </form>
-    </Layout>
+    </>
   )
 }

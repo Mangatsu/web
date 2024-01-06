@@ -135,7 +135,9 @@
   }
 
   .spinner-path {
-    animation: dash 1.5s ease-in-out infinite, 6s ease-in-out infinite;
+    animation:
+      dash 1.5s ease-in-out infinite,
+      6s ease-in-out infinite;
   }
 }
 
@@ -180,7 +182,7 @@
     @apply break-inside-avoid;
   }
 
-  grid-template-columns: 250px repeat(minmax(90px, 250px), minmax(90px, 250px));
+  /* grid-template-columns: 250px repeat(minmax(90px, 250px), minmax(90px, 250px)); */
 
   @media only screen and (max-width: 450px) {
     .filter-grid {

@@ -1,12 +1,12 @@
+"use client"
 import Image from "next/image"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 import { APIPathsV1, fetchJSON } from "../../lib/api/other"
 import useUser from "../../lib/hooks/data/useUser"
 import gameDieIcon from "../../public/icons/game-die.svg"
 import { Gallery } from "../../types/api"
 import Button from "../Button"
-import Spinner from "../Spinner"
 import Scan from "./Scan"
 import User from "./User"
 
@@ -16,20 +16,21 @@ const Nav = () => {
 
   const handleRandom = async () => {
     const gallery: Gallery = await fetchJSON(
-      `${APIPathsV1.RandomGallery}${preferences.SeriesRandom ? "" : "?series=false"}`
+      `${APIPathsV1.RandomGallery}${preferences.SeriesRandom ? "" : "?series=false"}`,
     )
     if (gallery) {
       router.push(`/g/${gallery.Meta.UUID}`)
     } else {
-      toast.error("No galleries to load")
+      toast.error("No galleries found")
     }
   }
 
   return (
-    <nav className="px-2 mb-8 flex flex-row justify-between">
-      <Spinner />
+    <nav className="px-2 mb-12 h-14 flex flex-row justify-between">
+      {/* <Spinner /> TODO: Fix spinner in Next.js 13+ */}
+      <span className="flex ml-2 text-3xl text-slate-600">漫月</span>
       <span className="flex">
-        <Button href="/" className="mx-2">
+        <Button href="/" className="mx-2 py-2 text-base">
           Library
         </Button>
         <Button
