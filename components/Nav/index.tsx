@@ -26,24 +26,26 @@ const Nav = () => {
   }
 
   return (
-    <nav className="px-2 mb-12 h-14 flex flex-row justify-between">
-      {/* <Spinner /> TODO: Fix spinner in Next.js 13+ */}
-      <span className="flex ml-2 text-3xl text-slate-600">漫月</span>
-      <span className="flex">
-        <Button href="/" className="mx-2 py-2 text-base">
-          Library
-        </Button>
-        <Button
-          onClick={() => handleRandom()}
-          title="Random gallery"
-          className="rounded-full p-1 mx-2 border-2 border-blue-800 inline-flex bg-blue-600 hover:bg-blue-800 focus:ring-blue-800"
-        >
-          <Image src={gameDieIcon} alt="game die" width={28} height={24} />
-        </Button>
-        {isAdmin && <Scan />}
-        <User isAdmin={isAdmin} />
-      </span>
-    </nav>
+    <div className="flex justify-center">
+      <nav className="px-2 mb-12 h-14 flex flex-row justify-between rounded-b-xl w-full max-w-screen-xl">
+        {/* <Spinner /> TODO: Fix spinner in Next.js 13+ */}
+        <span className="flex ml-2 text-3xl text-slate-600">漫月</span>
+        <span className="flex">
+          <Button href="/" className="mx-2 py-2 text-base">
+            Library
+          </Button>
+          <Button
+            onClick={() => handleRandom()}
+            title="Random gallery"
+            className="rounded-full p-1 mx-2 border-2 border-blue-800 inline-flex bg-blue-600 hover:bg-blue-800 focus:ring-blue-800"
+          >
+            <Image src={gameDieIcon} alt="game die" width={28} height={24} />
+          </Button>
+          {isAdmin && <Scan />}
+          <User isAdmin={isAdmin} />
+        </span>
+      </nav>
+    </div>
   )
 }
 
