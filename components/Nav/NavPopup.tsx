@@ -24,7 +24,10 @@ const NavPopup = ({ buttonChildren, children, menuRef }: Props) => {
       arrow={false}
       ref={menuRef}
     >
-      <div className="rounded bg-slate-700 w-auto h-auto flex flex-col py-2" style={{ marginTop: 6 }}>
+      <div
+        className="rounded bg-slate-700 w-auto h-auto flex flex-col py-2"
+        style={{ marginTop: 4, boxShadow: "0 10px 10px 5px rgba(0,0,0,0.5)" }}
+      >
         {children}
       </div>
     </Popup>
