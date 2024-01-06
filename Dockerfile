@@ -1,5 +1,5 @@
 # Dependencies step to avoid rebuilds if the package.json or package-lock.json have not changed.
-FROM node:18-alpine as BUILD-DEPS
+FROM node:20-alpine as BUILD-DEPS
 
 WORKDIR /mtsu-deps
 COPY --chown=node:node package.json package-lock.json ./
