@@ -14,12 +14,8 @@ const nextConfig = {
             },
           ]
         : []),
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "3000",
-        pathname: "**",
-      },
+      { protocol: "http", hostname: "localhost", port: "5050", pathname: "**" },
+      { protocol: "http", hostname: "127.0.0.1", port: "5050", pathname: "**" },
     ],
     formats: ["image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
