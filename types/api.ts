@@ -95,3 +95,37 @@ export interface LoginResponse {
   Role: string
   ExpiresIn: number
 }
+
+// Processing status
+export interface ProcessingStatus {
+  Scan: ScanResult
+  Thumbnails: ThumbnailResult
+  Metadata: MetadataResult
+}
+
+export interface ScanResult {
+  Running: boolean
+  FoundGalleries: string[]
+  SkippedGalleries: string[]
+  Errors: ProcessingError[]
+}
+
+export interface ThumbnailResult {
+  Running: boolean
+  TotalCovers: number
+  TotalPages: number
+  GeneratedCovers: number
+  GeneratedPages: number
+  Errors: ProcessingError[]
+}
+
+export interface MetadataResult {
+  Running: boolean
+  Errors: ProcessingError[]
+}
+
+export interface ProcessingError {
+  UUIDOrPath: string
+  Error: string
+  Details: Map<string, string>
+}
