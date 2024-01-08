@@ -58,6 +58,14 @@
     color: var(--links);
   }
 
+  a {
+    color: var(--links);
+  }
+
+  a:hover {
+    @apply text-blue-500;
+  }
+
   th {
     @apply p-3;
     @apply text-xs font-medium;
@@ -98,6 +106,10 @@
     @apply rounded-full;
     @apply py-1 px-3;
     @apply text-center;
+  }
+
+  button:disabled {
+    @apply opacity-50 cursor-not-allowed;
   }
 }
 
