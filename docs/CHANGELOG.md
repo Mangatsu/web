@@ -4,6 +4,34 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2024-01-09
+
+### Added
+
+- **New processing status page**
+- Close nav's user menu when clicking admin or personal
+- New-password attribute where applicable to accommodate password managers
+
+### Fixed
+
+- Only show favorite groups when logged in as a user
+- Anonymous user check
+- Double navigation on the admin and series page
+- React hydration error on personal settings page
+- Make the nav's user menu buttons consistent in size
+- Error when gallery was not found
+
+### Changed
+
+- **Rehauled the task menu**
+- Require minimum of Node.js v20 and npm v10
+- Upgrade dependencies (such as Next.js 14)
+- Refactor to use Next.js's App router
+- Wider search box
+- Nav to be narrower and rounder
+- Github link to be more obvious
+- Shadow to user menu
+
 ## [0.5.2] - 2023-05-30
 
 **Released packages also on GHCR (GitHub Container Registry) alongside DockerHub:**
