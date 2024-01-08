@@ -31,6 +31,7 @@ All notable changes of this project will be documented in this file. Unreleased 
 - Nav to be narrower and rounder
 - Github link to be more obvious
 - Shadow to user menu
+- Temporarily disabled loading icon (cause: a fundamental change in Next.js's router)
 
 ## [0.5.2] - 2023-05-30
 
