@@ -17,6 +17,7 @@ export enum APIPathsV1 {
   Scan = "scan",
   Thumbnails = "thumbnails",
   Meta = "meta",
+  Status = "status",
 }
 
 const API_VERSION = 1

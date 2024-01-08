@@ -7,7 +7,7 @@ import useUser from "../../lib/hooks/data/useUser"
 import gameDieIcon from "../../public/icons/game-die.svg"
 import { Gallery } from "../../types/api"
 import Button from "../Button"
-import Scan from "./Scan"
+import RunTasks from "./RunTasks"
 import User from "./User"
 
 const Nav = () => {
@@ -41,7 +41,7 @@ const Nav = () => {
           >
             <Image src={gameDieIcon} alt="game die" width={28} height={24} />
           </Button>
-          {isAdmin && <Scan />}
+          {isAdmin && <RunTasks />}
           <User isAdmin={isAdmin} />
         </span>
       </nav>

@@ -24,7 +24,7 @@ const User = ({ isAdmin }: Props) => {
   }
 
   return (
-    <NavPopup menuRef={menuRef} buttonChildren={<Image width={24} height={24} alt="user menu" src={UserIcon} />}>
+    <NavPopup menuRef={menuRef} triggerChildren={<Image width={24} height={24} alt="user menu" src={UserIcon} />}>
       <Lock />
       {getValue(LocalPreferences.UserUUID) && (
         <Button href="/personal" onClick={() => closeUserMenu()} className="mt-3 mx-4">
