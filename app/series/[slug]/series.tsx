@@ -27,7 +27,7 @@ export default function SeriesPage() {
 
   const series = galleries?.Data ? galleries.Data[0].Series : ""
   return (
-    <Layout subtitle={series}>
+    <div>
       <h2 className="mb-4 font-bold">
         {series} ({galleries.Count})
       </h2>
@@ -36,6 +36,6 @@ export default function SeriesPage() {
           <GalleryInfoBox key={gallery.UUID} gallery={gallery} />
         ))}
       </div>
-    </Layout>
+    </div>
   )
 }
