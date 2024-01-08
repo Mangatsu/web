@@ -51,7 +51,7 @@ export default function StatusPage() {
           <div>Status: {statusMessage(data.Scan.Running)}</div>
           <div className="flex flex-wrap">
             Found:
-            {data.Scan.SkippedGalleries.map((g, i) => (
+            {data.Scan.FoundGalleries.map((g, i) => (
               <span key={i} className="bg-emerald-800 rounded-md px-2 py-0 m-1">
                 {g}
               </span>
