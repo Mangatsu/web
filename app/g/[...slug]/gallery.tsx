@@ -84,7 +84,7 @@ export default function GalleryPage() {
   }
 
   useEffect(() => {
-    if (gallery) {
+    if (gallery?.Files) {
       const tmpFiles = []
       const tmpThumbnails = []
       gallery.Files.forEach((file) => {
@@ -116,11 +116,9 @@ export default function GalleryPage() {
     }
   }
 
-  if (isLoading || !gallery) {
+  if (isLoading || !gallery?.Meta) {
     return <Spinner />
   }
-
-  console.log(gallery)
 
   const viewer =
     files.length > 0 ? (
