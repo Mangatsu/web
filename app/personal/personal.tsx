@@ -37,7 +37,7 @@ function Personal() {
     if (response) {
       toast.success("User updated")
     } else {
-      toast.error("Failes to update user")
+      toast.error("Failed to update user")
     }
   }
 
