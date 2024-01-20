@@ -9,6 +9,8 @@ import Button from "../Button"
 import Lock from "../Lock"
 import NavPopup from "./NavPopup"
 
+import { version } from "../../package.json"
+
 interface Props {
   isAdmin: boolean
 }
@@ -52,10 +54,13 @@ const User = ({ isAdmin }: Props) => {
               Server: <span className="font-bold">{isLoading ? "..." : server?.ServerVersion ?? "-"}</span>
             </p>
             <p>
-              API <span className="font-bold">V{isLoading ? "..." : server?.APIVersion ?? "-"}</span>
+              API: <span className="font-bold">V{isLoading ? "..." : server?.APIVersion ?? "-"}</span>
             </p>
           </>
         )}
+        <p>
+          Web: <span className="font-bold">{version}</span>
+        </p>
       </div>
     </NavPopup>
   )
