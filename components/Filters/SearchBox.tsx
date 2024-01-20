@@ -9,7 +9,7 @@ const SearchBox = ({ query, setQuery }: FilterProps) => {
       name="search"
       minLength={2}
       placeholder="Search..."
-      onChange={(e) => setQuery({ ...query, searchTerm: e.target.value })}
+      onChange={(e) => setQuery({ ...query, searchTerm: e.target.value.trim() })}
     />
   )
 }
