@@ -105,7 +105,7 @@ export default function Login() {
               <option value={31}>31 days</option>
               <option value={365}>365 days</option>
             </select>
-            <input type="submit" value="Sign in with Credentials" className="mt-6" />
+            <input type="submit" value="Sign in with Credentials" className="cursor-pointer mt-6" />
           </form>
           {!isLoading && server?.Visibility === Visibility.Restricted && (
             <>
@@ -114,7 +114,7 @@ export default function Login() {
                 <label>Passphrase</label>
                 <input {...restrictedRegister("passphrase", { required: true })} type="password" />
                 {anonymousErrors.passphrase && <p>Passphrase is required.</p>}
-                <input type="submit" value="Sign in Anonymously" />
+                <input type="submit" value="Sign in Anonymously" className="cursor-pointer" />
               </form>
             </>
           )}
