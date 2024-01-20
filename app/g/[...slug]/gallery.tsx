@@ -149,7 +149,7 @@ function GalleryPage() {
   return (
     <>
       {viewer}
-      <div className="w-full mb-16 pb-96">
+      <div className="w-full mb-16">
         <div className="flex gap-2">
           <Button
             onClick={() => setShowThumbnails(!showThumbnails)}
