@@ -1,3 +1,5 @@
+import { ServerInfo } from "../../types/api"
+
 export enum APIPathsV1 {
   Register = "register",
   Login = "login",
@@ -51,7 +53,7 @@ export function getCacheUrl(path = "") {
  *
  * @returns promise of the JSON or null
  */
-export async function fetchServerInfo() {
+export async function fetchServerInfo(): Promise<ServerInfo | null> {
   const response = await fetch(`${API_URL}/api`, { mode: "cors" })
   if (!response.ok) {
     return null

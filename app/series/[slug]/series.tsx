@@ -1,8 +1,8 @@
 "use client"
-import { useParams } from "next/navigation"
+import { notFound, useParams } from "next/navigation"
+import { useEffect } from "react"
 import useSWR, { Fetcher } from "swr"
 import GalleryInfoBox from "../../../components/GalleryInfoBox"
-import Layout from "../../../components/Layout"
 import { APIPathsV1, swrFetcher } from "../../../lib/api/other"
 import useUser from "../../../lib/hooks/data/useUser"
 import { GalleryResponse } from "../../../types/api"
@@ -11,18 +11,25 @@ const fetcher: Fetcher<GalleryResponse, string> = (id) => swrFetcher(id)
 
 export default function SeriesPage() {
   const params = useParams()
-  const { loggedIn } = useUser()
+  const { loading, access } = useUser()
   const { data: galleries } = useSWR(
-    loggedIn && params?.slug ? `${APIPathsV1.Galleries}?series=${params.slug}` : null,
+    access && params?.slug ? `${APIPathsV1.Galleries}?series=${params.slug}` : null,
     fetcher,
   )
 
+  useEffect(() => {
+    if (!loading && !access) {
+      notFound()
+    }
+  }, [loading, access])
+
+  if (loading || !access) {
+    return null
+  }
+
   if (!galleries || !galleries.Data || galleries.Data.length === 0) {
-    return (
-      <Layout>
-        <div className="flex justify-center">-</div>
-      </Layout>
-    )
+    // todo: better empty state
+    return null
   }
 
   const series = galleries?.Data ? galleries.Data[0].Series : ""

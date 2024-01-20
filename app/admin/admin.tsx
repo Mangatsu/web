@@ -1,24 +1,29 @@
 "use client"
 import { notFound } from "next/navigation"
+import { useEffect } from "react"
 import useSWR from "swr"
 import NewUser from "../../components/NewUser"
 import Users from "../../components/Users"
 import { APIPathsV1, swrFetcher } from "../../lib/api/other"
 import { MangatsuUserResponse } from "../../lib/api/user"
-import { Role } from "../../lib/helpers"
-import { LocalPreferences, getValue } from "../../lib/localStorage"
+import useUser from "../../lib/hooks/data/useUser"
 
 export default function Admin() {
+  const { loading, isAdmin, isUser, uuid } = useUser()
   const { data, mutate } = useSWR(APIPathsV1.Users, (key: string) => swrFetcher(key))
 
-  const role = getValue(LocalPreferences.Roles)
-  if (role < Role.Admin) {
-    notFound()
+  useEffect(() => {
+    if (!loading && !isAdmin) {
+      notFound()
+    }
+  }, [loading, isAdmin])
+
+  if (loading || !isUser) {
+    return null
   }
 
-  const userUUID = getValue(LocalPreferences.UserUUID)
-
   const users = data?.Data ? (data as MangatsuUserResponse) : null
+
   return (
     <div className="flex flex-col justify-center ">
       <br />
@@ -29,7 +34,7 @@ export default function Admin() {
       </div>
       <div className="p-4 rounded bg-opacity-20 bg-black">
         <h4>Users</h4>
-        {users && <Users users={users} userUUID={userUUID} mutate={mutate} />}
+        {users && <Users users={users} userUUID={uuid} mutate={mutate} />}
       </div>
     </div>
   )

@@ -12,7 +12,7 @@ import User from "./User"
 
 const Nav = () => {
   const router = useRouter()
-  const { isAdmin, preferences } = useUser()
+  const { access, isAdmin, preferences } = useUser()
 
   const handleRandom = async () => {
     const gallery: Gallery = await fetchJSON(
@@ -31,16 +31,21 @@ const Nav = () => {
         {/* <Spinner /> TODO: Fix spinner in Next.js 13+ */}
         <span className="flex ml-2 text-3xl text-slate-600">漫月</span>
         <span className="flex">
-          <Button href="/" className="mx-2 py-2 text-base">
-            Library
-          </Button>
-          <Button
-            onClick={() => handleRandom()}
-            title="Random gallery"
-            className="rounded-full p-1 mx-2 border-2 border-blue-800 inline-flex bg-blue-600 hover:bg-blue-800 focus:ring-blue-800"
-          >
-            <Image src={gameDieIcon} alt="game die" width={28} height={24} />
-          </Button>
+          {access && (
+            <>
+              <Button href="/" className="mx-2 py-2 text-base">
+                Library
+              </Button>
+
+              <Button
+                onClick={() => handleRandom()}
+                title="Random gallery"
+                className="rounded-full p-1 mx-2 border-2 border-blue-800 inline-flex bg-blue-600 hover:bg-blue-800 focus:ring-blue-800"
+              >
+                <Image src={gameDieIcon} alt="game die" width={28} height={24} />
+              </Button>
+            </>
+          )}
           {isAdmin && <RunTasks />}
           <User isAdmin={isAdmin} />
         </span>

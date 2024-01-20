@@ -3,11 +3,14 @@ import { useRouter } from "next/navigation"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { APIPathsV1, getApiUrl } from "../../lib/api/other"
+import useServer from "../../lib/hooks/data/useServer"
 import { LocalPreferences, setValue } from "../../lib/localStorage"
 import pkg from "../../package.json"
-import { LoginResponse } from "../../types/api"
+import { LoginResponse, Visibility } from "../../types/api"
 
 export default function Login() {
+  const { isLoading, server } = useServer()
+
   const {
     register: privateRegister,
     handleSubmit: loginUser,
@@ -24,11 +27,11 @@ export default function Login() {
     reset: anonymousReset,
   } = useForm()
 
-  const loginWithCredentials = async (data: FieldValues) => {
-    const expiresIn = data.remember * 24 * 60 * 60
+  const loginWithCredentials = async (fieldData: FieldValues) => {
+    const expiresIn = fieldData.remember * 24 * 60 * 60
     const body = {
-      username: data.username,
-      password: data.password,
+      username: fieldData.username,
+      password: fieldData.password,
       session_name: `Web v${pkg.version}`,
       expires_in: expiresIn,
     }
@@ -41,11 +44,11 @@ export default function Login() {
     })
 
     if (res.ok) {
-      const data: LoginResponse = await res.json()
+      const resData: LoginResponse = await res.json()
       try {
-        setValue(LocalPreferences.Expires, data.ExpiresIn * 1000 + Date.now())
-        setValue(LocalPreferences.Roles, data.Role)
-        setValue(LocalPreferences.UserUUID, data.UUID)
+        setValue(LocalPreferences.Expires, resData.ExpiresIn * 1000 + Date.now())
+        setValue(LocalPreferences.Roles, resData.Role)
+        setValue(LocalPreferences.UserUUID, resData.UUID)
       } catch (e) {
         console.error("Failed to set user info to browser's locale storage.")
       }
@@ -69,6 +72,12 @@ export default function Login() {
     })
 
     if (res.ok) {
+      const resData: LoginResponse = await res.json()
+      try {
+        setValue(LocalPreferences.Expires, resData.ExpiresIn * 1000 + Date.now())
+      } catch (e) {
+        console.error("Failed to set expired value to browser's locale storage.")
+      }
       router.push("/")
     } else {
       anonymousReset()
@@ -95,13 +104,17 @@ export default function Login() {
         </select>
         <input type="submit" value="Sign in with Credentials" />
       </form>
-      <h4>OR</h4>
-      <form onSubmit={loginAnonymous((data) => loginWithPassphrase(data))}>
-        <label>Passphrase</label>
-        <input {...restrictedRegister("passphrase", { required: true })} type="password" />
-        {anonymousErrors.passphrase && <p>Passphrase is required.</p>}
-        <input type="submit" value="Sign in Anonymously" />
-      </form>
+      {!isLoading && server?.Visibility === Visibility.Restricted && (
+        <>
+          <h4>OR</h4>
+          <form onSubmit={loginAnonymous((data) => loginWithPassphrase(data))}>
+            <label>Passphrase</label>
+            <input {...restrictedRegister("passphrase", { required: true })} type="password" />
+            {anonymousErrors.passphrase && <p>Passphrase is required.</p>}
+            <input type="submit" value="Sign in Anonymously" />
+          </form>
+        </>
+      )}
     </>
   )
 }

@@ -91,8 +91,8 @@ export interface MangatsuUser {
 }
 
 export interface LoginResponse {
-  UUID: string
-  Role: string
+  UUID: string | null
+  Role: string | null
   ExpiresIn: number
 }
 

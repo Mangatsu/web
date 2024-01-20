@@ -1,6 +1,9 @@
 "use client"
+import { useEffect } from "react"
 import Popup from "reactjs-popup"
 import useProcessingStatus from "../../lib/hooks/data/useProcessingStatus"
+import useUser from "../../lib/hooks/data/useUser"
+import { notFound } from "next/navigation"
 
 export function statusMessage(running: boolean) {
   if (running) {
@@ -12,6 +15,17 @@ export function statusMessage(running: boolean) {
 
 export default function StatusPage() {
   const { data } = useProcessingStatus()
+  const { loading, isAdmin } = useUser()
+
+  useEffect(() => {
+    if (!loading && !isAdmin) {
+      notFound()
+    }
+  }, [loading, isAdmin])
+
+  if (loading || !isAdmin) {
+    return null
+  }
 
   const errorPopup = (key: number, triggerText: string, error: string, details: Map<string, string>) => {
     return (

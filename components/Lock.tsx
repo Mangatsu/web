@@ -1,13 +1,14 @@
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { initiateLogout } from "../lib/api/user"
 import useUser from "../lib/hooks/data/useUser"
 import { LocalPreferences, setValue } from "../lib/localStorage"
 import Button from "./Button"
 
 const Lock = () => {
-  const router = useRouter()
   const pathname = usePathname()
+  const { loading, access, isUser, isAnonymous } = useUser()
+
   const logoutHandler = () => {
     initiateLogout()
     setValue(LocalPreferences.Expires, undefined)
@@ -15,22 +16,21 @@ const Lock = () => {
     setValue(LocalPreferences.UserUUID, undefined)
 
     if (pathname === "/") {
-      router.refresh()
+      window.location.reload()
     } else {
-      router.push("/")
+      window.location.assign("/")
     }
   }
 
-  const { loggedIn } = useUser()
   return (
     <>
-      {false ? (
+      {loading ? (
         <Link href="#" passHref>
           <button disabled className="m-4 bg-blue-600 text-white opacity-50 cursor-not-allowed">
             Loading…
           </button>
         </Link>
-      ) : loggedIn ? (
+      ) : access && (isUser || isAnonymous) ? (
         <Button onClick={() => logoutHandler()} className="mt-3 mx-4">
           Logout
         </Button>

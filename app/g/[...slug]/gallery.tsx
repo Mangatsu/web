@@ -5,7 +5,7 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from "@heroicons/react/20/solid"
-import { useParams } from "next/navigation"
+import { notFound, useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import ComicViewer from "react-comic-viewer"
 import { GroupBase, OptionsOrGroups, StylesConfig } from "react-select"
@@ -57,15 +57,21 @@ export default function GalleryPage() {
     page = params.slug.length > 1 ? (params.slug[1] as unknown as number) : page
   }
 
-  const { loggedIn, anonymous, isAdmin } = useUser()
+  const { loading, access, isUser, isAdmin } = useUser()
 
   const [files, setFiles] = useState<string[]>([])
   const [thumbnails, setThumbnails] = useState<string[]>([])
   const [showThumbnails, setShowThumbnails] = useState(false)
   const [isShift, setIsShift] = useState(false)
 
+  useEffect(() => {
+    if (!loading && !access) {
+      notFound()
+    }
+  }, [loading, access])
+
   const { data: gallery, mutate: mutateGallery } = useSWR(
-    loggedIn ? `${APIPathsV1.Gallery}${galleryUUID}` : null,
+    access ? `${APIPathsV1.Gallery}${galleryUUID}` : null,
     fetcher,
   )
 
@@ -78,7 +84,7 @@ export default function GalleryPage() {
     data: favoritesData,
     mutate: mutateFavorites,
     isLoading,
-  } = useSWR(anonymous ? null : APIPathsV1.Favorites, (key) => swrFetcher(key))
+  } = useSWR(!loading && access && isUser ? APIPathsV1.Favorites : null, (key) => swrFetcher(key))
 
   let favoriteGroups: OptionsOrGroups<unknown, GroupBase<unknown>> = []
   if (favoritesData?.Data) {
@@ -101,8 +107,12 @@ export default function GalleryPage() {
     }
   }, [gallery, gallery?.Files])
 
+  if (loading || !access) {
+    return null
+  }
+
   const handleFavoriteChange = async (group: { value: string; label: string }, isNew: boolean) => {
-    if (loggedIn && !anonymous && gallery) {
+    if (access && gallery) {
       await updateFavoriteGroup(gallery.Meta.UUID, group.value)
       if (isNew) {
         mutateFavorites()
@@ -163,8 +173,8 @@ export default function GalleryPage() {
               <ArrowRightStartOnRectangleIcon className="h-5 w-5 text-zinc-100" />
             )}
           </Button>
-          {loggedIn && isAdmin && <EditGallery gallery={gallery.Meta} mutate={mutateGallery} />}
-          {loggedIn && !anonymous && (
+          {access && isAdmin && <EditGallery gallery={gallery.Meta} mutate={mutateGallery} />}
+          {access && isUser && (
             <div className="grow">
               <CreatableSelect
                 className="mx-4 max-w-md"
