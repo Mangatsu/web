@@ -7,9 +7,11 @@ interface Props {
   children: ReactNode
   menuRef?: RefObject<PopupActions>
   isLink?: boolean
+  isVisible?: boolean
+  onVisibilityChange?: (isOpen: boolean) => void
 }
 
-const NavPopup = ({ triggerChildren, children, menuRef, isLink }: Props) => {
+const NavPopup = ({ triggerChildren, children, menuRef, isLink, isVisible, onVisibilityChange }: Props) => {
   return (
     <Popup
       trigger={
@@ -28,6 +30,9 @@ const NavPopup = ({ triggerChildren, children, menuRef, isLink }: Props) => {
       position="bottom right"
       arrow={false}
       ref={menuRef}
+      open={isVisible}
+      onOpen={onVisibilityChange ? () => onVisibilityChange(true) : () => {}}
+      onClose={onVisibilityChange ? () => onVisibilityChange(false) : () => {}}
     >
       <div
         className="rounded bg-slate-700 w-auto h-auto min-w-64 flex flex-col py-2"

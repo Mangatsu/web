@@ -1,5 +1,6 @@
 "use client"
 import Image from "next/image"
+import { useState } from "react"
 import { toast } from "react-toastify"
 import { statusMessage } from "../../app/status/status"
 import { initiateMetadataGen, initiateScan, initiateThumbnailGen } from "../../lib/api/task"
@@ -9,7 +10,9 @@ import Button from "../Button"
 import NavPopup from "./NavPopup"
 
 const RunTasks = () => {
-  const { data } = useProcessingStatus()
+  const [isVisible, setIsVisible] = useState(false)
+
+  const { data } = useProcessingStatus(isVisible)
 
   // TODO: More options to the UI such as quick scan, covers only thumnbnail generation etc.
   // const quickScanHandler = async () => {
@@ -32,6 +35,10 @@ const RunTasks = () => {
     await initiateThumbnailGen(true, true)
   }
 
+  const onVisibilityChange = (isOpen: boolean) => {
+    setIsVisible(isOpen)
+  }
+
   if (!data) {
     return (
       <NavPopup triggerChildren={<Image width={24} height={24} alt="scan menu" src={ScanIcon} />}>
@@ -52,7 +59,11 @@ const RunTasks = () => {
   }
 
   return (
-    <NavPopup triggerChildren={<Image width={24} height={24} alt="scan menu" src={ScanIcon} />}>
+    <NavPopup
+      triggerChildren={<Image width={24} height={24} alt="scan menu" src={ScanIcon} />}
+      isVisible={isVisible}
+      onVisibilityChange={onVisibilityChange}
+    >
       <Button href="/status#thumbnails" className="mx-4 my-2 w-60">
         View stats
       </Button>

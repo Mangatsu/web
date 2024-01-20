@@ -13,7 +13,7 @@ export function statusMessage(running: boolean) {
 }
 
 function StatusPage() {
-  const { data } = useProcessingStatus()
+  const { data } = useProcessingStatus(true)
 
   const errorPopup = (key: number, triggerText: string, error: string, details: Map<string, string>) => {
     return (
