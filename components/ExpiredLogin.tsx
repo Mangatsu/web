@@ -9,23 +9,23 @@ const ExpiredLogin = () => {
   const router = useRouter()
   const pathname = usePathname()
   // const { routeChanging } = useRouteChange()
-  const { loggedIn } = useUser()
+  const { access, expired } = useUser()
 
   useEffect(() => {
-    // null or undefined would cause an infinite loop.
-    if (loggedIn === false) {
+    // checking access against null or undefined would cause an infinite loop.
+    if (expired === true && access === false) {
       initiateLogout()
       setValue(LocalPreferences.Expires, undefined)
       setValue(LocalPreferences.Roles, undefined)
       setValue(LocalPreferences.UserUUID, undefined)
 
       if (pathname === "/" || pathname === "/login") {
-        router.refresh()
+        window.location.reload()
       } else {
-        router.push("/")
+        window.location.assign("/")
       }
     }
-  }, [loggedIn, pathname, router])
+  }, [access, expired, pathname, router])
 
   return null
 }

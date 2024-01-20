@@ -52,7 +52,7 @@ export default function Login() {
       } catch (e) {
         console.error("Failed to set user info to browser's locale storage.")
       }
-      router.push("/")
+      window.location.assign("/")
     } else {
       privateReset()
       toast.error("Incorrect username or password.")
@@ -78,7 +78,7 @@ export default function Login() {
       } catch (e) {
         console.error("Failed to set expired value to browser's locale storage.")
       }
-      router.push("/")
+      window.location.assign("/")
     } else {
       anonymousReset()
       toast.error("Incorrect passphrase.")

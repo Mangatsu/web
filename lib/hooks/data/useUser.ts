@@ -13,14 +13,13 @@ export default function useUser() {
   const [loading, setLoading] = useState(true)
 
   const [access, setAccess] = useState(false)
-
-  const [uuid, setUUID] = useState<string | null>(null)
-  const [role, setRole] = useState(0)
-
-  const [expired, setExpired] = useState(true)
+  const [expired, setExpired] = useState<boolean | null>(null)
   const [isAnonymous, setIsAnonymous] = useState(false)
   const [isUser, setIsUser] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
+
+  const [uuid, setUUID] = useState<string | null>(null)
+  const [role, setRole] = useState(0)
 
   const [preferences, setPreferences] = useState({
     NSFW: false,
@@ -45,7 +44,7 @@ export default function useUser() {
     const expires = getValue(LocalPreferences.Expires)
     if (isNaN(expires)) {
       expiredLocal = true
-      setExpired(expiredLocal)
+      setExpired(null)
     } else {
       expiredLocal = expires < Date.now()
       setExpired(expiredLocal)
@@ -88,6 +87,7 @@ export default function useUser() {
 
   return {
     loading,
+    expired,
     access,
     uuid,
     role,
