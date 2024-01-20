@@ -23,7 +23,7 @@ export default function withAuth(Component: ComponentType, hidden: boolean, role
       }
     }, [access, isAdmin, isUser, loading, router])
 
-    if (loading || !access) {
+    if (loading || !access || (role > Role.NoRole && !isUser) || (role >= Role.Admin && !isAdmin)) {
       return null
     }
 
