@@ -1,31 +1,21 @@
 "use client"
-import { notFound } from "next/navigation"
-import { useEffect } from "react"
 import { toast } from "react-toastify"
 import useSWR from "swr"
+import withAuth from "../../components/HOC/WithAuth"
 import OnOffSwitch from "../../components/OnOffSwitch"
 import Sessions from "../../components/Sessions"
 import { APIPathsV1, swrFetcher } from "../../lib/api/other"
 import { MangatsuSessionResponse, updateUser } from "../../lib/api/user"
+import { Role } from "../../lib/helpers"
 import useUser from "../../lib/hooks/data/useUser"
 import { LocalPreferences, setValue } from "../../lib/localStorage"
 
-export default function Personal() {
-  const { loading, isUser, uuid, preferences, setPreferences } = useUser()
+function Personal() {
+  const { uuid, preferences, setPreferences } = useUser()
 
   const { data: response, mutate } = useSWR<MangatsuSessionResponse>(APIPathsV1.Sessions, (key: string) =>
     swrFetcher(key),
   )
-
-  useEffect(() => {
-    if (!loading && !isUser) {
-      notFound()
-    }
-  }, [loading, isUser])
-
-  if (loading || !isUser) {
-    return null
-  }
 
   const handlePreferences = () => {
     setValue(LocalPreferences.NSFWPref, preferences.NSFW)
@@ -121,3 +111,5 @@ export default function Personal() {
     </>
   )
 }
+
+export default withAuth(Personal, true, Role.Viewer)

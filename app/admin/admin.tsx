@@ -1,26 +1,16 @@
 "use client"
-import { notFound } from "next/navigation"
-import { useEffect } from "react"
 import useSWR from "swr"
+import withAuth from "../../components/HOC/WithAuth"
 import NewUser from "../../components/NewUser"
 import Users from "../../components/Users"
 import { APIPathsV1, swrFetcher } from "../../lib/api/other"
 import { MangatsuUserResponse } from "../../lib/api/user"
+import { Role } from "../../lib/helpers"
 import useUser from "../../lib/hooks/data/useUser"
 
-export default function Admin() {
-  const { loading, isAdmin, isUser, uuid } = useUser()
+function Admin() {
+  const { uuid } = useUser()
   const { data, mutate } = useSWR(APIPathsV1.Users, (key: string) => swrFetcher(key))
-
-  useEffect(() => {
-    if (!loading && !isAdmin) {
-      notFound()
-    }
-  }, [loading, isAdmin])
-
-  if (loading || !isUser) {
-    return null
-  }
 
   const users = data?.Data ? (data as MangatsuUserResponse) : null
 
@@ -39,3 +29,5 @@ export default function Admin() {
     </div>
   )
 }
+
+export default withAuth(Admin, true, Role.Admin)

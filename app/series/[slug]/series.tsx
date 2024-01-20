@@ -1,31 +1,22 @@
 "use client"
-import { notFound, useParams } from "next/navigation"
-import { useEffect } from "react"
+import { useParams } from "next/navigation"
 import useSWR, { Fetcher } from "swr"
 import GalleryInfoBox from "../../../components/GalleryInfoBox"
+import withAuth from "../../../components/HOC/WithAuth"
 import { APIPathsV1, swrFetcher } from "../../../lib/api/other"
+import { Role } from "../../../lib/helpers"
 import useUser from "../../../lib/hooks/data/useUser"
 import { GalleryResponse } from "../../../types/api"
 
 const fetcher: Fetcher<GalleryResponse, string> = (id) => swrFetcher(id)
 
-export default function SeriesPage() {
+function SeriesPage() {
   const params = useParams()
-  const { loading, access } = useUser()
+  const { access } = useUser()
   const { data: galleries } = useSWR(
     access && params?.slug ? `${APIPathsV1.Galleries}?series=${params.slug}` : null,
     fetcher,
   )
-
-  useEffect(() => {
-    if (!loading && !access) {
-      notFound()
-    }
-  }, [loading, access])
-
-  if (loading || !access) {
-    return null
-  }
 
   if (!galleries || !galleries.Data || galleries.Data.length === 0) {
     // todo: better empty state
@@ -46,3 +37,5 @@ export default function SeriesPage() {
     </div>
   )
 }
+
+export default withAuth(SeriesPage, true, Role.NoRole)

@@ -5,7 +5,7 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from "@heroicons/react/20/solid"
-import { notFound, useParams } from "next/navigation"
+import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import ComicViewer from "react-comic-viewer"
 import { GroupBase, OptionsOrGroups, StylesConfig } from "react-select"
@@ -13,11 +13,12 @@ import CreatableSelect from "react-select/creatable"
 import useSWR, { Fetcher } from "swr"
 import Button from "../../../components/Button"
 import EditGallery from "../../../components/EditGallery"
+import withAuth from "../../../components/HOC/WithAuth"
 import Spinner from "../../../components/Spinner"
 import Thumbnails from "../../../components/Thumbnails"
 import { APIPathsV1, getCacheUrl, swrFetcher } from "../../../lib/api/other"
 import { updateFavoriteGroup } from "../../../lib/api/user"
-import { changeExtension } from "../../../lib/helpers"
+import { Role, changeExtension } from "../../../lib/helpers"
 import useUser from "../../../lib/hooks/data/useUser"
 import { Gallery } from "../../../types/api"
 
@@ -48,7 +49,7 @@ const DEFAULT_GROUP = "Select or create a group"
 
 const fetcher: Fetcher<Gallery, string> = (id) => swrFetcher(id)
 
-export default function GalleryPage() {
+function GalleryPage() {
   const params = useParams()
   let galleryUUID = null
   let page: number = 1
@@ -57,18 +58,12 @@ export default function GalleryPage() {
     page = params.slug.length > 1 ? (params.slug[1] as unknown as number) : page
   }
 
-  const { loading, access, isUser, isAdmin } = useUser()
+  const { access, isUser, isAdmin } = useUser()
 
   const [files, setFiles] = useState<string[]>([])
   const [thumbnails, setThumbnails] = useState<string[]>([])
   const [showThumbnails, setShowThumbnails] = useState(false)
   const [isShift, setIsShift] = useState(false)
-
-  useEffect(() => {
-    if (!loading && !access) {
-      notFound()
-    }
-  }, [loading, access])
 
   const { data: gallery, mutate: mutateGallery } = useSWR(
     access ? `${APIPathsV1.Gallery}${galleryUUID}` : null,
@@ -84,7 +79,7 @@ export default function GalleryPage() {
     data: favoritesData,
     mutate: mutateFavorites,
     isLoading,
-  } = useSWR(!loading && access && isUser ? APIPathsV1.Favorites : null, (key) => swrFetcher(key))
+  } = useSWR(access && isUser ? APIPathsV1.Favorites : null, (key) => swrFetcher(key))
 
   let favoriteGroups: OptionsOrGroups<unknown, GroupBase<unknown>> = []
   if (favoritesData?.Data) {
@@ -106,10 +101,6 @@ export default function GalleryPage() {
       setThumbnails(gallery.Files.map((file) => getCacheUrl(`/${gallery.Meta.UUID}/${file}`)))
     }
   }, [gallery, gallery?.Files])
-
-  if (loading || !access) {
-    return null
-  }
 
   const handleFavoriteChange = async (group: { value: string; label: string }, isNew: boolean) => {
     if (access && gallery) {
@@ -199,3 +190,5 @@ export default function GalleryPage() {
     </>
   )
 }
+
+export default withAuth(GalleryPage, true, Role.NoRole)
