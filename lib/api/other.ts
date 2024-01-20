@@ -13,7 +13,7 @@ export enum APIPathsV1 {
   Series = "series",
   Tags = "tags",
   Users = "users",
-  User = "user/",
+  User = "users/",
   Favorites = "users/me/favorites",
   Sessions = "users/me/sessions",
   Scan = "scan",
