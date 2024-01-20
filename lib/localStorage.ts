@@ -1,4 +1,5 @@
 export enum LocalPreferences {
+  ServerVisibility = "mtsu_server_visibility",
   Roles = "mtsu_roles",
   Expires = "mtsu_expires",
   UserUUID = "mtsu_user_uuid",
