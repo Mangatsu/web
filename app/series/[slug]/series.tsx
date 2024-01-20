@@ -7,6 +7,7 @@ import { APIPathsV1, swrFetcher } from "../../../lib/api/other"
 import { Role } from "../../../lib/helpers"
 import useUser from "../../../lib/hooks/data/useUser"
 import { GalleryResponse } from "../../../types/api"
+import NotFound from "../../not-found"
 
 const fetcher: Fetcher<GalleryResponse, string> = (id) => swrFetcher(id)
 
@@ -19,8 +20,7 @@ function SeriesPage() {
   )
 
   if (!galleries || !galleries.Data || galleries.Data.length === 0) {
-    // todo: better empty state
-    return null
+    return <NotFound />
   }
 
   const series = galleries?.Data ? galleries.Data[0].Series : ""

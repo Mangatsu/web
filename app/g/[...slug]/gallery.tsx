@@ -14,13 +14,13 @@ import useSWR, { Fetcher } from "swr"
 import Button from "../../../components/Button"
 import EditGallery from "../../../components/EditGallery"
 import withAuth from "../../../components/HOC/WithAuth"
-import Spinner from "../../../components/Spinner"
 import Thumbnails from "../../../components/Thumbnails"
 import { APIPathsV1, getCacheUrl, swrFetcher } from "../../../lib/api/other"
 import { updateFavoriteGroup } from "../../../lib/api/user"
 import { Role, changeExtension } from "../../../lib/helpers"
 import useUser from "../../../lib/hooks/data/useUser"
 import { Gallery } from "../../../types/api"
+import NotFound from "../../not-found"
 
 // Style for the react-select component (favorite selection)
 const customStyles: StylesConfig = {
@@ -122,8 +122,12 @@ function GalleryPage() {
     }
   }
 
+  if (!isLoading && !gallery?.Meta) {
+    return <NotFound />
+  }
+
   if (isLoading || !gallery?.Meta) {
-    return <Spinner />
+    return null
   }
 
   const viewer =
