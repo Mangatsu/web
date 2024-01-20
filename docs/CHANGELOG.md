@@ -4,6 +4,24 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2024-01-21
+
+### Added
+
+- Web version to User menu
+
+### Fixed
+
+- A bug with found galleries on the Status page
+- Various issue with login states
+- Automatic logout on token expiring
+- Trying to access pages not available when logged in anonymously would cause flashing
+
+### Changed
+
+- **Rehauled Login page**
+- Upgraded dependencies
+
 ## [0.6.0] - 2024-01-09
 
 ### Added
