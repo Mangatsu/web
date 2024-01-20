@@ -1,5 +1,4 @@
 "use client"
-import { useRouter } from "next/navigation"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { APIPathsV1, getApiUrl } from "../../lib/api/other"
@@ -17,8 +16,6 @@ export default function Login() {
     formState: { errors: userErrors },
     reset: privateReset,
   } = useForm()
-
-  const router = useRouter()
 
   const {
     register: restrictedRegister,
@@ -86,35 +83,53 @@ export default function Login() {
   }
 
   return (
-    <>
-      <h2>Login</h2>
-      <form onSubmit={loginUser((data) => loginWithCredentials(data))}>
-        <label>Username</label>
-        <input {...privateRegister("username", { required: true })} />
-        {userErrors.username && <p>Username is required.</p>}
-        <label>Password</label>
-        <input {...privateRegister("password", { required: true })} type="password" />
-        {userErrors.password && <p>Password is required.</p>}
-        <label>Remember</label>
-        <select {...privateRegister("remember")}>
-          <option value={1}>A day</option>
-          <option value={7}>A week</option>
-          <option value={31}>A month</option>
-          <option value={365}>An year</option>
-        </select>
-        <input type="submit" value="Sign in with Credentials" />
-      </form>
-      {!isLoading && server?.Visibility === Visibility.Restricted && (
-        <>
-          <h4>OR</h4>
-          <form onSubmit={loginAnonymous((data) => loginWithPassphrase(data))}>
-            <label>Passphrase</label>
-            <input {...restrictedRegister("passphrase", { required: true })} type="password" />
-            {anonymousErrors.passphrase && <p>Passphrase is required.</p>}
-            <input type="submit" value="Sign in Anonymously" />
+    <div className="flex flex-col items-center space-x-12">
+      <div className="h-24 text-lg text-gray-500">
+        <p>夢を葬り、門をくぐれ、月灯りの葉陰に闇が蠢く。</p>
+        <p> Forgo your dreams, and step beyond, where shadows hide behind the moonlit leaves.</p>
+      </div>
+      <div className="flex flex-row justify-center space-x-12">
+        <div className="w-96">
+          <h3>Login</h3>
+          <form onSubmit={loginUser((data) => loginWithCredentials(data))}>
+            <label>Username</label>
+            <input {...privateRegister("username", { required: true })} />
+            {userErrors.username && <p>Username is required.</p>}
+            <label>Password</label>
+            <input {...privateRegister("password", { required: true })} type="password" />
+            {userErrors.password && <p>Password is required.</p>}
+            <label>Remember</label>
+            <select {...privateRegister("remember")} className="mt-2 p-1 rounded-lg">
+              <option value={1}>1 day</option>
+              <option value={7}>7 days</option>
+              <option value={31}>31 days</option>
+              <option value={365}>365 days</option>
+            </select>
+            <input type="submit" value="Sign in with Credentials" className="mt-6" />
           </form>
-        </>
-      )}
-    </>
+          {!isLoading && server?.Visibility === Visibility.Restricted && (
+            <>
+              <h4>OR</h4>
+              <form onSubmit={loginAnonymous((data) => loginWithPassphrase(data))}>
+                <label>Passphrase</label>
+                <input {...restrictedRegister("passphrase", { required: true })} type="password" />
+                {anonymousErrors.passphrase && <p>Passphrase is required.</p>}
+                <input type="submit" value="Sign in Anonymously" />
+              </form>
+            </>
+          )}
+        </div>
+        <div className="w-96">
+          <h3>Register</h3>
+          {server ? (
+            server.Registrations ? (
+              <p>Registration not implemented.</p>
+            ) : (
+              <p>Registration is disabled.</p>
+            )
+          ) : null}
+        </div>
+      </div>
+    </div>
   )
 }
