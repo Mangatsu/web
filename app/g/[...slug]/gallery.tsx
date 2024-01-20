@@ -1,5 +1,10 @@
 "use client"
-import { ArrowLeftOnRectangleIcon, ArrowRightOnRectangleIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid"
+import {
+  ArrowLeftEndOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
+  EyeIcon,
+  EyeSlashIcon,
+} from "@heroicons/react/20/solid"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import ComicViewer from "react-comic-viewer"
@@ -153,9 +158,9 @@ export default function GalleryPage() {
           </Button>
           <Button onClick={() => shiftByOne()} title="Shift pages by one">
             {isShift ? (
-              <ArrowLeftOnRectangleIcon className="h-5 w-5 text-zinc-100" />
+              <ArrowLeftEndOnRectangleIcon className="h-5 w-5 text-zinc-100" />
             ) : (
-              <ArrowRightOnRectangleIcon className="h-5 w-5 text-zinc-100" />
+              <ArrowRightStartOnRectangleIcon className="h-5 w-5 text-zinc-100" />
             )}
           </Button>
           {loggedIn && isAdmin && <EditGallery gallery={gallery.Meta} mutate={mutateGallery} />}
