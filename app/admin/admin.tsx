@@ -1,7 +1,7 @@
 "use client"
 import useSWR from "swr"
+import NewUserForm from "../../components/Forms/NewUserForm"
 import withAuth from "../../components/HOC/WithAuth"
-import NewUser from "../../components/NewUser"
 import Users from "../../components/Users"
 import { APIPathsV1, swrFetcher } from "../../lib/api/other"
 import { MangatsuUserResponse } from "../../lib/api/user"
@@ -20,7 +20,7 @@ function Admin() {
       <h3>Administrative settings</h3>
       <div className="p-4 rounded bg-opacity-20 bg-black">
         <h4>New user</h4>
-        <NewUser mutate={mutate} />
+        <NewUserForm mutate={mutate} />
       </div>
       <div className="p-4 rounded bg-opacity-20 bg-black">
         <h4>Users</h4>

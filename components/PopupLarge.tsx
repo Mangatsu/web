@@ -8,6 +8,7 @@ interface Props {
 
 const PopupLarge = ({ activator, children }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
+
   useEffect(() => {
     const html = document.getElementsByTagName("html")[0]
 

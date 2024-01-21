@@ -1,7 +1,9 @@
 "use client"
+import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import useSWR from "swr"
 import withAuth from "../../components/HOC/WithAuth"
+import InputError from "../../components/InputError"
 import OnOffSwitch from "../../components/OnOffSwitch"
 import Sessions from "../../components/Sessions"
 import { APIPathsV1, swrFetcher } from "../../lib/api/other"
@@ -9,6 +11,7 @@ import { MangatsuSessionResponse, updateUser } from "../../lib/api/user"
 import { Role } from "../../lib/helpers"
 import useUser from "../../lib/hooks/data/useUser"
 import { LocalPreferences, setValue } from "../../lib/localStorage"
+import { newPasswordFormResolver } from "../../lib/validations/resolvers"
 
 function Personal() {
   const { uuid, preferences, setPreferences } = useUser()
@@ -17,28 +20,36 @@ function Personal() {
     swrFetcher(key),
   )
 
-  const handlePreferences = () => {
-    setValue(LocalPreferences.NSFWPref, preferences.NSFW)
-    setValue(LocalPreferences.LanguagePref, preferences.Language)
-    setValue(LocalPreferences.SeriesRandomPref, preferences.SeriesRandom)
-    toast.success("Preferences saved")
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({ resolver: newPasswordFormResolver })
 
-  const handleUserUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleUserUpdate = async (fieldData: FieldValues) => {
     if (!uuid) {
       return
     }
 
-    const target = e.target as typeof e.target & { password: { value: string }; role: { value: number } }
-    const userForm = { password: target.password.value }
+    const userForm = {
+      password: fieldData.password,
+    }
 
     const response = await updateUser(uuid, userForm)
     if (response) {
       toast.success("User updated")
     } else {
+      reset()
       toast.error("Failed to update user")
     }
+  }
+
+  const handlePreferences = () => {
+    setValue(LocalPreferences.NSFWPref, preferences.NSFW)
+    setValue(LocalPreferences.LanguagePref, preferences.Language)
+    setValue(LocalPreferences.SeriesRandomPref, preferences.SeriesRandom)
+    toast.success("Preferences saved")
   }
 
   return (
@@ -48,17 +59,17 @@ function Personal() {
         <div className="grid grid-flow-col h-64">
           <div className="p-4 rounded bg-opacity-20 bg-black mr-8">
             <h4>User</h4>
-            <form onSubmit={(e) => handleUserUpdate(e)}>
+            <form onSubmit={handleSubmit((e) => handleUserUpdate(e))}>
               <label>New password</label>
               {/* Password forms should have (optionally hidden) username fields for accessibility. */}
               <input type="text" id="username" autoComplete="username" hidden />
-              <input type="password" id="password" autoComplete="new-password" />
-              <button
+              <input {...register("password", { required: true })} type="password" autoComplete="new-password" />
+              <InputError error={errors.password} />
+              <input
                 type="submit"
-                className="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
-              >
-                Update
-              </button>
+                value="Update"
+                className="text-white focus:ring-4 font-medium rounded-lg text-sm w-28 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+              />
             </form>
           </div>
 

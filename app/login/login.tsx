@@ -1,6 +1,7 @@
 "use client"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import InputError from "../../components/InputError"
 import { APIPathsV1, getApiUrl } from "../../lib/api/other"
 import useServer from "../../lib/hooks/data/useServer"
 import { LocalPreferences, setValue } from "../../lib/localStorage"
@@ -15,14 +16,14 @@ export default function Login() {
     handleSubmit: loginUser,
     formState: { errors: userErrors },
     reset: privateReset,
-  } = useForm()
+  } = useForm({ resolver: loginFormResolver })
 
   const {
     register: restrictedRegister,
     handleSubmit: loginAnonymous,
     formState: { errors: anonymousErrors },
     reset: anonymousReset,
-  } = useForm()
+  } = useForm({ resolver: anonymousLoginFormResolver })
 
   const loginWithCredentials = async (fieldData: FieldValues) => {
     const expiresIn = fieldData.remember * 24 * 60 * 60
@@ -94,10 +95,10 @@ export default function Login() {
           <form onSubmit={loginUser((data) => loginWithCredentials(data))}>
             <label>Username</label>
             <input {...privateRegister("username", { required: true })} />
-            {userErrors.username && <p>Username is required.</p>}
+            <InputError error={userErrors.username} />
             <label>Password</label>
             <input {...privateRegister("password", { required: true })} type="password" />
-            {userErrors.password && <p>Password is required.</p>}
+            <InputError error={userErrors.password} />
             <label>Remember</label>
             <select {...privateRegister("remember")} className="mt-2 p-1 rounded-lg">
               <option value={1}>1 day</option>
@@ -113,7 +114,7 @@ export default function Login() {
               <form onSubmit={loginAnonymous((data) => loginWithPassphrase(data))}>
                 <label>Passphrase</label>
                 <input {...restrictedRegister("passphrase", { required: true })} type="password" />
-                {anonymousErrors.passphrase && <p>Passphrase is required.</p>}
+                <InputError error={anonymousErrors.passphrase} />
                 <input type="submit" value="Sign in Anonymously" className="cursor-pointer" />
               </form>
             </>
