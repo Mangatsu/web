@@ -5,6 +5,7 @@ import InputError from "../../components/InputError"
 import { APIPathsV1, getApiUrl } from "../../lib/api/other"
 import useServer from "../../lib/hooks/data/useServer"
 import { LocalPreferences, setValue } from "../../lib/localStorage"
+import { anonymousLoginFormResolver, loginFormResolver } from "../../lib/validations/resolvers"
 import pkg from "../../package.json"
 import { LoginResponse, Visibility } from "../../types/api"
 
@@ -15,6 +16,7 @@ export default function Login() {
     register: privateRegister,
     handleSubmit: loginUser,
     formState: { errors: userErrors },
+    setValue: setFormValue,
     reset: privateReset,
   } = useForm({ resolver: loginFormResolver })
 
@@ -53,6 +55,8 @@ export default function Login() {
       window.location.assign("/")
     } else {
       privateReset()
+      setFormValue("username", fieldData.username)
+      setFormValue("remember", fieldData.remember)
       toast.error("Incorrect username or password.")
     }
   }
