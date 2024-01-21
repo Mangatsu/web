@@ -1,8 +1,10 @@
+import { useState } from "react"
 import { toast } from "react-toastify"
 import { KeyedMutator } from "swr"
 import { MangatsuUserResponse, deleteUser } from "../lib/api/user"
 import { Role, getRole } from "../lib/helpers"
 import UpdateUserForm from "./Forms/UpdateUserForm"
+import OnOffSwitch from "./OnOffSwitch"
 import PopupLarge from "./PopupLarge"
 
 interface Props {
@@ -12,6 +14,8 @@ interface Props {
 }
 
 const Users = ({ users, userUUID, mutate }: Props) => {
+  const [overrideAdminDelete, setOverrideAdminDelete] = useState(false)
+
   const handleDelete = async (uuid: string) => {
     const response = await deleteUser(uuid)
     if (response) {
@@ -24,16 +28,12 @@ const Users = ({ users, userUUID, mutate }: Props) => {
 
   return (
     <div className="flex flex-col">
-      <UpdateUserForm
-        user={{
-          UUID: "1111",
-          Username: "",
-          Role: 1,
-          CreatedAt: "",
-          UpdatedAt: "",
-        }}
-        mutate={mutate}
+      <OnOffSwitch
+        checked={overrideAdminDelete}
+        onChange={(e) => setOverrideAdminDelete(e)}
+        labelRight="Allow deletion of admin users"
       />
+
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
           <div className="overflow-hidden shadow-md sm:rounded-lg">
@@ -68,12 +68,12 @@ const Users = ({ users, userUUID, mutate }: Props) => {
                         <UpdateUserForm user={user} mutate={mutate} />
                       </PopupLarge>
                       {" - "}
-                      {user.Role >= Role.Admin || user.UUID === userUUID ? (
+                      {(!overrideAdminDelete && user.Role >= Role.Admin) || user.UUID === userUUID ? (
                         <span className="text-gray-600">Delete</span>
                       ) : (
                         <a
                           onClick={() => handleDelete(user.UUID)}
-                          className=" hover:text-blue-900 text-blue-500 hover:underline"
+                          className=" hover:text-blue-900 text-blue-500 hover:underline cursor-pointer"
                         >
                           Delete
                         </a>
