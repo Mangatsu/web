@@ -56,7 +56,7 @@ function Personal() {
     <>
       <div className="flex flex-col justify-center">
         <h3>Personal Settings</h3>
-        <div className="grid grid-flow-col h-64">
+        <div className="h-64 grid grid-flow-col">
           <div className="p-4 rounded bg-opacity-20 bg-black mr-8">
             <h4>User</h4>
             <form onSubmit={handleSubmit((e) => handleUserUpdate(e))}>
@@ -76,33 +76,27 @@ function Personal() {
           <div className="flex flex-col p-4 rounded bg-opacity-20 bg-black">
             <h4>Site</h4>
             <div className="grid gap-2">
-              <label>
-                <OnOffSwitch
-                  checked={preferences.NSFW}
-                  onChange={(e) => {
-                    setPreferences({ ...preferences, NSFW: e })
-                  }}
-                />
-                Hide NSFW results by default
-              </label>
-              <label>
-                <OnOffSwitch
-                  checked={preferences.Language}
-                  onChange={(e) => {
-                    setPreferences({ ...preferences, Language: e })
-                  }}
-                />
-                Show native titles when available
-              </label>
-              <label>
-                <OnOffSwitch
-                  checked={preferences.SeriesRandom}
-                  onChange={(e) => {
-                    setPreferences({ ...preferences, SeriesRandom: e })
-                  }}
-                />
-                Include serialized galleries in the random selection (🎲)
-              </label>
+              <OnOffSwitch
+                checked={preferences.NSFW}
+                onChange={(e) => {
+                  setPreferences({ ...preferences, NSFW: e })
+                }}
+                labelRight="Hide NSFW results by default"
+              />
+              <OnOffSwitch
+                checked={preferences.Language}
+                onChange={(e) => {
+                  setPreferences({ ...preferences, Language: e })
+                }}
+                labelRight="Show native titles when available"
+              />
+              <OnOffSwitch
+                checked={preferences.SeriesRandom}
+                onChange={(e) => {
+                  setPreferences({ ...preferences, SeriesRandom: e })
+                }}
+                labelRight="Include serialized galleries in the random selection (🎲)"
+              />
             </div>
             <button
               onClick={() => handlePreferences()}
@@ -113,8 +107,7 @@ function Personal() {
             </button>
           </div>
         </div>
-        <br />
-        <div className="p-4 rounded bg-opacity-20 bg-black">
+        <div className="p-4 rounded bg-opacity-20 bg-black" style={{ marginTop: "3vh" }}>
           <h4>Sessions</h4>
           <Sessions sessions={response?.Data ?? []} mutate={mutate} currentSessionID={response?.CurrentSession ?? ""} />
         </div>
