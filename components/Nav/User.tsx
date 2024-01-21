@@ -9,7 +9,8 @@ import Button from "../Button"
 import Lock from "../Lock"
 import NavPopup from "./NavPopup"
 
-import { version } from "../../package.json"
+import packageJson from "../../package.json"
+const { version } = packageJson
 
 interface Props {
   isAdmin: boolean
