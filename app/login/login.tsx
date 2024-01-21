@@ -101,10 +101,10 @@ export default function Login() {
             <InputError error={userErrors.password} />
             <label>Remember</label>
             <select {...privateRegister("remember")} className="mt-2 p-1 rounded-lg">
-              <option value={1}>1 day</option>
-              <option value={7}>7 days</option>
-              <option value={31}>31 days</option>
-              <option value={365}>365 days</option>
+              <option value={60 * 60 * 24}>1 day</option>
+              <option value={60 * 60 * 24 * 7}>7 days</option>
+              <option value={60 * 60 * 24 * 31}>31 days</option>
+              <option value={60 * 60 * 24 * 365}>365 days</option>
             </select>
             <input type="submit" value="Sign in with Credentials" className="cursor-pointer mt-6" />
           </form>
