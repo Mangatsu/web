@@ -4,6 +4,29 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.2] - 2024-01-21
+
+### Added
+
+- Validations for all the user forms (login, edit user, edit personal settings)
+- Remember username and remember status on failed login
+- Cursor pointers to login page buttons
+- 404 for not existing Gallery and Series pages
+- Message when no galleries were found
+
+### Fixed
+
+- Typos
+- Error when trying to update or delete users
+- Remember login values on Login page
+
+### Changed
+
+- Removed white space on the bottom of the gallery page
+- Refactored gallery grid
+- Trim whitespaces when searching
+- Now the task status is only being refresh on the status page or if the status popup is open
+
 ## [0.6.1] - 2024-01-21
 
 ### Added
