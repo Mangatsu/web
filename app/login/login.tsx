@@ -88,12 +88,12 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center space-x-12">
-      <div className="h-24 text-lg text-gray-500">
+    <div className="flex flex-col items-center">
+      <div className="h-24 text-sm md:text-md text-gray-500 w-96">
         <p>夢を葬り、門をくぐれ、月灯りの葉陰に闇が蠢く。</p>
         <p> Forgo your dreams, and step beyond, where shadows hide behind the moonlit leaves.</p>
       </div>
-      <div className="flex flex-row justify-center space-x-12">
+      <div className="flex flex-col lg:flex-row justify-center lg:space-x-12">
         <div className="w-96">
           <h3>Login</h3>
           <form onSubmit={loginUser((data) => loginWithCredentials(data))}>
@@ -124,7 +124,7 @@ export default function Login() {
             </>
           )}
         </div>
-        <div className="w-96">
+        <div className="w-96 mb-32">
           <h3>Register</h3>
           {server ? (
             server.Registrations ? (
