@@ -64,10 +64,10 @@ const EditGallery = ({ gallery, mutate }: EditGalleryProps) => {
         </button>
       }
     >
-      <p className="mb-2 text-xl">
-        Editing <span className="font-bold">{gallery.UUID}</span>
-      </p>
+      <p className="mb-2 text-xl w-96">Editing gallery</p>
       <form onSubmit={(e) => handleUpdate(e, gallery.UUID)}>
+        <label>UUID</label>
+        <input type="text" id="uuid" disabled defaultValue={gallery.UUID} className="cursor-not-allowed" />
         <label>Title</label>
         <input type="text" id="title" defaultValue={gallery.Title} />
         <label>Native Title</label>
