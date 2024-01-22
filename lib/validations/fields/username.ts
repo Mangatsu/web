@@ -4,8 +4,8 @@ import { GenericFormErrors } from "../resolvers"
 const minUsernameLength = 2
 const maxUsernameLength = 32
 
-// The username can contain alphanumeric characters (first character must be a letter), dashes and underscores.
-const usernameRe = new RegExp(`^[a-zA-Z][a-zA-Z0-9_-]{1,31}$`)
+// The username can contain alphanumeric characters, dashes and underscores.
+const usernameRe = new RegExp(`^[a-zA-Z0-9_-]+$`)
 
 export function validateUsername(username: string, errors: GenericFormErrors<{ username?: FieldError }>) {
   if (!username) {
