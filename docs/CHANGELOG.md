@@ -4,6 +4,27 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.4] - 2024-01-23
+
+### Added
+
+- Cursors (while hovering) to various buttons such as Save and Update
+- Confirming password when changing own password
+- Clicking 漫月 (top left) takes the user to the main page
+- Autocomplete props to password and username fields
+- Uneditable UUID field when editing a Gallery
+
+### Fixed
+
+- Search filter buttons now showing
+- 404 page flashing when accessing Galleries and Series
+- Mobile style layout on Personal page
+
+### Changed
+
+- Username can now start with a number as well
+- Unify styling all across the page
+
 ## [0.6.3] - 2024-01-22
 
 ### Added
