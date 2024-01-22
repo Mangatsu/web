@@ -3,10 +3,11 @@ import Popup from "reactjs-popup"
 
 interface Props {
   activator?: JSX.Element | ((isOpen: boolean) => JSX.Element)
+  className?: string
   children: ReactNode
 }
 
-const PopupLarge = ({ activator, children }: Props) => {
+const PopupLarge = ({ activator, className, children }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const PopupLarge = ({ activator, children }: Props) => {
   return (
     <Popup trigger={activator} modal arrow={false} onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
       <div
-        className="popup-content rounded-xl bg-slate-800 w-auto h-auto m-4 px-5 py-4 flex flex-col shadow-xl overflow-y-auto"
+        className={`popup-content rounded-xl bg-slate-800 w-auto h-auto m-4 px-5 py-4 flex flex-col shadow-xl overflow-y-auto ${className}`}
         style={{ marginTop: 6, maxHeight: "calc(100vh - 50px)" }}
       >
         {children}
