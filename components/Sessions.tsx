@@ -47,7 +47,7 @@ const Sessions = ({ sessions, currentSessionID, mutate }: Props) => {
                     <td className="p-4 text-sm font-medium text-right whitespace-nowrap">
                       {currentSessionID === session.ID ? (
                         <a
-                          className=" hover:text-blue-900 text-blue-500 hover:underline"
+                          className=" hover:text-blue-900 text-blue-500 hover:underline cursor-pointer"
                           onClick={() => logoutHandler()}
                         >
                           Logout
@@ -55,7 +55,7 @@ const Sessions = ({ sessions, currentSessionID, mutate }: Props) => {
                       ) : (
                         <a
                           onClick={() => handleDelete(session.ID)}
-                          className=" hover:text-blue-900 text-blue-500 hover:underline"
+                          className=" hover:text-blue-900 text-blue-500 hover:underline cursor-pointer"
                         >
                           Delete
                         </a>
