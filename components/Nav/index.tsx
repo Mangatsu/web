@@ -1,5 +1,6 @@
 "use client"
 import Image from "next/image"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 import { APIPathsV1, fetchJSON } from "../../lib/api/other"
@@ -29,7 +30,9 @@ const Nav = () => {
     <div className="flex justify-center">
       <nav className="px-2 mb-12 h-14 flex flex-row justify-between rounded-b-xl w-full max-w-screen-xl">
         {/* <Spinner /> TODO: Fix spinner in Next.js 13+ */}
-        <span className="flex ml-2 text-3xl text-slate-600">漫月</span>
+        <Link href="/">
+          <span className="flex ml-2 text-3xl text-slate-600">漫月</span>
+        </Link>
         <span className="flex">
           {access && (
             <>
