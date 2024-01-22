@@ -42,8 +42,7 @@ const GalleryGrid = ({ galleries, layout, nativeTitles }: GalleryProps) => {
                 </div>
               )}
               <Link
-                href={`g?id=${gallery.UUID}`}
-                as={`g/${gallery.UUID}`}
+                href={`g/${gallery.UUID}`}
                 className="grid place-content-center bg-gray-800 bg-clip-padding rounded"
               >
                 <Image
