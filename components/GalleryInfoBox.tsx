@@ -62,7 +62,7 @@ const GalleryInfoBox = ({ gallery }: Props) => {
         <div className="badge" title="Category">
           {gallery.Category}
         </div>
-        {!gallery.Nsfw && (
+        {gallery.Nsfw && (
           <div className="badge bg-pink-700 text-pink-200 font" title="NSFW">
             H
           </div>
