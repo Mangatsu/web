@@ -65,6 +65,9 @@ function Personal() {
               <input type="text" id="username" autoComplete="username" hidden />
               <input {...register("password", { required: true })} type="password" autoComplete="new-password" />
               <InputError error={errors.password} />
+              <label>Confirm new password</label>
+              <input {...register("confirmPassword", { required: true })} type="password" autoComplete="new-password" />
+              <InputError error={errors.confirmPassword} />
               <input
                 type="submit"
                 value="Update"

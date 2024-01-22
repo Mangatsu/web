@@ -1,5 +1,5 @@
 import { FieldError } from "react-hook-form"
-import { validatePassword } from "./fields/password"
+import { validatePassword, validatePasswordConfirm } from "./fields/password"
 import { validateRemember } from "./fields/remember"
 import { validateRole } from "./fields/role"
 import { validateUsername } from "./fields/username"
@@ -30,6 +30,7 @@ export const newUserFormResolver = async (values: NewUserFormData) => {
 
 interface NewPasswordFormData {
   password: string
+  confirmPassword: string
 }
 
 export const newPasswordFormResolver = async (values: NewPasswordFormData) => {
@@ -38,6 +39,7 @@ export const newPasswordFormResolver = async (values: NewPasswordFormData) => {
   } = {}
 
   validatePassword(values.password, errors)
+  validatePasswordConfirm(values.password, values.confirmPassword, errors)
 
   return { values, errors }
 }

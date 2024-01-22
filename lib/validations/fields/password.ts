@@ -26,3 +26,18 @@ export function validatePassword(password: string, errors: GenericFormErrors<{ p
     }
   }
 }
+
+export function validatePasswordConfirm(
+  password: string,
+  confirmPassword: string,
+  errors: GenericFormErrors<{ password?: FieldError; confirmPassword?: FieldError }>,
+) {
+  validatePassword(password, errors)
+
+  if (password !== confirmPassword) {
+    errors.confirmPassword = {
+      type: "validate",
+      message: "Passwords must match.",
+    }
+  }
+}
