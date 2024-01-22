@@ -1,4 +1,5 @@
 "use client"
+import { BookOpenIcon } from "@heroicons/react/20/solid"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -33,17 +34,20 @@ const Nav = () => {
         <Link href="/">
           <span className="flex ml-2 text-3xl text-slate-600">漫月</span>
         </Link>
-        <span className="flex">
+        <span className="flex space-x-1 sm:space-x-3 md:space-x-5">
           {access && (
             <>
-              <Button href="/" className="mx-2 py-2 text-base">
-                Library
+              <Button
+                href="/"
+                className="rounded-full p-1 border-blue-800 bg-blue-600 hover:bg-blue-800 focus:ring-blue-800"
+              >
+                <BookOpenIcon className="h-7 w-7 text-zinc-100" title="Library" />
               </Button>
 
               <Button
                 onClick={() => handleRandom()}
                 title="Random gallery"
-                className="rounded-full p-1 mx-2 border-2 border-blue-800 inline-flex bg-blue-600 hover:bg-blue-800 focus:ring-blue-800"
+                className="rounded-full p-1 border-blue-800 bg-blue-600 hover:bg-blue-800 focus:ring-blue-800"
               >
                 <Image src={gameDieIcon} alt="game die" width={28} height={24} />
               </Button>

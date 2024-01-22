@@ -34,7 +34,7 @@ const OnOffSwitch = ({ checked, onChange, labelRight }: Props) => {
     return (
       <div className="flex flex-row space-x-2">
         {switchComponent()}
-        <label className="">{labelRight}</label>
+        <label className="text-xs md:text-base">{labelRight}</label>
       </div>
     )
 

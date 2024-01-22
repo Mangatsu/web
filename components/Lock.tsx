@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { initiateLogout } from "../lib/api/user"
 import useUser from "../lib/hooks/data/useUser"
@@ -22,22 +21,20 @@ const Lock = () => {
     }
   }
 
+  if (loading) {
+    return (
+      <Button disabled className="bg-blue-600 text-white opacity-50 cursor-not-allowed">
+        Loading…
+      </Button>
+    )
+  }
+
   return (
     <>
-      {loading ? (
-        <Link href="#" passHref>
-          <button disabled className="m-4 bg-blue-600 text-white opacity-50 cursor-not-allowed">
-            Loading…
-          </button>
-        </Link>
-      ) : access && (isUser || isAnonymous) ? (
-        <Button onClick={() => logoutHandler()} className="mt-3 mx-4">
-          Logout
-        </Button>
+      {access && (isUser || isAnonymous) ? (
+        <Button onClick={() => logoutHandler()}>Logout</Button>
       ) : (
-        <Button href="/login" className="mt-3 mx-4">
-          Login
-        </Button>
+        <Button href="/login">Login</Button>
       )}
     </>
   )

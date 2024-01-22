@@ -45,57 +45,47 @@ const RunTasks = () => {
         <div className="flex flex-col items-center justify-center">
           <div className="text-xs text-gray-300">Waiting for the status response...</div>
         </div>
-        <Button disabled className="mx-4 my-2">
-          Scan galleries
-        </Button>
-        <Button disabled className="mx-4 my-2">
-          Generate metadata
-        </Button>
-        <Button disabled className="mx-4 my-2">
-          Generate thumbnails
-        </Button>
+        <Button disabled>Scan galleries</Button>
+        <Button disabled>Generate metadata</Button>
+        <Button disabled>Generate thumbnails</Button>
       </NavPopup>
     )
   }
 
   return (
     <NavPopup
-      triggerChildren={<Image width={24} height={24} alt="scan menu" src={ScanIcon} />}
+      triggerChildren={<Image width={28} height={28} alt="scan menu" src={ScanIcon} />}
       isVisible={isVisible}
       onVisibilityChange={onVisibilityChange}
     >
-      <Button href="/status#thumbnails" className="mx-4 my-2 w-60">
-        View stats
-      </Button>
-      <div className="flex flex-row items-center">
-        <Button onClick={() => fullScanHandler()} disabled={!data || data.Scan.Running} className="mx-4 my-2 w-44">
-          Scan galleries
-        </Button>
-        <div className="flex flex-col items-start flex-none">
-          <div className="text-xs">Status</div>
-          <div className="text-xs">{statusMessage(data.Scan.Running)}</div>
+      <div className="flex flex-col gap-2 m-4">
+        <Button href="/status#thumbnails">View stats</Button>
+        <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-col items-start flex-none">
+            <div className="text-xs">Status</div>
+            <div className="text-xs">{statusMessage(data.Scan.Running)}</div>
+          </div>
+          <Button onClick={() => fullScanHandler()} disabled={!data || data.Scan.Running}>
+            Scan galleries
+          </Button>
         </div>
-      </div>
-      <div className="flex flex-row items-center">
-        <Button onClick={() => metadataHandler()} disabled={!data || data.Metadata.Running} className="mx-4 my-2 w-44">
-          Generate metadata
-        </Button>
-        <div className="flex flex-col items-start flex-none">
-          <div className="text-xs">Status</div>
-          <div className="text-xs">{statusMessage(data.Metadata.Running)}</div>
+        <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-col items-start flex-none">
+            <div className="text-xs">Status</div>
+            <div className="text-xs">{statusMessage(data.Metadata.Running)}</div>
+          </div>
+          <Button onClick={() => metadataHandler()} disabled={!data || data.Metadata.Running}>
+            Generate metadata
+          </Button>
         </div>
-      </div>
-      <div className="flex flex-row items-center">
-        <Button
-          onClick={() => thumbnailHandler()}
-          disabled={!data || data.Thumbnails.Running}
-          className="mx-4 my-2 w-44"
-        >
-          Generate thumbnails
-        </Button>
-        <div className="flex flex-col items-start">
-          <div className="text-xs">Status</div>
-          <div className="text-xs">{statusMessage(data.Thumbnails.Running)}</div>
+        <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-col items-start">
+            <div className="text-xs">Status</div>
+            <div className="text-xs">{statusMessage(data.Thumbnails.Running)}</div>
+          </div>
+          <Button onClick={() => thumbnailHandler()} disabled={!data || data.Thumbnails.Running}>
+            Generate thumbnails
+          </Button>
         </div>
       </div>
     </NavPopup>

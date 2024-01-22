@@ -11,18 +11,20 @@ interface Props {
 }
 
 const Button = ({ children, title, href, disabled, className, onClick }: Props) => {
-  const classes = `text-white bg-blue-600 ${disabled || "hover:bg-blue-800"}`
+  const classes = `w-full text-white bg-blue-600 ${disabled || "hover:bg-blue-800"}`
   if (!href) {
     return (
-      <button disabled={disabled} onClick={onClick} type="button" className={`${classes} ${className}`} title={title}>
-        {children}
-      </button>
+      <span>
+        <button disabled={disabled} onClick={onClick} type="button" className={`${classes} ${className}`} title={title}>
+          {children}
+        </button>
+      </span>
     )
   }
 
   return (
-    <Link href={href} onClick={onClick} passHref className="flex justify-center">
-      <button disabled={disabled} type="button" className={`${classes} ${className} w-full`} title={title}>
+    <Link href={href} onClick={onClick} passHref>
+      <button disabled={disabled} type="button" className={`flex justify-center ${classes} ${className}`} title={title}>
         {children}
       </button>
     </Link>

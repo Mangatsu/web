@@ -27,7 +27,7 @@ const Users = ({ users, userUUID, mutate }: Props) => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-4">
       <OnOffSwitch
         checked={overrideAdminDelete}
         onChange={(e) => setOverrideAdminDelete(e)}
