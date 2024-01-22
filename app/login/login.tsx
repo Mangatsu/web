@@ -73,7 +73,7 @@ export default function Login() {
       headers: { "Content-Type": "application/json" },
     })
 
-    if (res.ok) {
+    if (res?.ok) {
       const resData: LoginResponse = await res.json()
       try {
         setValue(LocalPreferences.Expires, resData.ExpiresIn * 1000 + Date.now())
@@ -98,10 +98,14 @@ export default function Login() {
           <h3>Login</h3>
           <form onSubmit={loginUser((data) => loginWithCredentials(data))}>
             <label>Username</label>
-            <input {...privateRegister("username", { required: true })} />
+            <input {...privateRegister("username", { required: true })} autoComplete="username" />
             <InputError error={userErrors.username} />
             <label>Password</label>
-            <input {...privateRegister("password", { required: true })} type="password" />
+            <input
+              {...privateRegister("password", { required: true })}
+              type="password"
+              autoComplete="current-password"
+            />
             <InputError error={userErrors.password} />
             <label>Remember</label>
             <select {...privateRegister("remember")} className="mt-2 p-1 rounded-lg">
@@ -117,7 +121,11 @@ export default function Login() {
               <h4>OR</h4>
               <form onSubmit={loginAnonymous((data) => loginWithPassphrase(data))}>
                 <label>Passphrase</label>
-                <input {...restrictedRegister("passphrase", { required: true })} type="password" />
+                <input
+                  {...restrictedRegister("passphrase", { required: true })}
+                  type="password"
+                  autoComplete="passphrase"
+                />
                 <InputError error={anonymousErrors.passphrase} />
                 <input type="submit" value="Sign in Anonymously" className="cursor-pointer" />
               </form>
