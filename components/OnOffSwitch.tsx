@@ -12,7 +12,7 @@ interface Props {
 }
 
 const OnOffSwitch = ({ checked, onChange, labelRight }: Props) => {
-  const switchComponent = () => {
+  function switchComponent() {
     return (
       <Switch
         checked={checked === undefined ? false : checked}
@@ -38,7 +38,7 @@ const OnOffSwitch = ({ checked, onChange, labelRight }: Props) => {
       </div>
     )
 
-  return <>{switchComponent}</>
+  return switchComponent()
 }
 
 export default OnOffSwitch
