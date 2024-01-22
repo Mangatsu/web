@@ -68,7 +68,7 @@ function Personal() {
               <input
                 type="submit"
                 value="Update"
-                className="text-white focus:ring-4 font-medium rounded-lg text-sm w-28 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+                className="text-white focus:ring-4 font-medium rounded-lg text-sm w-28 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 cursor-pointer"
               />
             </form>
           </div>
