@@ -56,7 +56,7 @@ function Personal() {
     <>
       <div className="flex flex-col justify-center">
         <h3>Personal Settings</h3>
-        <div className="h-64 grid grid-flow-col">
+        <div className="grid grid-flow-col">
           <div className="p-4 rounded bg-opacity-20 bg-black mr-8">
             <h4>User</h4>
             <form onSubmit={handleSubmit((e) => handleUserUpdate(e))}>
@@ -78,7 +78,7 @@ function Personal() {
 
           <div className="flex flex-col p-4 rounded bg-opacity-20 bg-black">
             <h4>Site</h4>
-            <div className="grid gap-2">
+            <div className="grid gap-4">
               <OnOffSwitch
                 checked={preferences.NSFW}
                 onChange={(e) => {
