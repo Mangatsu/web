@@ -65,21 +65,22 @@ function GalleryPage() {
   const [showThumbnails, setShowThumbnails] = useState(false)
   const [isShift, setIsShift] = useState(false)
 
-  const { data: gallery, mutate: mutateGallery } = useSWR(
-    access ? `${APIPathsV1.Gallery}${galleryUUID}` : null,
-    fetcher,
-  )
+  const {
+    data: gallery,
+    mutate: mutateGallery,
+    error: galleryError,
+    isLoading: isGalleryLoading,
+  } = useSWR(access ? `${APIPathsV1.Gallery}${galleryUUID}` : null, fetcher)
 
   const [currentFavorite, setCurrentFavorite] = useState<{ value: string; label: string }>({
     value: gallery?.Meta?.GalleryPref?.FavoriteGroup || "",
     label: gallery?.Meta?.GalleryPref?.FavoriteGroup || DEFAULT_GROUP,
   })
 
-  const {
-    data: favoritesData,
-    mutate: mutateFavorites,
-    isLoading,
-  } = useSWR(access && isUser ? APIPathsV1.Favorites : null, (key) => swrFetcher(key))
+  const { data: favoritesData, mutate: mutateFavorites } = useSWR(
+    access && isUser ? APIPathsV1.Favorites : null,
+    (key) => swrFetcher(key),
+  )
 
   let favoriteGroups: OptionsOrGroups<unknown, GroupBase<unknown>> = []
   if (favoritesData?.Data) {
@@ -122,13 +123,8 @@ function GalleryPage() {
     }
   }
 
-  if (!isLoading && !gallery?.Meta) {
-    return <NotFound />
-  }
-
-  if (isLoading || !gallery?.Meta) {
-    return null
-  }
+  if (galleryError) return <NotFound />
+  if (isGalleryLoading || !gallery) return null
 
   const viewer =
     files.length > 0 ? (

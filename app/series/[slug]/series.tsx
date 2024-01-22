@@ -14,13 +14,18 @@ const fetcher: Fetcher<GalleryResponse, string> = (id) => swrFetcher(id)
 function SeriesPage() {
   const params = useParams()
   const { access } = useUser()
-  const { data: galleries } = useSWR(
+  const { data: galleries, error } = useSWR(
     access && params?.slug ? `${APIPathsV1.Galleries}?series=${params.slug}` : null,
     fetcher,
   )
 
-  if (!galleries || !galleries.Data || galleries.Data.length === 0) {
+  if (error) {
     return <NotFound />
+  }
+
+  if (!galleries?.Data || galleries.Data.length === 0) {
+    // better no data state
+    return null
   }
 
   const series = galleries?.Data ? galleries.Data[0].Series : ""
