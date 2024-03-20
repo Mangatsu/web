@@ -7,7 +7,7 @@ COPY --chown=node:node package.json package-lock.json ./
 RUN npm install npm@latest -g && npm install
 
 # Build the app.
-FROM node:18-alpine AS BUILDER
+FROM node:20-alpine AS BUILDER
 ENV NODE_ENV=production
 ENV NEXT_MANGATSU_IMAGE_HOSTNAME=MANGATSU_IMAGE_HOSTNAME_PLACEHOLDER
 
@@ -18,7 +18,7 @@ COPY --chown=node:node --from=BUILD-DEPS /mtsu-deps/node_modules ./node_modules
 RUN NEXT_PUBLIC_MANGATSU_API_URL=APP_NEXT_PUBLIC_MANGATSU_API_URL npm run build
 
 # Run the app.
-FROM node:18-alpine as RUNNER
+FROM node:20-alpine as RUNNER
 ENV NODE_ENV=production
 
 WORKDIR /mtsu-web
