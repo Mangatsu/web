@@ -9,6 +9,7 @@ RUN npm install npm@latest -g && npm install
 # Build the app.
 FROM node:20-alpine AS BUILDER
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED 1
 ENV NEXT_MANGATSU_IMAGE_HOSTNAME=MANGATSU_IMAGE_HOSTNAME_PLACEHOLDER
 
 WORKDIR /mtsu-build
