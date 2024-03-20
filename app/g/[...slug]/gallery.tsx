@@ -52,14 +52,14 @@ const fetcher: Fetcher<Gallery, string> = (id) => swrFetcher(id)
 function GalleryPage() {
   const params = useParams()
   let galleryUUID = null
-  let page: number = 1
+  let page = 1
+
   if (params?.slug && Array.isArray(params.slug) && params.slug.length > 0) {
     galleryUUID = params.slug[0]
     page = params.slug.length > 1 ? (params.slug[1] as unknown as number) : page
   }
 
   const { access, isUser, isAdmin } = useUser()
-
   const [files, setFiles] = useState<string[]>([])
   const [thumbnails, setThumbnails] = useState<string[]>([])
   const [showThumbnails, setShowThumbnails] = useState(false)
