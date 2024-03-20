@@ -33,8 +33,8 @@ const NavPopup = ({ triggerChildren, children, menuRef, isLink, isVisible, onVis
       arrow={false}
       ref={menuRef}
       open={isVisible}
-      onOpen={onVisibilityChange ? () => onVisibilityChange(true) : () => {}}
-      onClose={onVisibilityChange ? () => onVisibilityChange(false) : () => {}}
+      onOpen={onVisibilityChange ? () => onVisibilityChange(true) : undefined}
+      onClose={onVisibilityChange ? () => onVisibilityChange(false) : undefined}
     >
       <div
         className="rounded bg-slate-700 w-auto h-auto min-w-64 flex flex-col py-2"
