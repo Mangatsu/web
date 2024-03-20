@@ -17,7 +17,7 @@ WORKDIR /mtsu-build
 COPY --chown=node:node . .
 COPY --chown=node:node --from=BUILD-DEPS /mtsu-deps/node_modules ./node_modules
 
-RUN NEXT_PUBLIC_MANGATSU_API_URL=APP_NEXT_PUBLIC_MANGATSU_API_URL npm run build
+RUN env NEXT_PUBLIC_MANGATSU_API_URL=APP_NEXT_PUBLIC_MANGATSU_API_URL NEXT_INTERNAL_MANGATSU_API_URL=APP_NEXT_INTERNAL_MANGATSU_API_URL npm run build
 
 # Runs the app.
 FROM node:20-alpine as RUNNER

@@ -22,11 +22,12 @@ export enum APIPathsV1 {
   Status = "status",
 }
 
-const API_VERSION = 1
+const API_VERSION = 1 as const
 const CACHE_PATH = "/cache" as const
-export const RESULT_LIMIT = 50
+export const RESULT_LIMIT = 50 as const
 
 const API_URL = process.env.NEXT_PUBLIC_MANGATSU_API_URL || "http://localhost:5050"
+const INTERNAL_API_URL = process.env.NEXT_INTERNAL_MANGATSU_API_URL || "http://mtsuserver:5050"
 
 /**
  * Returns the API URL with specified path.
@@ -44,8 +45,9 @@ export function getApiUrl(path: APIPathsV1 | string) {
  * @param path
  * @returns API URL as string
  */
-export function getCacheUrl(path = "") {
-  return `${API_URL}${CACHE_PATH}${path}`
+export function getCacheUrl(path = "", preferInternalAPI = true) {
+  const apiURL = INTERNAL_API_URL && preferInternalAPI ? INTERNAL_API_URL : API_URL
+  return `${apiURL}${CACHE_PATH}${path}`
 }
 
 /**

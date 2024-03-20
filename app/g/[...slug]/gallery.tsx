@@ -17,7 +17,7 @@ import withAuth from "../../../components/HOC/WithAuth"
 import Thumbnails from "../../../components/Thumbnails"
 import { APIPathsV1, getCacheUrl, swrFetcher } from "../../../lib/api/other"
 import { updateFavoriteGroup } from "../../../lib/api/user"
-import { Role, changeExtension } from "../../../lib/helpers"
+import { Role } from "../../../lib/helpers"
 import useUser from "../../../lib/hooks/data/useUser"
 import { Gallery } from "../../../types/api"
 import NotFound from "../../not-found"
@@ -92,14 +92,15 @@ function GalleryPage() {
 
   useEffect(() => {
     if (gallery?.Files) {
-      const tmpFiles = []
-      const tmpThumbnails = []
+      const tmpFiles = new Array<string>()
+      const tmpThumbnails = new Array<string>()
       gallery.Files.forEach((file) => {
-        tmpFiles.push(getCacheUrl(`/${gallery.Meta.UUID}/${file}`))
-        tmpThumbnails.push(getCacheUrl(`/thumbnails/${gallery.Meta.UUID}/${changeExtension(file, ".webp")}`))
+        tmpFiles.push(getCacheUrl(`/${gallery.Meta.UUID}/${file}`, false))
+        tmpThumbnails.push(getCacheUrl(`/thumbnails/${gallery.Meta.UUID}/${file}`))
       })
-      setFiles(gallery.Files.map((file) => getCacheUrl(`/${gallery.Meta.UUID}/${file}`)))
-      setThumbnails(gallery.Files.map((file) => getCacheUrl(`/${gallery.Meta.UUID}/${file}`)))
+
+      setFiles(tmpFiles)
+      setThumbnails(tmpThumbnails)
     }
   }, [gallery, gallery?.Files])
 
