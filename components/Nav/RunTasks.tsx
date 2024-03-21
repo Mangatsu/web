@@ -65,7 +65,7 @@ const RunTasks = () => {
             <div className="text-xs">Status</div>
             <div className="text-xs">{statusMessage(data.Scan.Running)}</div>
           </div>
-          <Button onClick={() => fullScanHandler()} disabled={!data || data.Scan.Running}>
+          <Button onClick={() => fullScanHandler()} disabled={data.Scan.Running}>
             Scan galleries
           </Button>
         </div>
@@ -74,7 +74,7 @@ const RunTasks = () => {
             <div className="text-xs">Status</div>
             <div className="text-xs">{statusMessage(data.Metadata.Running)}</div>
           </div>
-          <Button onClick={() => metadataHandler()} disabled={!data || data.Metadata.Running}>
+          <Button onClick={() => metadataHandler()} disabled={data.Metadata.Running}>
             Generate metadata
           </Button>
         </div>
@@ -83,7 +83,7 @@ const RunTasks = () => {
             <div className="text-xs">Status</div>
             <div className="text-xs">{statusMessage(data.Thumbnails.Running)}</div>
           </div>
-          <Button onClick={() => thumbnailHandler()} disabled={!data || data.Thumbnails.Running}>
+          <Button onClick={() => thumbnailHandler()} disabled={data.Thumbnails.Running}>
             Generate thumbnails
           </Button>
         </div>
