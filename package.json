@@ -10,7 +10,7 @@
     "lint:next": "next lint",
     "lint": "eslint --ext js,jsx,ts,tsx . && prettier --check .",
     "lint:fix": "eslint --ext js,jsx,ts,tsx --fix . && prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
