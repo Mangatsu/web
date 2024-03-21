@@ -30,7 +30,7 @@ function Library() {
 
   const getGKey = (pageIndex: number, previousPageData: unknown[]) => {
     if (previousPageData && previousPageData.length === 0) return null
-    return [pageIndex * RESULT_LIMIT, debouncedFilters]
+    return [pageIndex, debouncedFilters]
   }
 
   const {
