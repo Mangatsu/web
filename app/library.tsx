@@ -6,7 +6,6 @@ import { LibraryLayout } from "../components/Filters/LayoutSelect"
 import GalleryGrid, { GalleriesResult } from "../components/GalleryGrid"
 import withAuth from "../components/HOC/WithAuth"
 import { fetchLibrary } from "../lib/api/library"
-import { RESULT_LIMIT } from "../lib/api/other"
 import { Role } from "../lib/helpers"
 import useCategories from "../lib/hooks/data/useCategories"
 import useFavorites from "../lib/hooks/data/useFavorites"
@@ -41,9 +40,8 @@ function Library() {
     keepPreviousData: true,
   })
 
-  // This should actually be called "mightHaveMore", as in rare cases the data ends exactly on the offset
-  // which results one extra request being made. (results % offset === 0)
-  const hasMoreGalleries = gData && gData[gData.length - 1]?.Count === RESULT_LIMIT
+  const hasMoreGalleries =
+    gData && gData[gData.length - 1].TotalCount > gData.reduce((acc, galleryResult) => acc + galleryResult.Count, 0)
 
   // TODO: Grid masonry when major browsers support it (https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Masonry_Layout)
   return (

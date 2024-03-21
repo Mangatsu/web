@@ -9,6 +9,7 @@ import { LibraryLayout } from "./Filters/LayoutSelect"
 export interface GalleriesResult {
   Data: GalleryMeta[] | Record<string, GalleryMeta[]>
   Count: number
+  TotalCount: number
 }
 
 interface GalleryProps {
