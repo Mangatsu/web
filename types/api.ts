@@ -1,3 +1,8 @@
+export interface OrderedMap<T> {
+  Keys: string[]
+  Map: Record<string, T>
+}
+
 // Server meta
 export enum Visibility {
   Public = "public",
@@ -44,6 +49,7 @@ export interface GalleryMeta {
   Tags: Record<string, string[]>
   Reference: Reference
   GalleryPref?: GalleryPref
+  SubGalleryCount?: number
   CreatedAt: string
   UpdatedAt: string
 }
