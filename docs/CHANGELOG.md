@@ -4,6 +4,27 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.5] - 2024-03-21
+
+### Added
+
+- NEXT_INTERNAL_MANGATSU_API_URL environment variable to specify which API URL to use for internal requests (currently only for image proxying)
+- Add AVIF support
+
+### Fixed
+
+- Useless network calls that ended up in 404 when opening the Library page
+- NSFW badges not showing on the Series page
+- Warning on empty functions and unnecessary type
+- Fixed an issue with image remote patterns that would cause the image proxy to return error 400
+
+### Changed
+
+- Updated Node.js runtime to v20
+- Updated dependencies
+- Disabled Next.js telemetry in the Docker image before building
+- Decreased minimum TTL of the image proxy from 30 days to 24 hours
+
 ## [0.6.4] - 2024-01-23
 
 ### Added
