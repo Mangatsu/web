@@ -27,7 +27,7 @@ const CACHE_PATH = "/cache" as const
 export const RESULT_LIMIT = 50 as const
 
 const API_URL = process.env.NEXT_PUBLIC_MANGATSU_API_URL || "http://localhost:5050"
-const INTERNAL_API_URL = process.env.NEXT_INTERNAL_MANGATSU_API_URL || "http://mtsuserver:5050"
+const INTERNAL_API_URL = process.env.NEXT_PUBLIC_INTERNAL_MANGATSU_API_URL || "http://mtsuserver:5050"
 
 /**
  * Returns the API URL with specified path.
