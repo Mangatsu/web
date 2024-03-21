@@ -3,11 +3,11 @@ import Link from "next/link"
 import { getCacheUrl } from "../lib/api/other"
 import { Base64Placeholder } from "../lib/helpers"
 import placeholderCover from "../public/placeholder-fade.png"
-import { GalleryMeta } from "../types/api"
+import { GalleryMeta, OrderedMap } from "../types/api"
 import { LibraryLayout } from "./Filters/LayoutSelect"
 
 export interface GalleriesResult {
-  Data: GalleryMeta[] | Record<string, GalleryMeta[]>
+  Data: GalleryMeta[] | OrderedMap<GalleryMeta>
   Count: number
   TotalCount: number
 }
@@ -63,19 +63,20 @@ const GalleryGrid = ({ galleries, layout, nativeTitles }: GalleryProps) => {
           ))
         }
 
-        const galleryMap = result.Data as Record<string, GalleryMeta[]>
-        return Object.keys(galleryMap).map((k, i) => {
-          const g = galleryMap[k]
+        const galleryOrderedMap = result.Data
+        return galleryOrderedMap.Keys.map((k, i) => {
+          const g = galleryOrderedMap.Map[k]
+          const subGalleryCount = g.SubGalleryCount ?? 0
           return (
             <div key={i} className="relative">
               <Link
-                href={g.length > 1 ? `series/${g[0].Series}` : `g/${g[0].UUID}`}
-                key={g[0].UUID}
+                href={subGalleryCount > 0 ? `series/${g.Series}` : `g/${g.UUID}`}
+                key={g.UUID}
                 className="grid place-content-center mb-3 mr-3 bg-gray-800 bg-clip-padding rounded"
               >
                 <Image
                   alt="cover image"
-                  src={g[0].Thumbnail ? getCacheUrl(`/thumbnails/${g[0].UUID}/${g[0].Thumbnail}`) : placeholderCover}
+                  src={g.Thumbnail ? getCacheUrl(`/thumbnails/${g.UUID}/${g.Thumbnail}`) : placeholderCover}
                   className="w-full rounded text-center"
                   width={200}
                   height={300}
@@ -84,12 +85,12 @@ const GalleryGrid = ({ galleries, layout, nativeTitles }: GalleryProps) => {
                   blurDataURL={Base64Placeholder}
                 />
               </Link>
-              {g.length > 1 && (
+              {subGalleryCount > 0 && (
                 <div
                   style={{ margin: "-50px 0 0 15px" }}
                   className="absolute bg-slate-900 opacity-75 text-white text-center p-2 leading-3 rounded-full"
                 >
-                  {g.length}
+                  {subGalleryCount}
                 </div>
               )}
             </div>
