@@ -4,6 +4,24 @@ All notable changes of this project will be documented in this file. Unreleased 
 
 > The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.6] - 2024-03-23
+
+**Server v0.8.0 required!**
+
+### Added
+
+- Calculate the total number of pages in the Library accurarely with TotalCount (requires server v0.8.0)
+
+### Fixed
+
+- `NEXT_INTERNAL_MANGATSU_API_URL` to `NEXT_PUBLIC_INTERNAL_MANGATSU_API_URL` as `NEXT_PUBLIC_` is required for the environment variable to be available on the client side
+- Page thumbnail path
+
+### Changed
+
+- Remove unnecessary data checks on task statuses
+- Remove client side limit multiplier as this is handled on the server
+
 ## [0.6.5] - 2024-03-21
 
 ### Added
