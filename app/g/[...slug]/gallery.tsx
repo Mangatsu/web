@@ -96,7 +96,7 @@ function GalleryPage() {
       const tmpThumbnails = new Array<string>()
       gallery.Files.forEach((file) => {
         tmpFiles.push(getCacheUrl(`/${gallery.Meta.UUID}/${file}`, false))
-        tmpThumbnails.push(getCacheUrl(`/thumbnails/p/${gallery.Meta.UUID}/${changeExtension(file, ".webp")}`))
+        tmpThumbnails.push(getCacheUrl(`/thumbnails/${gallery.Meta.UUID}/p/${changeExtension(file, ".webp")}`))
       })
 
       setFiles(tmpFiles)
